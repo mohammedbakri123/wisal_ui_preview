@@ -1,13 +1,10 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
 import { BackButton } from '@/core/components/ui/BackButton'
 import { PageContainer } from '@/core/components/layout/PageContainer'
 import { Toggle } from '@/core/components/ui/Toggle'
 import { ROUTES } from '@/core/utils/routes'
 
 export default function NotificationSettingsPage() {
-  const navigate = useNavigate()
-
   const [pushEnabled, setPushEnabled] = useState(true)
   const [groupAlerts, setGroupAlerts] = useState(true)
   const [soundsEnabled, setSoundsEnabled] = useState(true)

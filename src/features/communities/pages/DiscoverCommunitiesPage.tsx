@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router'
 import { PageContainer } from '@/core/components/layout/PageContainer'
 import { BackButton } from '@/core/components/ui/BackButton'
 import { ROUTES } from '@/core/utils/routes'
@@ -6,8 +5,6 @@ import { CommunityCard } from '../components/CommunityCard'
 import { communities } from '../data'
 
 export default function DiscoverCommunitiesPage() {
-  const navigate = useNavigate()
-
   return (
     <div className="flex h-full flex-col bg-background">
       <PageContainer className="w-full px-3 sm:px-4 pt-3 sm:pt-4">

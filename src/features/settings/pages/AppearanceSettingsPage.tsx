@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
 import { BackButton } from '@/core/components/ui/BackButton'
 import { PageContainer } from '@/core/components/layout/PageContainer'
 import { useTheme, type AccentColor } from '@/app/providers/ThemeProvider'
@@ -14,7 +13,6 @@ const ACCENT_PREVIEW: Record<AccentColor, { bg: string; ring: string }> = {
 }
 
 export default function AppearanceSettingsPage() {
-  const navigate = useNavigate()
   const { theme, accentColor, setTheme, setAccentColor } = useTheme()
   const [backgroundPattern, setBackgroundPattern] = useState('classic')
 

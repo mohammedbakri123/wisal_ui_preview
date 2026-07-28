@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
 import { Avatar } from '@/core/components/ui/Avatar'
 import { PageContainer } from '@/core/components/layout/PageContainer'
 import { BackButton } from '@/core/components/ui/BackButton'
@@ -10,7 +9,6 @@ import { StoryCreator } from '@/features/stories/components/StoryCreator'
 import { cn } from '@/core/utils/cn'
 
 export default function StoriesPage() {
-  const navigate = useNavigate()
   const { user } = useAuth()
   const {
     storyGroups,

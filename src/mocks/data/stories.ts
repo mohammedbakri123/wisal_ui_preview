@@ -1,5 +1,4 @@
 import type { StoryGroup } from '@/core/types/story'
-import { mockUsers } from './users'
 
 const now = Date.now()
 
@@ -76,6 +75,7 @@ export const mockStoryGroups: StoryGroup[] = [
         userId: '1',
         userName: 'Alex Morgan',
         userAvatar: null,
+        mediaUrl: null,
         content: 'Building the future, one commit at a time. 🌟',
         type: 'text',
         backgroundColor: '#1b2a1e',

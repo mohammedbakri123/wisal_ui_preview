@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
 import { useAuth } from '@/app/providers/AuthProvider'
 import { BackButton } from '@/core/components/ui/BackButton'
 import { PageContainer } from '@/core/components/layout/PageContainer'
@@ -8,7 +7,6 @@ import { Button } from '@/core/components/ui/Button'
 import { ROUTES } from '@/core/utils/routes'
 
 export default function AccountSettingsPage() {
-  const navigate = useNavigate()
   const { user, setUser } = useAuth()
 
   const [phone, setPhone] = useState(user?.phone || '')

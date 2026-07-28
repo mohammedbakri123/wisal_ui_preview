@@ -4,7 +4,6 @@ import { Sidebar } from '@/core/components/layout/Sidebar'
 import { useOnlineStatus } from '@/core/hooks/useOnlineStatus'
 import { ChatStoreProvider } from '@/features/chat/store/ChatStore'
 import { StoriesProvider } from '@/features/stories/context/StoriesContext'
-import { ROUTES } from '@/core/utils/routes'
 
 export function MainLayout() {
   const isOnline = useOnlineStatus()

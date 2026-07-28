@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
 import { FeatureScaffold } from '@/core/components/layout/FeatureScaffold'
 import { ROUTES } from '@/core/utils/routes'
 import { PageContainer } from '@/core/components/layout/PageContainer'
@@ -12,7 +11,6 @@ const initialBans = [
 ]
 
 export default function BannedUsersPage() {
-  const navigate = useNavigate()
   const [bans, setBans] = useState(initialBans)
 
   if (bans.length === 0) {

@@ -164,7 +164,7 @@ export default function ExplorePage() {
 
                     {storyGroups.length > 0 ? (
                       <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 justify-center sm:justify-start">
-                        {storyGroups.map((group, idx) => {
+                        {storyGroups.map((group) => {
                           const hasUnseen = !group.allViewed
                           return (
                             <button

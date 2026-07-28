@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
 import { FeatureScaffold } from '@/core/components/layout/FeatureScaffold'
 import { ROUTES } from '@/core/utils/routes'
 import { PageContainer } from '@/core/components/layout/PageContainer'
@@ -13,7 +12,6 @@ const initialReports = [
 ]
 
 export default function ReportedContentPage() {
-  const navigate = useNavigate()
   const [reports, setReports] = useState(initialReports)
 
   if (reports.length === 0) {

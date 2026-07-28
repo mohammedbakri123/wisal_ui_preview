@@ -43,7 +43,7 @@ export function ChatListItem({ conversation, onTogglePin, onArchive, onDelete, o
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null)
   const menuOpenRef = useRef(false)
   const menuRef = useRef<HTMLDivElement>(null)
-  const longPressTimer = useRef<ReturnType<typeof setTimeout>>()
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const itemRef = useRef<HTMLDivElement>(null)
 
   // Close menu on outside click

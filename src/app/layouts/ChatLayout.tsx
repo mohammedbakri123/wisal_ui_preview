@@ -4,7 +4,6 @@ import { useConversations } from '@/features/chat/hooks/useConversations'
 import { ChatList } from '@/features/chat/components/ChatList'
 import { useNavigate } from 'react-router'
 import { ROUTES } from '@/core/utils/routes'
-import { StoriesRow } from '@/features/stories/components/StoriesRow'
 import { StoryViewer } from '@/features/stories/components/StoryViewer'
 import { StoryCreator } from '@/features/stories/components/StoryCreator'
 import { useStoriesContext } from '@/features/stories/context/StoriesContext'
@@ -19,7 +18,6 @@ export function ChatLayout() {
   const {
     storyGroups,
     activeStoryIndex,
-    openStoryViewer,
     closeStoryViewer,
     goToNextStory,
     goToPrevStory,
