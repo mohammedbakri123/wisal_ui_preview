@@ -1,5 +1,5 @@
-import { API_BASE_URL } from '@/core/utils/constants'
 import type { User } from '@/core/types'
+import { mockUsers } from '@/mocks/data/users'
 import type {
   LoginRequest,
   LoginResponse,
@@ -9,54 +9,70 @@ import type {
   CreateProfileResponse,
 } from '../types/auth.types'
 
-async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const res = await fetch(`${API_BASE_URL}${path}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
-    ...options,
-  })
-
-  if (!res.ok) {
-    const error = await res.json().catch(() => ({ message: 'Request failed' }))
-    throw new Error(error.message ?? `HTTP ${res.status}`)
-  }
-
-  return res.json()
-}
+const verifiedIdentifiers = new Set<string>()
+const pendingIdentifiers = new Set<string>()
 
 export const authService = {
-  login(data: LoginRequest) {
-    return request<LoginResponse>('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    })
+  async login(data: LoginRequest): Promise<LoginResponse> {
+    await new Promise((r) => setTimeout(r, 400))
+    if (!data.identifier) throw new Error('Identifier is required')
+    pendingIdentifiers.add(data.identifier)
+    return { message: 'OTP sent successfully', expiresAt: Date.now() + 300_000 }
   },
 
-  verifyOtp(data: VerifyOtpRequest) {
-    return request<VerifyOtpResponse>('/auth/verify', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    })
+  async verifyOtp(data: VerifyOtpRequest): Promise<VerifyOtpResponse> {
+    await new Promise((r) => setTimeout(r, 500))
+    if (!data.code || data.code.length !== 6) throw new Error('Invalid OTP code')
+    if (!/^\d{6}$/.test(data.code)) throw new Error('Invalid OTP code')
+
+    const existingUser = mockUsers.find(
+      (u) => u.email === data.identifier || u.phone === data.identifier,
+    )
+
+    verifiedIdentifiers.add(data.identifier)
+
+    if (existingUser) {
+      return {
+        token: `mock_token_${existingUser.id}_${Date.now()}`,
+        user: existingUser,
+      }
+    }
+
+    return {
+      token: `mock_token_new_${Date.now()}`,
+      user: null,
+    }
   },
 
-  createProfile(data: CreateProfileRequest, token: string) {
-    const formData = new FormData()
-    formData.append('name', data.name)
-    if (data.bio) formData.append('bio', data.bio)
-    if (data.avatar) formData.append('avatar', data.avatar)
+  async createProfile(data: CreateProfileRequest, token: string): Promise<CreateProfileResponse> {
+    await new Promise((r) => setTimeout(r, 500))
+    if (!token?.startsWith('mock_token')) throw new Error('Unauthorized')
 
-    return request<CreateProfileResponse>('/auth/profile', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
-    })
+    const newUser: User = {
+      id: String(Date.now()),
+      name: data.name,
+      avatar: null,
+      bio: data.bio ?? null,
+      phone: null,
+      email: null,
+      isOnline: true,
+      lastSeen: null,
+      createdAt: new Date().toISOString(),
+    }
+
+    return { user: newUser, token }
   },
 
-  getCurrentUser(token: string) {
-    return request<{ user: User }>('/auth/me', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+  async getCurrentUser(token: string): Promise<{ user: User }> {
+    await new Promise((r) => setTimeout(r, 200))
+    if (!token?.startsWith('mock_token_')) throw new Error('Invalid token')
+
+    const match = token.match(/mock_token_(\d+)/)
+    if (match) {
+      const user = mockUsers.find((u) => u.id === match[1])
+      if (user) return { user }
+    }
+
+    throw new Error('Invalid token')
   },
 }

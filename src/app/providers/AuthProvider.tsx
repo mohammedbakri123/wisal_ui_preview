@@ -2,6 +2,7 @@
 import { createContext, useContext, useReducer, useEffect, useCallback, type ReactNode } from 'react'
 import type { User } from '@/core/types'
 import { STORAGE_KEYS } from '@/core/utils/constants'
+import { authService } from '@/features/authentication/services/auth.service'
 
 interface AuthState {
   user: User | null
@@ -64,15 +65,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN)
     if (token) {
-      fetch(`${import.meta.env.VITE_API_URL ?? '/api'}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error('Not authenticated')
-          return res.json()
-        })
-        .then((data) => {
-          dispatch({ type: 'LOGIN', payload: { user: data.data.user, token } })
+      authService.getCurrentUser(token)
+        .then(({ user }) => {
+          dispatch({ type: 'LOGIN', payload: { user, token } })
         })
         .catch(() => {
           localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN)
