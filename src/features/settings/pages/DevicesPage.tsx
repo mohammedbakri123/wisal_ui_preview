@@ -11,9 +11,9 @@ export default function DevicesPage() {
   ])
 
   return (
-    <div className="flex h-full flex-col bg-background text-foreground">
-      <PageContainer className="w-full px-4 pt-3 pb-8">
-        <div className="mx-auto w-full max-w-xl">
+    <div className="flex h-full flex-col bg-background text-foreground min-w-0 max-w-full overflow-x-hidden">
+      <PageContainer className="w-full max-w-full box-border overflow-x-hidden px-4 pt-3 pb-8 min-w-0">
+        <div className="mx-auto w-full max-w-full sm:max-w-xl min-w-0 overflow-x-hidden">
           <BackButton to={ROUTES.SETTINGS.ROOT} label="الإعدادات" />
           <header className="mb-6 mt-2"><p className="text-xs font-bold uppercase tracking-wider text-accent">الأمان</p><h1 className="mt-1 text-2xl font-bold">الأجهزة النشطة</h1><p className="mt-2 text-sm leading-relaxed text-muted">راجع أماكن تسجيل دخول حسابك وأنهِ الجلسات التي لم تعد تعرفها.</p></header>
           <section className="overflow-hidden rounded-2xl border border-border bg-surface">

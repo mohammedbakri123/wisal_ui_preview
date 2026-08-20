@@ -13,7 +13,7 @@ export const PageContainer = forwardRef<HTMLDivElement, PageContainerProps>(
       <main
         ref={ref}
         className={cn(
-          'flex-1 overflow-y-auto scrollbar-thin momentum-scroll',
+          'flex-1 min-w-0 max-w-full overflow-y-auto overflow-x-hidden scrollbar-thin momentum-scroll box-border',
           padded && 'p-4',
           className,
         )}

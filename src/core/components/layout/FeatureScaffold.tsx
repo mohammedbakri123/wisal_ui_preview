@@ -47,14 +47,14 @@ export function FeatureScaffold({
   const navigate = useNavigate()
 
   return (
-    <div className="relative flex h-full flex-col overflow-hidden bg-background text-foreground">
-      <PageContainer className="relative z-10 w-full px-4 pt-3 pb-8">
+    <div className="relative flex h-full flex-col overflow-hidden bg-background text-foreground min-w-0 max-w-full overflow-x-hidden">
+      <PageContainer className="relative z-10 w-full max-w-full box-border overflow-x-hidden px-4 pt-3 pb-8 min-w-0">
         {backTo && (
           <div className="mb-2">
             <BackButton to={backTo} />
           </div>
         )}
-        <div className="mx-auto w-full max-w-2xl space-y-4">
+        <div className="mx-auto w-full max-w-full sm:max-w-2xl min-w-0 space-y-4 overflow-x-hidden">
           <section className="rounded-2xl border border-border bg-surface overflow-hidden">
             <div className="border-b border-border p-4 sm:p-5">
               {eyebrow && (

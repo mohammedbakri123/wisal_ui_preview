@@ -21,8 +21,8 @@ export default function AppearanceSettingsPage() {
   ]
 
   return (
-    <div className="flex flex-col h-full bg-background">
-      <PageContainer className="max-w-md mx-auto w-full space-y-5 pt-3 sm:pt-4">
+    <div className="flex flex-col h-full bg-background min-w-0 max-w-full overflow-x-hidden">
+      <PageContainer className="max-w-md mx-auto w-full max-w-full space-y-5 pt-3 sm:pt-4 min-w-0 box-border overflow-x-hidden">
         <div className="-mt-1">
           <BackButton to={ROUTES.SETTINGS.ROOT} label="الإعدادات" />
         </div>
@@ -126,5 +126,5 @@ export default function AppearanceSettingsPage() {
 }
 
 function OptionGrid({ options, value, onChange }: { options: Array<{ value: string; label: string; copy: string }>; value: string; onChange: (value: string) => void }) {
-  return <div className="grid gap-2 p-3">{options.map((option) => <button key={option.value} type="button" onClick={() => onChange(option.value)} className={`flex items-center justify-between gap-3 rounded-xl border p-3 text-start transition-colors cursor-pointer ${value === option.value ? 'border-accent bg-accent/10' : 'border-border-light/40 hover:bg-surface-hover'}`}><span><span className={`block text-sm font-medium ${value === option.value ? 'text-accent' : 'text-foreground'}`}>{option.label}</span><span className="mt-1 block text-xs text-muted-foreground/70">{option.copy}</span></span>{value === option.value && <span className="text-accent">✓</span>}</button>)}</div>
+  return <div className="grid gap-2 p-3 min-w-0 max-w-full overflow-x-hidden">{options.map((option) => <button key={option.value} type="button" onClick={() => onChange(option.value)} className={`flex items-center justify-between gap-3 rounded-xl border p-3 text-start transition-colors cursor-pointer min-w-0 max-w-full overflow-hidden box-border ${value === option.value ? 'border-accent bg-accent/10' : 'border-border-light/40 hover:bg-surface-hover'}`}><span className="min-w-0 flex-1 pe-2 break-words"><span className={`block text-sm font-medium ${value === option.value ? 'text-accent' : 'text-foreground'}`}>{option.label}</span><span className="mt-1 block text-xs text-muted-foreground/70 break-words">{option.copy}</span></span>{value === option.value && <span className="shrink-0 text-accent">✓</span>}</button>)}</div>
 }

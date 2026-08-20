@@ -35,10 +35,10 @@ export default function AccountSettingsPage() {
   }
 
   return (
-    <div className="flex flex-col h-full bg-background">
-      <PageContainer className="w-full px-3 sm:px-4 pt-3 sm:pt-4">
+    <div className="flex flex-col h-full bg-background min-w-0 max-w-full overflow-x-hidden">
+      <PageContainer className="w-full max-w-full box-border overflow-x-hidden px-3 sm:px-4 pt-3 sm:pt-4 min-w-0">
         <BackButton to={ROUTES.SETTINGS.ROOT} label="الإعدادات" />
-        <form onSubmit={handleUpdate} className="max-w-lg mx-auto space-y-4 sm:space-y-6">
+        <form onSubmit={handleUpdate} className="max-w-lg mx-auto w-full max-w-full min-w-0 space-y-4 sm:space-y-6 overflow-x-hidden box-border">
           <section className="bg-surface rounded-2xl border border-border-light/40 overflow-hidden">
             <div className="p-4 border-b border-border-light/30">
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">المعلومات الشخصية</h3>

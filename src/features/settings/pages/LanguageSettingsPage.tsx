@@ -22,8 +22,8 @@ export default function LanguageSettingsPage() {
   }, [selected])
 
   return (
-    <div className="flex h-full flex-col bg-background text-foreground">
-      <PageContainer className="w-full max-w-xl px-3 pt-3 sm:px-4 sm:pt-4">
+    <div className="flex h-full flex-col bg-background text-foreground min-w-0 max-w-full overflow-x-hidden">
+      <PageContainer className="w-full max-w-full box-border overflow-x-hidden max-w-xl px-3 pt-3 sm:px-4 sm:pt-4 min-w-0">
         <BackButton to={ROUTES.SETTINGS.ROOT} label="الإعدادات" />
         <section className="mt-3 overflow-hidden rounded-2xl border border-border bg-surface">
           <div className="border-b border-border p-4">

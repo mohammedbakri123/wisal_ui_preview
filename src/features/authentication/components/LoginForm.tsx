@@ -19,7 +19,7 @@ export function LoginForm({ onSubmit, isLoading, error }: LoginFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5 sm:gap-6">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5 sm:gap-6 w-full max-w-full min-w-0 overflow-x-hidden">
       <div className="text-center lg:text-start">
         <h2 className="font-serif italic text-[1.6rem] sm:text-[1.8rem] leading-tight text-foreground tracking-tight">
           مرحباً بعودتك
@@ -73,7 +73,7 @@ export function LoginForm({ onSubmit, isLoading, error }: LoginFormProps) {
         متابعة
       </Button>
 
-      <p className="text-xs text-center text-muted-foreground/40 max-w-xs mx-auto leading-relaxed">
+      <p className="text-xs text-center text-muted-foreground/40 max-w-full sm:max-w-xs mx-auto leading-relaxed px-2 break-words">
         سنرسل رمز تحقق لمرة واحدة إلى هذا الرقم
       </p>
     </form>

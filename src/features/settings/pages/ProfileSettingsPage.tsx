@@ -12,14 +12,14 @@ export default function ProfileSettingsPage() {
   const { user } = useAuth()
 
   return (
-    <div className="flex h-full flex-col bg-background">
-      <PageContainer className="w-full px-3 sm:px-4 pt-3 sm:pt-4">
+    <div className="flex h-full flex-col bg-background min-w-0 max-w-full overflow-x-hidden">
+      <PageContainer className="w-full max-w-full box-border overflow-x-hidden px-3 sm:px-4 pt-3 sm:pt-4 min-w-0">
         <BackButton to={ROUTES.SETTINGS.ROOT} label="الإعدادات" />
-        <div className="max-w-lg mx-auto space-y-4 sm:space-y-5">
-          <section className="rounded-2xl border border-border-light/40 bg-surface p-5 sm:p-6 text-center">
+        <div className="max-w-lg mx-auto w-full max-w-full min-w-0 space-y-4 sm:space-y-5 overflow-x-hidden">
+          <section className="rounded-2xl border border-border-light/40 bg-surface p-5 sm:p-6 text-center min-w-0 max-w-full overflow-hidden box-border">
             <Avatar src={user?.avatar} alt={user?.name ?? 'مستخدم'} size="xl" online />
-            <h2 className="mt-3.5 text-lg font-bold">{user?.name}</h2>
-            <p className="text-sm text-muted-foreground/70 mt-1">{user?.bio ?? 'لا توجد نبذة'}</p>
+            <h2 className="mt-3.5 text-lg font-bold break-words break-all max-w-full">{user?.name}</h2>
+            <p className="text-sm text-muted-foreground/70 mt-1 break-words break-all max-w-full">{user?.bio ?? 'لا توجد نبذة'}</p>
             <Button className="mt-4" size="sm" variant="secondary" onClick={() => navigate(ROUTES.PROFILE.EDIT)}>
               تعديل الملف الشخصي
             </Button>

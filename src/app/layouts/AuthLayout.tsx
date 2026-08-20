@@ -2,8 +2,8 @@ import { Outlet } from 'react-router'
 
 export function AuthLayout() {
   return (
-    <div className="min-h-dvh w-full overflow-y-auto bg-black text-[#e7e9ea] selection:bg-[#1d9bf0] selection:text-white">
-      <div className="flex min-h-dvh w-full max-w-[1280px] mx-auto">
+    <div className="min-h-dvh w-full max-w-full overflow-x-hidden overflow-y-auto bg-black text-[#e7e9ea] selection:bg-[#1d9bf0] selection:text-white">
+      <div className="flex min-h-dvh w-full max-w-[1280px] mx-auto min-w-0 overflow-x-hidden">
         {/* Left branding panel (desktop only) */}
         <div className="hidden lg:flex flex-col items-center justify-center w-1/2 p-12 border-e border-[#2f3336]">
           <div className="max-w-md text-start flex flex-col items-start">
@@ -44,8 +44,8 @@ export function AuthLayout() {
         </div>
 
         {/* Right form panel */}
-        <div className="flex-1 flex flex-col p-6 sm:p-12">
-          <div className="w-full max-w-sm mx-auto my-auto">
+        <div className="flex-1 flex flex-col min-w-0 max-w-full overflow-x-hidden p-6 sm:p-12">
+          <div className="w-full max-w-full sm:max-w-sm min-w-0 mx-auto my-auto overflow-x-hidden">
             {/* Mobile Logo */}
             <div className="lg:hidden flex flex-col items-center text-center mb-8">
               <div className="w-14 h-14 rounded-full bg-[#1d9bf0] flex items-center justify-center text-black font-black text-2xl tracking-tighter mb-3 shadow-md shadow-[#1d9bf0]/20">

@@ -11,9 +11,9 @@ export default function StorageDataPage() {
   const [cacheCleared, setCacheCleared] = useState(false)
 
   return (
-    <div className="flex h-full flex-col bg-background text-foreground">
-      <PageContainer className="w-full px-4 pt-3 pb-8">
-        <div className="mx-auto w-full max-w-xl">
+    <div className="flex h-full flex-col bg-background text-foreground min-w-0 max-w-full overflow-x-hidden">
+      <PageContainer className="w-full max-w-full box-border overflow-x-hidden px-4 pt-3 pb-8 min-w-0">
+        <div className="mx-auto w-full max-w-full sm:max-w-xl min-w-0 overflow-x-hidden">
           <BackButton to={ROUTES.SETTINGS.ROOT} label="الإعدادات" />
           <header className="mb-6 mt-2"><p className="text-xs font-bold uppercase tracking-wider text-accent">الإعدادات</p><h1 className="mt-1 text-2xl font-bold">التخزين والبيانات</h1><p className="mt-2 text-sm leading-relaxed text-muted">تحكم في الوسائط المخزنة والتنزيلات التلقائية على هذا الجهاز.</p></header>
           <div className="grid grid-cols-2 overflow-hidden rounded-2xl border border-border bg-surface sm:grid-cols-4">

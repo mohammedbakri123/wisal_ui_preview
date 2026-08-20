@@ -28,10 +28,10 @@ export default function PrivacySettingsPage() {
   }, [contactPrivacy, groupAddPrivacy, storyPrivacy])
 
   return (
-    <div className="flex flex-col h-full bg-background">
-      <PageContainer className="w-full px-3 sm:px-4 pt-3 sm:pt-4">
+    <div className="flex flex-col h-full bg-background min-w-0 max-w-full overflow-x-hidden">
+      <PageContainer className="w-full max-w-full box-border overflow-x-hidden px-3 sm:px-4 pt-3 sm:pt-4 min-w-0">
         <BackButton to={ROUTES.SETTINGS.ROOT} label="الإعدادات" />
-        <div className="max-w-lg mx-auto space-y-4 sm:space-y-5">
+        <div className="max-w-lg mx-auto w-full max-w-full min-w-0 space-y-4 sm:space-y-5 overflow-x-hidden box-border">
           <section className="bg-surface rounded-2xl border border-border-light/40 overflow-hidden">
             <div className="p-4 border-b border-border-light/30">
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">الظهور</h3>
@@ -42,7 +42,7 @@ export default function PrivacySettingsPage() {
                 <select
                   value={lastSeen}
                   onChange={(e) => setLastSeen(e.target.value)}
-                  className="w-full bg-background border border-border-light/50 rounded-xl px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/40 cursor-pointer transition-all"
+                  className="w-full max-w-full box-border bg-background border border-border-light/50 rounded-xl px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/40 cursor-pointer transition-all"
                 >
                   <option value="everyone">الجميع</option>
                   <option value="contacts">جهات الاتصال</option>
@@ -54,7 +54,7 @@ export default function PrivacySettingsPage() {
                 <select
                   value={profilePhoto}
                   onChange={(e) => setProfilePhoto(e.target.value)}
-                  className="w-full bg-background border border-border-light/50 rounded-xl px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/40 cursor-pointer transition-all"
+                  className="w-full max-w-full box-border bg-background border border-border-light/50 rounded-xl px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/40 cursor-pointer transition-all"
                 >
                   <option value="everyone">الجميع</option>
                   <option value="contacts">جهات الاتصال</option>
@@ -77,8 +77,8 @@ export default function PrivacySettingsPage() {
             </div>
           </section>
 
-          <button type="button" onClick={() => setShowBlocked(true)} className="w-full flex items-center justify-between p-4 bg-surface rounded-2xl border border-border-light/40 hover:bg-surface-hover transition-all cursor-pointer">
-            <div className="text-start">
+          <button type="button" onClick={() => setShowBlocked(true)} className="w-full max-w-full box-border flex items-center justify-between p-4 bg-surface rounded-2xl border border-border-light/40 hover:bg-surface-hover transition-all cursor-pointer min-w-0 overflow-hidden">
+            <div className="text-start min-w-0 flex-1 pe-2 break-words">
               <p className="text-sm font-semibold">جهات الاتصال المحظورة</p>
               <p className="text-xs text-muted-foreground/70 mt-0.5">إدارة جهات الاتصال التي حظرتها من مراسلتك.</p>
             </div>
@@ -103,7 +103,7 @@ export default function PrivacySettingsPage() {
 }
 
 function PrivacySelect({ label, value, onChange, options }: { label: string; value: string; onChange: (value: string) => void; options: Array<[string, string]> }) {
-  return <div className="space-y-1.5"><label className="text-xs font-semibold text-muted-foreground">{label}</label><select value={value} onChange={(event) => onChange(event.target.value)} className="w-full bg-background border border-border-light/50 rounded-xl px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/40 cursor-pointer transition-all">{options.map(([optionValue, optionLabel]) => <option key={optionValue} value={optionValue}>{optionLabel}</option>)}</select></div>
+  return <div className="space-y-1.5 min-w-0 max-w-full"><label className="text-xs font-semibold text-muted-foreground">{label}</label><select value={value} onChange={(event) => onChange(event.target.value)} className="w-full max-w-full box-border bg-background border border-border-light/50 rounded-xl px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/40 cursor-pointer transition-all">{options.map(([optionValue, optionLabel]) => <option key={optionValue} value={optionValue}>{optionLabel}</option>)}</select></div>
 }
 
 function PrivacyToggleRow({ label, description, checked, onChange }: {

@@ -15,8 +15,8 @@ export default function SettingsPage() {
   const navigate = useNavigate()
   const { logout } = useAuth()
   return (
-    <div className="flex h-full flex-col bg-background text-foreground">
-      <PageContainer className="mx-auto w-full max-w-2xl px-3 pt-4 pb-10 sm:px-4 sm:pt-5">
+    <div className="flex h-full flex-col bg-background text-foreground min-w-0 max-w-full overflow-x-hidden">
+      <PageContainer className="mx-auto w-full max-w-full sm:max-w-2xl px-3 pt-4 pb-10 sm:px-4 sm:pt-5 min-w-0 box-border overflow-x-hidden">
         <header className="border-b border-border pb-5">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">التفضيلات</p>
           <h1 className="mt-2 text-2xl font-bold sm:text-3xl">الإعدادات</h1>
@@ -32,7 +32,7 @@ export default function SettingsPage() {
                     type="button"
                     key={item.path}
                     onClick={() => navigate(item.path)}
-                    className="group flex w-full items-center gap-3 border-b border-border p-3.5 text-start transition-colors last:border-b-0 hover:bg-surface-hover cursor-pointer sm:p-4"
+                    className="group flex w-full max-w-full min-w-0 items-center gap-3 border-b border-border p-3.5 text-start transition-colors last:border-b-0 hover:bg-surface-hover cursor-pointer sm:p-4 box-border overflow-hidden"
                   >
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent/10 text-sm font-bold text-accent">{item.icon}</span>
                     <span className="min-w-0 flex-1">
