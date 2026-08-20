@@ -30,6 +30,13 @@ function createMessage(conversationId: string, sender: User, content: string, ty
   }
 }
 
+function updateStoredMessage(conversationId: string, messageId: string, update: (message: Message) => Message): Message[] {
+  const current = store[conversationId] ?? []
+  const next = current.map((message) => message.id === messageId ? update(message) : message)
+  store[conversationId] = next
+  return next
+}
+
 const store: Record<string, Message[]> = Object.fromEntries(
   Object.entries(mockMessages).map(([conversationId, messages]) => [conversationId, [...messages]]),
 )
@@ -44,11 +51,12 @@ export const messagesService = {
     content: string,
     type: Message['type'] = 'text',
     sender?: User | null,
+    replyTo: string | null = null,
   ): Promise<Message[]> {
     const conversation = mockConversations.find((item) => item.id === conversationId)
     const current = store[conversationId] ?? []
     const msgSender = sender ?? fallbackSender
-    const sent = createMessage(conversationId, msgSender, content, type)
+    const sent = { ...createMessage(conversationId, msgSender, content, type), replyTo }
     const next = [...current, sent]
 
     if (type === 'text' && conversation && conversation.type !== 'channel') {
@@ -84,5 +92,29 @@ export const messagesService = {
 
   async clear(conversationId: string): Promise<void> {
     store[conversationId] = []
+  },
+
+  async edit(conversationId: string, messageId: string, content: string): Promise<Message[]> {
+    if (!content.trim()) throw new Error('Message cannot be empty')
+    return updateStoredMessage(conversationId, messageId, (message) => ({
+      ...message,
+      content: content.trim(),
+      isEdited: true,
+      updatedAt: new Date().toISOString(),
+    }))
+  },
+
+  async remove(conversationId: string, messageId: string): Promise<Message[]> {
+    const next = (store[conversationId] ?? []).filter((message) => message.id !== messageId)
+    store[conversationId] = next
+    return next
+  },
+
+  async togglePinned(conversationId: string, messageId: string): Promise<Message[]> {
+    return updateStoredMessage(conversationId, messageId, (message) => ({
+      ...message,
+      isPinned: !message.isPinned,
+      updatedAt: new Date().toISOString(),
+    }))
   },
 }

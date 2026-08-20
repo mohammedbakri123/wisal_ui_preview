@@ -1,19 +1,28 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { PageContainer } from '@/core/components/layout/PageContainer'
 import { BackButton } from '@/core/components/ui/BackButton'
 import { ROUTES } from '@/core/utils/routes'
 import { mockConversations } from '@/mocks/data/conversations'
 import { mockMessages } from '@/mocks/data/messages'
-import { SearchResultItem } from '../components/SearchResultItem'
+import type { Conversation, Message } from '@/core/types'
+import { Avatar } from '@/core/components/ui/Avatar'
 
 export default function SearchMessagesPage() {
   const navigate = useNavigate()
+  const { conversationId } = useParams()
   const [query, setQuery] = useState('')
   const lowered = query.toLowerCase()
-  const results = mockConversations.filter((conversation) =>
-    (mockMessages[conversation.id] ?? []).some((message) => message.content.toLowerCase().includes(lowered)),
-  )
+  const matchingConversations = conversationId
+    ? mockConversations.filter((conversation) => conversation.id === conversationId)
+    : mockConversations
+  const results = query.trim()
+    ? matchingConversations.flatMap((conversation) =>
+        (mockMessages[conversation.id] ?? [])
+          .filter((message) => message.content.toLowerCase().includes(lowered))
+          .map((message) => ({ conversation, message })),
+      )
+    : []
 
   return (
     <div className="flex h-full flex-col bg-background relative overflow-hidden">
@@ -54,7 +63,7 @@ export default function SearchMessagesPage() {
                 Find messages across all your conversations.
               </p>
             </div>
-            <BackButton to={ROUTES.CHAT.SEARCH} label="Search" />
+            <BackButton to={conversationId ? `/home/${conversationId.startsWith('g') ? 'g' : 'c'}/${conversationId}` : ROUTES.CHAT.SEARCH} label={conversationId ? 'Conversation' : 'Search'} />
           </div>
           <div className="mt-4 sm:mt-5 h-px bg-gradient-to-r from-accent/25 via-accent/5 to-transparent" />
         </section>
@@ -72,12 +81,12 @@ export default function SearchMessagesPage() {
               placeholder="Search message text"
               className="min-w-0 flex-1 bg-transparent text-sm text-foreground focus:outline-none placeholder:text-muted-foreground/40"
             />
-            <button
+            {!conversationId && <button
               onClick={() => navigate(ROUTES.CHAT.SEARCH)}
               className="text-[11px] sm:text-xs font-semibold text-accent/70 hover:text-accent transition-colors ml-2 shrink-0 whitespace-nowrap"
             >
               Chats &rarr;
-            </button>
+            </button>}
           </div>
         </div>
 
@@ -100,12 +109,8 @@ export default function SearchMessagesPage() {
                 <span className="text-[11px] text-muted-foreground/30 font-medium">({results.length})</span>
               </div>
               <div className="overflow-hidden rounded-2xl border border-border-light/10 bg-surface/20 divide-y divide-border-light/5">
-                {results.map((conversation) => (
-                  <SearchResultItem
-                    key={conversation.id}
-                    conversation={conversation}
-                    snippet={(mockMessages[conversation.id] ?? []).find((message) => message.content.toLowerCase().includes(lowered))?.content}
-                  />
+                {results.map(({ conversation, message }) => (
+                  <MessageSearchResult key={`${conversation.id}-${message.id}`} conversation={conversation} message={message} />
                 ))}
               </div>
             </div>
@@ -113,5 +118,28 @@ export default function SearchMessagesPage() {
         </div>
       </PageContainer>
     </div>
+  )
+}
+
+function MessageSearchResult({ conversation, message }: { conversation: Conversation; message: Message }) {
+  const navigate = useNavigate()
+  const path = conversation.type === 'group' ? `/home/g/${conversation.id}` : `/home/c/${conversation.id}`
+
+  return (
+    <button
+      type="button"
+      onClick={() => navigate(path, { state: { highlightMessageId: message.id } })}
+      className="group flex w-full items-start gap-3 border-b border-[#2f3336] px-4 py-3.5 text-left transition-colors hover:bg-white/[0.03] active:bg-white/[0.06] cursor-pointer"
+    >
+      <Avatar src={message.sender.avatar ?? conversation.avatar} alt={message.sender.name} size="sm" online={message.sender.isOnline} />
+      <span className="min-w-0 flex-1">
+        <span className="flex items-center gap-2">
+          <span className="truncate text-sm font-bold text-[#e7e9ea] group-hover:text-[#1d9bf0]">{conversation.name}</span>
+          <span className="shrink-0 text-[11px] text-[#71767b]">{message.sender.name}</span>
+        </span>
+        <span className="mt-1 block break-words text-sm leading-relaxed text-[#71767b]">{message.content}</span>
+      </span>
+      <span className="shrink-0 pt-1 text-xs font-bold text-[#1d9bf0]">Jump</span>
+    </button>
   )
 }

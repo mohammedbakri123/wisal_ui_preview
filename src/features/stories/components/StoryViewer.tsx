@@ -11,6 +11,9 @@ interface StoryViewerProps {
   onClose: () => void
   onMarkViewed: () => void
   onReact: (emoji: string) => void
+  currentUserId?: string
+  onReply?: (content: string) => void
+  onDelete?: (storyId: string) => void
 }
 
 const STORY_DURATION = 5000
@@ -24,10 +27,17 @@ export function StoryViewer({
   onClose,
   onMarkViewed,
   onReact,
+  currentUserId = '1',
+  onReply,
+  onDelete,
 }: StoryViewerProps) {
   const [progress, setProgress] = useState(0)
   const [showReactions, setShowReactions] = useState(false)
   const [pause, setPause] = useState(false)
+  const [reply, setReply] = useState('')
+  const [showOwnerMenu, setShowOwnerMenu] = useState(false)
+  const [showViewers, setShowViewers] = useState(false)
+  const [muted, setMuted] = useState(true)
   const progressRef = useRef(0)
   const animFrameRef = useRef<number | null>(null)
   const startTimeRef = useRef<number>(0)
@@ -41,12 +51,19 @@ export function StoryViewer({
   // ALL useEffect hooks before any early return — follows Rules of Hooks
   useEffect(() => {
     if (!activeIndex) return
-    setProgress(0)
     progressRef.current = 0
     startTimeRef.current = 0
     lastFrameTimeRef.current = 0
-    setShowReactions(false)
-    setPause(false)
+    const frame = requestAnimationFrame(() => {
+      setProgress(0)
+      setShowReactions(false)
+      setPause(false)
+      setReply('')
+      setShowOwnerMenu(false)
+      setShowViewers(false)
+      setMuted(true)
+    })
+    return () => cancelAnimationFrame(frame)
   }, [activeIndex, groupIndex, storyIndex, story?.id])
 
   useEffect(() => {
@@ -87,7 +104,7 @@ export function StoryViewer({
         cancelAnimationFrame(animFrameRef.current)
       }
     }
-  }, [pause, story?.id, groupIndex, storyIndex, activeIndex, onNext])
+  }, [pause, story, groupIndex, storyIndex, activeIndex, onNext])
 
   useEffect(() => {
     if (!activeIndex) return
@@ -102,6 +119,14 @@ export function StoryViewer({
 
   // Early returns are now safe — all hooks are above
   if (!activeIndex || !group || !story) return null
+
+  const isOwner = story.userId === currentUserId
+  const submitReply = () => {
+    const message = reply.trim()
+    if (!message) return
+    onReply?.(message)
+    setReply('')
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 animate-fade-in">
@@ -149,7 +174,23 @@ export function StoryViewer({
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
             </svg>
           </button>
+          {isOwner && (
+            <button onClick={() => setShowOwnerMenu((visible) => !visible)} className="p-2 rounded-full text-white/80 hover:bg-white/10 cursor-pointer" aria-label="Story options">
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5" /><circle cx="12" cy="12" r="1.5" /><circle cx="19" cy="12" r="1.5" /></svg>
+            </button>
+          )}
         </div>
+
+        {isOwner && showOwnerMenu && (
+          <div className="absolute right-3 top-16 z-40 w-44 rounded-xl border border-white/15 bg-black/85 p-1 text-sm shadow-xl backdrop-blur-md">
+            <button onClick={() => setShowViewers(true)} className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-white/85 hover:bg-white/10">
+              View viewers <span className="text-xs text-white/45">{story.viewedBy.length}</span>
+            </button>
+            <button onClick={() => { onDelete?.(story.id); onClose() }} className="w-full rounded-lg px-3 py-2 text-left text-red-300 hover:bg-red-500/15">
+              Delete story
+            </button>
+          </div>
+        )}
 
         {/* Tap areas for navigation */}
         <div
@@ -173,6 +214,15 @@ export function StoryViewer({
           {story.type === 'image' && story.mediaUrl && (
             <img src={story.mediaUrl} alt="Story" className="max-w-full max-h-full object-contain rounded-lg" />
           )}
+          {story.type === 'video' && story.mediaUrl && (
+            <video src={story.mediaUrl} autoPlay playsInline muted={muted} className="max-h-full max-w-full rounded-lg object-contain" />
+          )}
+          {story.type !== 'text' && !story.mediaUrl && (
+            <div className="rounded-2xl border border-white/15 bg-black/20 px-6 py-5 text-center text-sm text-white/60">
+              {story.type === 'video' ? 'Video story' : 'Image story'}
+              <p className="mt-1 text-xs text-white/35">Media preview unavailable</p>
+            </div>
+          )}
         </div>
 
         {/* Bottom: reply input */}
@@ -182,9 +232,12 @@ export function StoryViewer({
               <input
                 type="text"
                 placeholder="Send a message"
+                value={reply}
+                onChange={(e) => setReply(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') submitReply() }}
                 className="flex-1 bg-transparent text-sm text-white placeholder:text-white/50 focus:outline-none"
               />
-              <button className="text-white/70 hover:text-white transition-colors cursor-pointer">
+              <button onClick={submitReply} disabled={!reply.trim()} className="text-white/70 hover:text-white disabled:opacity-30 transition-colors cursor-pointer" aria-label="Send reply">
                 <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M3.48 2.4a.75.75 0 0 0-.93.94l2.43 7.91h8.52a.75.75 0 0 1 0 1.5H4.98l-2.43 7.9a.75.75 0 0 0 .93.95 60.52 60.52 0 0 0 18.44-8.99.75.75 0 0 0 0-1.22A60.52 60.52 0 0 0 3.48 2.4Z" />
                 </svg>
@@ -192,6 +245,24 @@ export function StoryViewer({
             </div>
           </div>
         </div>
+
+        {story.type === 'video' && story.mediaUrl && (
+          <button onClick={() => setMuted((value) => !value)} className="absolute bottom-20 right-4 z-30 rounded-full bg-black/45 p-2 text-white/80 hover:bg-black/70" aria-label={muted ? 'Unmute video' : 'Mute video'}>
+            {muted ? '🔇' : '🔊'}
+          </button>
+        )}
+
+        {showViewers && (
+          <div className="absolute inset-x-4 top-20 z-40 rounded-2xl border border-white/15 bg-black/85 p-4 text-white shadow-xl backdrop-blur-md">
+            <div className="flex items-center justify-between">
+              <div><p className="font-semibold">Story viewers</p><p className="text-xs text-white/45">{story.viewedBy.length} viewer{story.viewedBy.length === 1 ? '' : 's'}</p></div>
+              <button onClick={() => setShowViewers(false)} className="rounded-full p-1 text-white/60 hover:bg-white/10">✕</button>
+            </div>
+            <div className="mt-4 space-y-2 text-sm text-white/75">
+              {story.viewedBy.length > 0 ? story.viewedBy.map((viewerId) => <div key={viewerId} className="rounded-lg bg-white/5 px-3 py-2">{viewerId === currentUserId ? 'You' : `Viewer ${viewerId}`}</div>) : <p className="text-white/45">No viewers yet.</p>}
+            </div>
+          </div>
+        )}
 
         {/* Reactions panel */}
         {showReactions && (

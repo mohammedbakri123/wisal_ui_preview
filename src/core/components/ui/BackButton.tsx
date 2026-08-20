@@ -1,22 +1,28 @@
 import { useNavigate } from 'react-router'
+import { cn } from '@/core/utils/cn'
 
-interface BackButtonProps {
+export interface BackButtonProps {
   to?: string
   label?: string
+  className?: string
 }
 
-export function BackButton({ to, label }: BackButtonProps) {
+export function BackButton({ to, label, className }: BackButtonProps) {
   const navigate = useNavigate()
 
   return (
     <button
       onClick={() => (to ? navigate(to) : navigate(-1))}
-      className="group inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground/50 hover:text-foreground transition-colors cursor-pointer px-1 py-1 -ml-1"
+      className={cn(
+        'w-[34.75px] h-[34.75px] rounded-full flex items-center justify-center text-[#e7e9ea] hover:bg-white/[0.08] active:bg-white/[0.12] transition-colors cursor-pointer shrink-0',
+        className,
+      )}
+      aria-label="Go back"
     >
-      <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-        <path fillRule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z" clipRule="evenodd" />
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
       </svg>
-      {label && <span>{label}</span>}
+      {label && <span className="sr-only">{label}</span>}
     </button>
   )
 }

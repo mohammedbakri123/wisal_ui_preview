@@ -1,7 +1,6 @@
-import { useState } from 'react'
 import { BackButton } from '@/core/components/ui/BackButton'
 import { PageContainer } from '@/core/components/layout/PageContainer'
-import { useTheme, type AccentColor } from '@/app/providers/ThemeProvider'
+import { useTheme, type AccentColor, type BubbleStyle, type ChatBackground, type ChatFontSize } from '@/app/providers/ThemeProvider'
 import { ROUTES } from '@/core/utils/routes'
 
 const ACCENT_PREVIEW: Record<AccentColor, { bg: string; ring: string }> = {
@@ -13,8 +12,7 @@ const ACCENT_PREVIEW: Record<AccentColor, { bg: string; ring: string }> = {
 }
 
 export default function AppearanceSettingsPage() {
-  const { theme, accentColor, setTheme, setAccentColor } = useTheme()
-  const [backgroundPattern, setBackgroundPattern] = useState('classic')
+  const { accentColor, setAccentColor, bubbleStyle, chatBackground, chatFontSize, setBubbleStyle, setChatBackground, setChatFontSize } = useTheme()
 
   const patterns = [
     { id: 'classic', label: 'Classic Grid' },
@@ -29,64 +27,16 @@ export default function AppearanceSettingsPage() {
           <BackButton to={ROUTES.SETTINGS.ROOT} label="Settings" />
         </div>
         
-        {/* Theme selector with preview */}
+        {/* Bubble shape */}
         <section className="bg-surface rounded-2xl border border-border-light/50 overflow-hidden">
           <div className="p-4 border-b border-border-light/30">
-            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Display Mode</h3>
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Bubble shape</h3>
           </div>
-          <div className="grid grid-cols-2 gap-0">
-            <button
-              onClick={() => setTheme('light')}
-              className={`p-5 flex flex-col items-center gap-3 transition-all cursor-pointer border-r border-border-light/30 ${
-                theme === 'light' ? 'bg-accent/[0.03]' : 'hover:bg-surface-hover'
-              }`}
-            >
-              {/* Light mode preview */}
-              <div className="w-full h-20 rounded-xl bg-white border border-gray-200 overflow-hidden relative">
-                <div className="h-5 bg-gray-100 border-b border-gray-200" />
-                <div className="p-2 space-y-1.5">
-                  <div className="h-2 w-16 bg-gray-200 rounded" />
-                  <div className="h-2 w-24 bg-gray-100 rounded" />
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                  theme === 'light' ? 'border-accent' : 'border-muted-foreground/40'
-                }`}>
-                  {theme === 'light' && <div className="w-2 h-2 rounded-full bg-accent" />}
-                </div>
-                <span className={`text-xs font-semibold ${theme === 'light' ? 'text-accent' : 'text-muted-foreground'}`}>
-                  Light
-                </span>
-              </div>
-            </button>
-
-            <button
-              onClick={() => setTheme('dark')}
-              className={`p-5 flex flex-col items-center gap-3 transition-all cursor-pointer ${
-                theme === 'dark' ? 'bg-accent/[0.03]' : 'hover:bg-surface-hover'
-              }`}
-            >
-              {/* Dark mode preview */}
-              <div className="w-full h-20 rounded-xl bg-[#1a1a2e] border border-[#2a2a3e] overflow-hidden relative">
-                <div className="h-5 bg-[#252540] border-b border-[#2a2a3e]" />
-                <div className="p-2 space-y-1.5">
-                  <div className="h-2 w-16 bg-[#2a2a3e] rounded" />
-                  <div className="h-2 w-24 bg-[#222238] rounded" />
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                  theme === 'dark' ? 'border-accent' : 'border-muted-foreground/40'
-                }`}>
-                  {theme === 'dark' && <div className="w-2 h-2 rounded-full bg-accent" />}
-                </div>
-                <span className={`text-xs font-semibold ${theme === 'dark' ? 'text-accent' : 'text-muted-foreground'}`}>
-                  Dark
-                </span>
-              </div>
-            </button>
-          </div>
+          <OptionGrid options={[
+            { value: 'rounded', label: 'Rounded', copy: 'Soft corners for everyday chat.' },
+            { value: 'sharp', label: 'Sharp', copy: 'Crisp, squared conversation blocks.' },
+            { value: 'compact', label: 'Compact', copy: 'Tighter bubbles for dense threads.' },
+          ]} value={bubbleStyle} onChange={(value) => setBubbleStyle(value as BubbleStyle)} />
         </section>
 
         {/* Accent color picker */}
@@ -122,24 +72,24 @@ export default function AppearanceSettingsPage() {
           </div>
         </section>
 
-        {/* Chat background pattern */}
+        {/* Chat background */}
         <section className="bg-surface rounded-2xl border border-border-light/50 overflow-hidden">
           <div className="p-4 border-b border-border-light/30">
-            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Chat Background</h3>
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Chat background</h3>
           </div>
           <div className="p-3 space-y-2">
             {patterns.map((pat) => (
               <button
                 key={pat.id}
-                onClick={() => setBackgroundPattern(pat.id)}
+                onClick={() => setChatBackground(pat.id as ChatBackground)}
                 className={`w-full flex items-center justify-between p-3 rounded-xl border transition-colors cursor-pointer text-left ${
-                  backgroundPattern === pat.id
+                  chatBackground === pat.id
                     ? 'bg-accent/10 border-accent/30 text-accent'
                     : 'bg-background border-border-light/40 text-foreground hover:bg-surface-hover'
                 }`}
               >
                 <span className="text-sm font-medium">{pat.label}</span>
-                {backgroundPattern === pat.id && (
+                {chatBackground === pat.id && (
                   <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
                   </svg>
@@ -149,6 +99,17 @@ export default function AppearanceSettingsPage() {
           </div>
         </section>
 
+        <section className="bg-surface rounded-2xl border border-border-light/50 overflow-hidden">
+          <div className="p-4 border-b border-border-light/30">
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Message text size</h3>
+          </div>
+          <OptionGrid options={[
+            { value: 'small', label: 'Small', copy: 'More messages in view.' },
+            { value: 'standard', label: 'Standard', copy: 'Balanced everyday reading.' },
+            { value: 'large', label: 'Large', copy: 'More comfortable reading.' },
+          ]} value={chatFontSize} onChange={(value) => setChatFontSize(value as ChatFontSize)} />
+        </section>
+
         {/* Live preview note */}
         <p className="text-center text-[10px] text-muted-foreground/40 pb-4">
           Changes apply instantly ✨
@@ -156,4 +117,8 @@ export default function AppearanceSettingsPage() {
       </PageContainer>
     </div>
   )
+}
+
+function OptionGrid({ options, value, onChange }: { options: Array<{ value: string; label: string; copy: string }>; value: string; onChange: (value: string) => void }) {
+  return <div className="grid gap-2 p-3">{options.map((option) => <button key={option.value} type="button" onClick={() => onChange(option.value)} className={`flex items-center justify-between gap-3 rounded-xl border p-3 text-left transition-colors cursor-pointer ${value === option.value ? 'border-accent bg-accent/10' : 'border-border-light/40 hover:bg-surface-hover'}`}><span><span className={`block text-sm font-medium ${value === option.value ? 'text-accent' : 'text-foreground'}`}>{option.label}</span><span className="mt-1 block text-xs text-muted-foreground/70">{option.copy}</span></span>{value === option.value && <span className="text-accent">✓</span>}</button>)}</div>
 }

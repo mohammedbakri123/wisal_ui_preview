@@ -22,8 +22,7 @@ export const authService = {
 
   async verifyOtp(data: VerifyOtpRequest): Promise<VerifyOtpResponse> {
     await new Promise((r) => setTimeout(r, 500))
-    if (!data.code || data.code.length !== 6) throw new Error('Invalid OTP code')
-    if (!/^\d{6}$/.test(data.code)) throw new Error('Invalid OTP code')
+    if (data.code !== '123456') throw new Error('Invalid OTP code. Use 123456 during development.')
 
     const existingUser = mockUsers.find(
       (u) => u.email === data.identifier || u.phone === data.identifier,

@@ -11,5 +11,6 @@ export interface Conversation {
   members: User[]
   isMuted: boolean
   isPinned: boolean
+  isBlocked?: boolean
   createdAt: string
 }

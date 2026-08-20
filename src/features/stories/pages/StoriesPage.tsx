@@ -1,27 +1,16 @@
-import { useState } from 'react'
+import { useNavigate } from 'react-router'
 import { Avatar } from '@/core/components/ui/Avatar'
 import { PageContainer } from '@/core/components/layout/PageContainer'
 import { BackButton } from '@/core/components/ui/BackButton'
 import { useAuth } from '@/app/providers/AuthProvider'
-import { useStoriesContext } from '@/features/stories/context/StoriesContext'
-import { StoryViewer } from '@/features/stories/components/StoryViewer'
-import { StoryCreator } from '@/features/stories/components/StoryCreator'
+import { useStoriesContext } from '@/features/stories/context/useStoriesContext'
 import { cn } from '@/core/utils/cn'
+import { ROUTES } from '@/core/utils/routes'
 
 export default function StoriesPage() {
+  const navigate = useNavigate()
   const { user } = useAuth()
-  const {
-    storyGroups,
-    activeStoryIndex,
-    openStoryViewer,
-    closeStoryViewer,
-    goToNextStory,
-    goToPrevStory,
-    markCurrentAsViewed,
-    reactToStory,
-    addStory,
-  } = useStoriesContext()
-  const [showCreator, setShowCreator] = useState(false)
+  const { storyGroups } = useStoriesContext()
 
   return (
     <div className="flex h-full flex-col bg-background">
@@ -33,7 +22,7 @@ export default function StoriesPage() {
             Your Story
           </p>
           <button
-            onClick={() => setShowCreator(true)}
+            onClick={() => navigate(ROUTES.STORY_CREATE)}
             className="flex items-center gap-4 w-full p-4 rounded-2xl bg-surface border border-border-light/40 hover:bg-surface-hover transition-all text-left cursor-pointer group"
           >
             <div className="relative shrink-0">
@@ -80,7 +69,7 @@ export default function StoriesPage() {
                 return (
                   <button
                     key={group.userId}
-                    onClick={() => openStoryViewer(group.userId)}
+                    onClick={() => navigate(`${ROUTES.STORY_VIEWER}?userId=${group.userId}`)}
                     className="flex flex-col items-center gap-2 p-3 rounded-2xl bg-surface border border-border-light/40 hover:bg-surface-hover active:scale-[0.97] transition-all cursor-pointer group"
                   >
                     <div className="relative">
@@ -125,7 +114,7 @@ export default function StoriesPage() {
               {storyGroups.map((group) => (
                 <button
                   key={group.userId}
-                  onClick={() => openStoryViewer(group.userId)}
+                  onClick={() => navigate(`${ROUTES.STORY_VIEWER}?userId=${group.userId}`)}
                   className="flex items-center gap-3 w-full p-3 rounded-2xl bg-surface border border-border-light/40 hover:bg-surface-hover transition-all text-left cursor-pointer"
                 >
                   <Avatar
@@ -162,26 +151,6 @@ export default function StoriesPage() {
         )}
       </PageContainer>
 
-      {/* Story Viewer overlay */}
-      <StoryViewer
-        storyGroups={storyGroups}
-        activeIndex={activeStoryIndex}
-        onNext={goToNextStory}
-        onPrev={goToPrevStory}
-        onClose={closeStoryViewer}
-        onMarkViewed={markCurrentAsViewed}
-        onReact={reactToStory}
-      />
-
-      {/* Story Creator */}
-      {showCreator && (
-        <StoryCreator
-          userName={user?.name ?? 'You'}
-          userAvatar={user?.avatar ?? null}
-          onPublish={(content, bgColor) => addStory(user?.id ?? '1', content, 'text', bgColor)}
-          onClose={() => setShowCreator(false)}
-        />
-      )}
     </div>
   )
 }

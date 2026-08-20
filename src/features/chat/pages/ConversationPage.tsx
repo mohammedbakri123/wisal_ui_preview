@@ -1,5 +1,5 @@
-import { useState, useRef, useCallback } from 'react'
-import { useNavigate, useParams } from 'react-router'
+import { useState } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router'
 import { Avatar } from '@/core/components/ui/Avatar'
 import { Button } from '@/core/components/ui/Button'
 import { EmptyState } from '@/core/components/ui/EmptyState'
@@ -14,60 +14,31 @@ import { MessageList } from '../components/MessageList'
 import { useMessages } from '../hooks/useMessages'
 import { useRealtimeMessages } from '../hooks/useRealtimeMessages'
 import { useSendMessage } from '../hooks/useSendMessage'
+import { updateMockConversation } from '../hooks/useConversations'
+import type { User } from '@/core/types'
 
 export default function ConversationPage() {
   const { conversationId, groupId } = useParams<{ conversationId?: string; groupId?: string }>()
   const activeConversationId = conversationId ?? groupId
   const navigate = useNavigate()
+  const location = useLocation()
   const { user: currentUser } = useAuth()
   const [showDetails, setShowDetails] = useState(false)
-  const [mutedByConversation, setMutedByConversation] = useState<Record<string, boolean>>({})
-  const [blockedByConversation, setBlockedByConversation] = useState<Record<string, boolean>>({})
-  const [swipeTranslate, setSwipeTranslate] = useState(0)
-  const swipeStartRef = useRef(0)
-  const swipeTranslateRef = useRef(0)
-  const isSwipingRef = useRef(false)
+  const [replyingTo, setReplyingTo] = useState<import('@/core/types').Message | null>(null)
+  const [selectedMember, setSelectedMember] = useState<User | null>(null)
 
   const conversation = mockConversations.find((item) => item.id === activeConversationId)
   const { messages, isLoading, isReplying, error, clearMessages } = useMessages(conversation)
   const sendMessage = useSendMessage(conversation, currentUser)
   useRealtimeMessages(conversation)
-  const isMuted = conversation ? mutedByConversation[conversation.id] ?? conversation.isMuted : false
-  const isBlocked = conversation ? blockedByConversation[conversation.id] ?? false : false
-
-  const onTouchStart = useCallback((e: React.TouchEvent) => {
-    if (window.innerWidth >= 1024) return
-    const touch = e.touches[0]
-    if (touch.clientX < 40) {
-      swipeStartRef.current = touch.clientX
-      isSwipingRef.current = true
-      swipeTranslateRef.current = 0
-      setSwipeTranslate(0)
-    }
-  }, [])
-
-  const onTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!isSwipingRef.current) return
-    const diff = e.touches[0].clientX - swipeStartRef.current
-    if (diff > 0) {
-      const val = Math.min(diff, 250)
-      swipeTranslateRef.current = val
-      setSwipeTranslate(val)
-    }
-  }, [])
-
-  const onTouchEnd = useCallback(() => {
-    if (!isSwipingRef.current) return
-    const didSwipe = swipeTranslateRef.current > 80
-    isSwipingRef.current = false
-    swipeTranslateRef.current = 0
-    setSwipeTranslate(0)
-    if (didSwipe) navigate(ROUTES.CHAT.LIST)
-  }, [navigate])
+  const isMuted = conversation?.isMuted ?? false
+  const isBlocked = conversation?.isBlocked ?? false
+  const storyReply = (location.state as { prefill?: string } | null)?.prefill ?? ''
+  const highlightMessageId = (location.state as { highlightMessageId?: string } | null)?.highlightMessageId
 
   if (!activeConversationId) {
     return (
-      <div className="flex h-full items-center justify-center bg-background">
+      <div className="flex h-full items-center justify-center bg-black">
         <Spinner size="lg" />
       </div>
     )
@@ -75,70 +46,68 @@ export default function ConversationPage() {
 
   if (!conversation) {
     return (
-      <div className="flex h-full items-center justify-center bg-background p-6">
+      <div className="flex h-full items-center justify-center bg-black p-6">
         <EmptyState
           title="Conversation not found"
-          description="This chat may have been deleted or moved."
-          action={<Button onClick={() => navigate(ROUTES.CHAT.LIST)}>Back to chats</Button>}
+          description="This chat may have been deleted or does not exist."
+          action={<Button variant="primary" onClick={() => navigate(ROUTES.CHAT.LIST)}>Back to Messages</Button>}
         />
       </div>
     )
   }
 
   return (
-    <div className="relative flex h-full overflow-hidden bg-background">
-      {/* Gradient orbs for atmosphere */}
-      <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden>
-        <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-[#0ea583]/5 blur-[128px]" />
-        <div className="absolute -bottom-32 -right-32 h-80 w-80 rounded-full bg-[#0ea583]/3 blur-[100px]" />
-      </div>
-
-      <div
-        className="flex h-full min-w-0 flex-1 flex-col"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-        style={{
-          transform: swipeTranslate > 0 ? `translateX(${swipeTranslate}px)` : '',
-          transition: swipeTranslate > 0 ? 'none' : 'transform 0.3s ease-out',
-          opacity: swipeTranslate > 0 ? 1 - (swipeTranslate / 300) : 1,
-        }}
-      >
-        <header className="flex h-14 shrink-0 items-center gap-3 border-b border-white/[0.04] bg-background/80 px-4 backdrop-blur-xl">
-          {/* Mobile back */}
+    <div className="relative flex h-full w-full flex-col overflow-hidden bg-black text-[#e7e9ea]">
+      {/* Sticky Top Header */}
+      <header className="sticky top-0 z-20 flex h-[53px] shrink-0 items-center justify-between gap-3 border-b border-[#2f3336] bg-black/65 px-4 backdrop-blur-md">
+        <div className="flex items-center gap-3 min-w-0">
+          {/* Mobile Back Button */}
           <button
             type="button"
             onClick={() => navigate(ROUTES.CHAT.LIST)}
-            className="-ml-1 flex items-center gap-1 rounded-full p-1.5 text-muted-foreground transition-colors hover:text-foreground lg:hidden cursor-pointer"
-            title="Back to chats"
+            className="w-[34.75px] h-[34.75px] rounded-full flex items-center justify-center text-[#e7e9ea] hover:bg-white/[0.08] active:bg-white/[0.12] transition-colors md:hidden cursor-pointer shrink-0"
+            title="Back to conversations"
           >
-            <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M12.79 5.23a.75.75 0 0 1-.02 1.06L8.83 10l3.94 3.71a.75.75 0 1 1-1.04 1.08l-4.5-4.25a.75.75 0 0 1 0-1.08l4.5-4.25a.75.75 0 0 1 1.06.02Z" clipRule="evenodd" />
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
           </button>
 
           <button
             type="button"
             onClick={() => setShowDetails(true)}
-            className="flex min-w-0 flex-1 items-center gap-3 text-left transition-opacity hover:opacity-85"
+            className="flex min-w-0 items-center gap-3 text-left hover:opacity-90 transition-opacity cursor-pointer"
           >
-            <Avatar src={conversation.avatar} alt={conversation.name} size="sm" online={conversation.type === 'direct'} />
-            <div className="min-w-0 flex-1">
-              <h1 className="truncate text-sm font-semibold">{conversation.name}</h1>
-              <p className="truncate text-xs text-muted-foreground/70">
+            <Avatar
+              src={conversation.avatar}
+              alt={conversation.name}
+              size="sm"
+              online={conversation.type === 'direct'}
+              verified
+              verifiedType={conversation.type === 'channel' ? 'gold' : 'blue'}
+            />
+            <div className="min-w-0">
+              <h1 className="truncate text-[15px] font-bold text-[#e7e9ea] leading-tight">
+                {conversation.name}
+              </h1>
+              <p className="truncate text-[12px] text-[#71767b] leading-tight">
                 {conversation.type === 'direct'
-                  ? isMuted ? 'Notifications muted' : 'Online'
+                  ? isMuted ? 'Muted' : 'Online'
                   : `${conversation.members.length || 0} members`}
               </p>
             </div>
           </button>
+        </div>
 
+        {/* Action icons */}
+        <div className="flex items-center gap-1">
           <button
             type="button"
-            className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-white/10 hover:text-foreground cursor-pointer"
+            onClick={() => navigate(`/home/c/${conversation.id}/search`)}
+            className="w-[34.75px] h-[34.75px] rounded-full flex items-center justify-center text-[#e7e9ea] hover:bg-white/[0.08] active:bg-white/[0.12] transition-colors cursor-pointer"
             title="Search in conversation"
           >
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
           </button>
@@ -146,52 +115,78 @@ export default function ConversationPage() {
           <button
             type="button"
             onClick={() => setShowDetails(true)}
-            className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-white/10 hover:text-foreground cursor-pointer"
+            className="w-[34.75px] h-[34.75px] rounded-full flex items-center justify-center text-[#e7e9ea] hover:bg-white/[0.08] active:bg-white/[0.12] transition-colors cursor-pointer"
             title="Conversation details"
           >
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
             </svg>
           </button>
-        </header>
+        </div>
+      </header>
 
-        <main className="relative flex-1 overflow-y-auto chat-bg scrollbar-thin">
-          <div className="relative z-10 h-full px-4 py-2">
-            {isLoading ? (
-              <div className="flex h-full items-center justify-center">
-                <Spinner size="lg" />
-              </div>
-            ) : (
-              <MessageList
-                conversation={conversation}
-                currentUserId={currentUser?.id}
-                messages={messages}
-                isReplying={isReplying}
-              />
-            )}
+      {/* Message Stream */}
+      <main className="relative flex-1 overflow-y-auto scrollbar-thin bg-black">
+        {isLoading ? (
+          <div className="flex h-full items-center justify-center">
+            <Spinner size="lg" />
           </div>
-        </main>
+        ) : (
+          <MessageList
+            conversation={conversation}
+            currentUserId={currentUser?.id}
+            messages={messages}
+            isReplying={isReplying}
+            highlightMessageId={highlightMessageId}
+            onReply={setReplyingTo}
+            onOpenMember={conversation.type !== 'direct' ? setSelectedMember : undefined}
+          />
+        )}
+      </main>
 
-        <footer className="shrink-0 border-t border-white/[0.04] bg-background/80 px-3 py-2.5 backdrop-blur-xl">
-          {error && <p className="mb-1.5 text-center text-[11px] text-destructive">{error}</p>}
-          <MessageInput disabled={isBlocked} onSend={sendMessage} />
-        </footer>
-      </div>
+      {/* Bottom Composer */}
+      <footer className="shrink-0 bg-black">
+        {error && <p className="px-4 py-1 text-center text-xs text-[#f4212e]">{error}</p>}
+        <MessageInput
+          disabled={isBlocked}
+          initialValue={storyReply}
+          mentionUsers={conversation.type !== 'direct' ? conversation.members : []}
+          onSend={sendMessage}
+          replyingTo={replyingTo}
+          onCancelReply={() => setReplyingTo(null)}
+        />
+      </footer>
 
-      <Sheet open={showDetails} onClose={() => setShowDetails(false)} title="Conversation details">
+      {/* Details Sheet Modal */}
+      <Sheet open={showDetails} onClose={() => setShowDetails(false)} title="Conversation Info">
         <ConversationDetailsPanel
           conversation={conversation}
           isMuted={isMuted}
           isBlocked={isBlocked}
           onMutedChange={(value) => {
-            setMutedByConversation((current) => ({ ...current, [conversation.id]: value }))
+            updateMockConversation(conversation.id, { isMuted: value })
           }}
           onBlockedChange={(value) => {
-            setBlockedByConversation((current) => ({ ...current, [conversation.id]: value }))
+            updateMockConversation(conversation.id, { isBlocked: value })
           }}
           onClearMessages={clearMessages}
           onClose={() => setShowDetails(false)}
         />
+      </Sheet>
+
+      <Sheet open={selectedMember !== null} onClose={() => setSelectedMember(null)} title="Member profile">
+        {selectedMember && (
+          <div className="text-center">
+            <Avatar src={selectedMember.avatar} alt={selectedMember.name} size="xl" online={selectedMember.isOnline} />
+            <h2 className="mt-3 text-xl font-bold">{selectedMember.name}</h2>
+            <p className="mt-1 text-sm text-[#71767b]">Group member</p>
+            <p className="mt-4 text-sm leading-relaxed text-[#71767b]">{selectedMember.bio ?? 'No bio added yet.'}</p>
+            <div className="mt-5 flex gap-2">
+              <Button variant="secondary" className="flex-1" onClick={() => navigate(`/profile/${selectedMember.name.toLowerCase().replace(/\s+/g, '')}`)}>View profile</Button>
+              <Button className="flex-1" onClick={() => { setSelectedMember(null); navigate('/home/c/c1') }}>Message</Button>
+            </div>
+          </div>
+        )}
       </Sheet>
     </div>
   )

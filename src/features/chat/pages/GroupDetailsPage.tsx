@@ -1,35 +1,20 @@
-import { useParams } from 'react-router'
-import { FeatureScaffold } from '@/core/components/layout/FeatureScaffold'
+import { useState } from 'react'
+import { useNavigate, useParams } from 'react-router'
+import { Avatar } from '@/core/components/ui/Avatar'
+import { BackButton } from '@/core/components/ui/BackButton'
+import { Button } from '@/core/components/ui/Button'
+import { PageContainer } from '@/core/components/layout/PageContainer'
+import { Sheet } from '@/core/components/ui/Sheet'
 import { mockConversations } from '@/mocks/data/conversations'
 import { mockUsers } from '@/mocks/data/users'
 
 export default function GroupDetailsPage() {
+  const navigate = useNavigate()
   const { groupId } = useParams()
   const group = mockConversations.find((item) => item.id === groupId) ?? mockConversations.find((item) => item.type === 'group') ?? mockConversations[0]
+  const members = group.members.length ? group.members : mockUsers
+  const [sheet, setSheet] = useState<'leave' | 'report' | null>(null)
+  const [reported, setReported] = useState(false)
 
-  return (
-    <FeatureScaffold
-      title={`${group.name} Details`}
-      description="Manage group metadata, members, roles, invite links, and group settings."
-      backTo={`/home/g/${group.id}`}
-      actions={[{ label: 'Edit group', path: '/home/create-group' }]}
-      sections={[
-        {
-          title: 'Members and roles',
-          items: mockUsers.map((user, index) => ({
-            title: user.name,
-            description: user.bio ?? 'Group member',
-            meta: index === 0 ? 'Admin' : 'Member',
-          })),
-        },
-        {
-          title: 'Settings',
-          items: [
-            { title: 'Invite link', description: 'Allow members to invite trusted collaborators.', meta: 'Enabled' },
-            { title: 'Posting permissions', description: 'Members can send messages and reactions.', meta: 'Open' },
-          ],
-        },
-      ]}
-    />
-  )
+  return <div className="flex h-full flex-col bg-black text-[#e7e9ea]"><PageContainer className="w-full px-4 pt-3 pb-8"><div className="mx-auto max-w-2xl"><BackButton to={`/home/g/${group.id}`} /><header className="mt-2 rounded-2xl border border-[#2f3336] bg-[#16181c] p-5"><div className="flex items-center gap-3"><Avatar src={group.avatar} alt={group.name} size="lg" /><div><p className="text-xs font-bold uppercase tracking-wider text-[#1d9bf0]">Group details</p><h1 className="mt-1 text-xl font-bold">{group.name}</h1><p className="mt-1 text-sm text-[#71767b]">{members.length} members · {group.isMuted ? 'Muted' : 'Notifications on'}</p></div></div><div className="mt-5 flex flex-wrap gap-2"><Button size="sm" onClick={() => navigate(`/home/g/${group.id}/members`)}>Members</Button><Button size="sm" variant="secondary" onClick={() => navigate(`/home/g/${group.id}/settings`)}>Settings</Button><Button size="sm" variant="secondary" onClick={() => navigate(`/home/c/${group.id}/media`)}>Shared media</Button></div></header><section className="mt-6 overflow-hidden rounded-2xl border border-[#2f3336] bg-[#16181c]"><div className="border-b border-[#2f3336] p-4"><p className="text-xs font-bold uppercase tracking-wider text-[#71767b]">Members and roles</p></div>{members.map((member, index) => <div key={member.id} className="flex items-center gap-3 border-b border-[#2f3336] p-4 last:border-b-0"><Avatar src={member.avatar} alt={member.name} size="md" online={member.isOnline} /><div className="min-w-0 flex-1"><p className="truncate text-sm font-bold">{member.name}</p><p className="mt-0.5 text-xs text-[#71767b]">{index === 0 ? 'Admin' : 'Member'}</p></div></div>)}</section><section className="mt-6 overflow-hidden rounded-2xl border border-[#2f3336] bg-[#16181c]"><button type="button" onClick={() => setSheet('report')} className="flex w-full items-center justify-between border-b border-[#2f3336] p-4 text-left hover:bg-white/[0.03] cursor-pointer"><span><span className="block text-sm font-bold text-[#f4212e]">Report group</span><span className="mt-1 block text-xs text-[#71767b]">Send this group for moderator review.</span></span><span className="text-xs font-bold text-[#f4212e]">Report</span></button><button type="button" onClick={() => setSheet('leave')} className="flex w-full items-center justify-between p-4 text-left hover:bg-white/[0.03] cursor-pointer"><span><span className="block text-sm font-bold text-[#f4212e]">Leave group</span><span className="mt-1 block text-xs text-[#71767b]">You can rejoin later with a new invite.</span></span><span className="text-xs font-bold text-[#f4212e]">Leave</span></button></section></div></PageContainer><Sheet open={sheet !== null} onClose={() => setSheet(null)} title={sheet === 'leave' ? 'Leave group' : 'Report group'}>{sheet === 'leave' ? <div><p className="text-sm leading-relaxed text-[#71767b]">Are you sure you want to leave {group.name}?</p><div className="mt-5 flex gap-2"><Button variant="secondary" className="flex-1" onClick={() => setSheet(null)}>Cancel</Button><Button variant="danger" className="flex-1" onClick={() => navigate('/home')}>Leave group</Button></div></div> : reported ? <div className="py-5 text-center"><p className="font-bold">Report submitted</p><p className="mt-1 text-sm text-[#71767b]">The group has been sent for review.</p><Button size="sm" className="mt-4" onClick={() => setSheet(null)}>Done</Button></div> : <div><p className="text-sm text-[#71767b]">Choose a reason for reporting this group.</p><select className="mt-4 h-11 w-full rounded-full border border-[#2f3336] bg-[#202327] px-4 text-sm text-[#e7e9ea] outline-none focus:border-[#1d9bf0]"><option>Harassment or abuse</option><option>Spam or misleading</option><option>Something else</option></select><Button className="mt-4 w-full" onClick={() => { setReported(true) }}>Send report</Button></div>}</Sheet></div>
 }

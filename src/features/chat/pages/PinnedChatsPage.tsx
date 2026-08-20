@@ -1,8 +1,10 @@
 import { FeatureScaffold } from '@/core/components/layout/FeatureScaffold'
 import { ROUTES } from '@/core/utils/routes'
-import { mockConversations } from '@/mocks/data/conversations'
+import { useConversations } from '../hooks/useConversations'
 
 export default function PinnedChatsPage() {
+  const { conversations } = useConversations()
+
   return (
     <FeatureScaffold
       title="Pinned Chats"
@@ -11,7 +13,7 @@ export default function PinnedChatsPage() {
       sections={[
         {
           title: 'Pinned',
-          items: mockConversations.filter((item) => item.isPinned).map((conversation) => ({
+          items: conversations.filter((item) => item.isPinned).map((conversation) => ({
             title: conversation.name,
             description: conversation.lastMessage ?? 'No recent message',
             meta: conversation.type,

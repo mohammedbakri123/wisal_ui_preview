@@ -3,7 +3,7 @@ import type { Conversation, Message, User } from '@/core/types'
 import { messagesService } from '../services/messages.service'
 import { useChatStore } from '../store/ChatStore'
 
-function createOptimisticMessage(conversationId: string, currentUser: User | null, content: string, type: Message['type']): Message {
+function createOptimisticMessage(conversationId: string, currentUser: User | null, content: string, type: Message['type'], replyTo: string | null): Message {
   const now = new Date().toISOString()
   return {
     id: `optimistic_${Date.now()}`,
@@ -21,7 +21,7 @@ function createOptimisticMessage(conversationId: string, currentUser: User | nul
     },
     content: content.trim(),
     type,
-    replyTo: null,
+    replyTo,
     isEdited: false,
     isPinned: false,
     reactions: [],
@@ -35,7 +35,7 @@ export function useSendMessage(conversation: Conversation | undefined, currentUs
   const conversationId = conversation?.id
 
   return useCallback(
-    async (content: string, type: Message['type'] = 'text') => {
+    async (content: string, type: Message['type'] = 'text', replyTo: string | null = null) => {
       if (!conversationId) return
       if (type === 'text' && !content.trim()) return
 
@@ -43,7 +43,7 @@ export function useSendMessage(conversation: Conversation | undefined, currentUs
       dispatch({
         type: 'APPEND_MESSAGE',
         conversationId,
-        message: createOptimisticMessage(conversationId, currentUser, content, type),
+        message: createOptimisticMessage(conversationId, currentUser, content, type, replyTo),
       })
 
       if (!navigator.onLine) {
@@ -59,7 +59,7 @@ export function useSendMessage(conversation: Conversation | undefined, currentUs
       }
 
       try {
-        const updated = await messagesService.send(conversationId, content, type, currentUser)
+        const updated = await messagesService.send(conversationId, content, type, currentUser, replyTo)
         const senderId = currentUser?.id ?? '1'
         const latestReply = type === 'text' && conversation?.type !== 'channel'
           ? [...updated]

@@ -14,4 +14,11 @@ export const STORAGE_KEYS = {
   AUTH_TOKEN: 'wisal_auth_token',
   THEME: 'wisal_theme',
   ACCENT: 'wisal_accent',
+  BUBBLE_STYLE: 'wisal_bubble_style',
+  CHAT_BACKGROUND: 'wisal_chat_background',
+  CHAT_FONT_SIZE: 'wisal_chat_font_size',
+  LANGUAGE: 'wisal_language',
+  PRIVACY_STORY: 'wisal_privacy_story',
+  PRIVACY_GROUP_ADD: 'wisal_privacy_group_add',
+  PRIVACY_CONTACT: 'wisal_privacy_contact',
 } as const

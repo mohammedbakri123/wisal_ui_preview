@@ -1,27 +1,29 @@
-import { useParams } from 'react-router'
-import { FeatureScaffold } from '@/core/components/layout/FeatureScaffold'
+import { useState } from 'react'
+import { useNavigate, useParams } from 'react-router'
+import { Avatar } from '@/core/components/ui/Avatar'
+import { BackButton } from '@/core/components/ui/BackButton'
+import { Button } from '@/core/components/ui/Button'
+import { PageContainer } from '@/core/components/layout/PageContainer'
+import { Sheet } from '@/core/components/ui/Sheet'
+import { ROUTES } from '@/core/utils/routes'
 import { mockConversations } from '@/mocks/data/conversations'
+import { mockUsers } from '@/mocks/data/users'
+import { removeMockConversation, updateMockConversation } from '../hooks/useConversations'
 
 export default function ChatDetailsPage() {
+  const navigate = useNavigate()
   const { conversationId } = useParams()
   const conversation = mockConversations.find((item) => item.id === conversationId) ?? mockConversations[0]
+  const contact = mockUsers.find((user) => user.name === conversation.name) ?? mockUsers[0]
+  const sharedGroups = mockConversations.filter((item) => item.type === 'group' && item.members.some((member) => member.id === contact.id))
+  const [muted, setMuted] = useState(conversation.isMuted)
+  const [blocked, setBlocked] = useState(conversation.isBlocked ?? false)
+  const [sheet, setSheet] = useState<'report' | 'block' | null>(null)
+  const [reportSent, setReportSent] = useState(false)
 
-  return (
-    <FeatureScaffold
-      title={`${conversation.name} Details`}
-      description="Review shared media, pinned messages, privacy controls, and conversation management actions."
-      backTo={`/home/c/${conversation.id}`}
-      sections={[
-        {
-          title: 'Conversation controls',
-          items: [
-            { title: 'Mute notifications', description: 'Pause push and in-app alerts from this conversation.', meta: conversation.isMuted ? 'On' : 'Off' },
-            { title: 'Pinned messages', description: 'Review important messages saved from this chat.', meta: '2' },
-            { title: 'Shared media', description: 'Images, files, and links exchanged in the chat.', meta: '18' },
-            { title: 'Block contact', description: 'Stop receiving messages from this contact.', meta: 'Direct' },
-          ],
-        },
-      ]}
-    />
-  )
+  return <div className="flex h-full flex-col bg-black text-[#e7e9ea]"><PageContainer className="w-full px-4 pt-3 pb-8"><div className="mx-auto max-w-xl"><BackButton to={`/home/c/${conversation.id}`} /><section className="mt-2 border-b border-[#2f3336] pb-6 text-center"><Avatar src={contact.avatar} alt={contact.name} size="xl" online={contact.isOnline} /><h1 className="mt-3 text-xl font-bold">{contact.name}</h1><p className="mt-1 text-sm text-[#71767b]">{contact.isOnline ? 'Online now' : 'Last seen recently'}</p><div className="mt-4 flex justify-center gap-2"><Button size="sm" variant="secondary" onClick={() => navigate(`/home/c/${conversation.id}/media`)}>Shared media</Button><Button size="sm" variant="secondary" onClick={() => navigate(`/home/c/${conversation.id}/search`)}>Search</Button></div></section><section className="mt-6 overflow-hidden rounded-2xl border border-[#2f3336] bg-[#16181c]"><div className="border-b border-[#2f3336] p-4"><p className="text-xs font-bold uppercase tracking-wider text-[#71767b]">Information</p><p className="mt-2 text-sm font-bold">{contact.name}</p><p className="mt-1 text-xs text-[#71767b]">{contact.phone ?? 'No phone number'} · {contact.bio ?? 'No bio added'}</p></div><ActionRow label="Mute notifications" description="Pause alerts from this conversation." value={muted ? 'On' : 'Off'} onClick={() => { const next = !muted; setMuted(next); updateMockConversation(conversation.id, { isMuted: next }) }} /><ActionRow label="Shared media" description="Images, files, and links exchanged here." value="18 items" onClick={() => navigate(`/home/c/${conversation.id}/media`)} /><ActionRow label="Block contact" description="Stop receiving messages from this contact." value={blocked ? 'Blocked' : 'Block'} danger onClick={() => setSheet('block')} /><ActionRow label="Report contact" description="Send a safety report for moderator review." value="Report" danger onClick={() => { setReportSent(false); setSheet('report') }} /><ActionRow label="Delete conversation" description="Remove this conversation from your inbox." value="Delete" danger onClick={() => { removeMockConversation(conversation.id); navigate(ROUTES.CHAT.LIST) }} /></section><section className="mt-6 overflow-hidden rounded-2xl border border-[#2f3336] bg-[#16181c]"><div className="border-b border-[#2f3336] p-4"><p className="text-xs font-bold uppercase tracking-wider text-[#71767b]">Shared groups</p><p className="mt-1 text-xs text-[#71767b]">Groups you both belong to.</p></div>{sharedGroups.length ? sharedGroups.map((group) => <button type="button" key={group.id} onClick={() => navigate(`/home/g/${group.id}`)} className="flex w-full items-center gap-3 border-b border-[#2f3336] p-4 text-left last:border-b-0 hover:bg-white/[0.03] cursor-pointer"><Avatar src={group.avatar} alt={group.name} size="sm" /><span className="min-w-0 flex-1"><span className="block truncate text-sm font-bold">{group.name}</span><span className="mt-1 block text-xs text-[#71767b]">{group.members.length} members</span></span><span className="text-xs text-[#1d9bf0]">Open</span></button>) : <p className="p-4 text-sm text-[#71767b]">No shared groups yet.</p>}</section><p className="mt-3 text-center text-xs text-[#71767b]">Changes apply to this prototype session.</p></div></PageContainer><Sheet open={sheet !== null} onClose={() => setSheet(null)} title={sheet === 'block' ? 'Block contact' : 'Report contact'}>{sheet === 'block' ? <div><p className="text-sm leading-relaxed text-[#71767b]">Blocked contacts cannot send you new messages. Existing conversation history stays on this device.</p><div className="mt-5 flex gap-2"><Button variant="secondary" className="flex-1" onClick={() => setSheet(null)}>Cancel</Button><Button variant="danger" className="flex-1" onClick={() => { setBlocked(true); updateMockConversation(conversation.id, { isBlocked: true }); setSheet(null) }}>Block</Button></div></div> : reportSent ? <div className="py-5 text-center"><p className="font-bold">Report submitted</p><p className="mt-1 text-sm text-[#71767b]">Thanks for helping keep Wisal safe.</p><Button size="sm" className="mt-4" onClick={() => setSheet(null)}>Done</Button></div> : <div><p className="text-sm text-[#71767b]">Choose a reason for reporting this contact.</p><select className="mt-4 h-11 w-full rounded-full border border-[#2f3336] bg-[#202327] px-4 text-sm text-[#e7e9ea] outline-none focus:border-[#1d9bf0]"><option>Harassment or abuse</option><option>Spam</option><option>Something else</option></select><Button className="mt-4 w-full" onClick={() => setReportSent(true)}>Send report</Button></div>}</Sheet></div>
+}
+
+function ActionRow({ label, description, value, onClick, danger = false }: { label: string; description: string; value: string; onClick: () => void; danger?: boolean }) {
+  return <button type="button" onClick={onClick} className="flex w-full items-center gap-4 border-b border-[#2f3336] p-4 text-left transition-colors last:border-b-0 hover:bg-white/[0.03] cursor-pointer"><span className="min-w-0 flex-1"><span className={`block text-sm font-bold ${danger ? 'text-[#f4212e]' : 'text-[#e7e9ea]'}`}>{label}</span><span className="mt-1 block text-xs text-[#71767b]">{description}</span></span><span className={`shrink-0 text-xs font-bold ${danger ? 'text-[#f4212e]' : 'text-[#71767b]'}`}>{value}</span></button>
 }

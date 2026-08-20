@@ -1,10 +1,10 @@
 import { type ButtonHTMLAttributes, forwardRef } from 'react'
 import { cn } from '@/core/utils/cn'
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger'
-type ButtonSize = 'sm' | 'md' | 'lg'
+export type ButtonVariant = 'primary' | 'secondary' | 'inverse' | 'ghost' | 'danger'
+export type ButtonSize = 'sm' | 'md' | 'lg'
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
   size?: ButtonSize
   loading?: boolean
@@ -12,19 +12,21 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    'bg-accent text-accent-foreground hover:bg-accent/90 active:bg-accent/80 shadow-sm shadow-accent/20',
+    'bg-[#1d9bf0] text-[#e7e9ea] hover:bg-[#1a8cd8] active:bg-[#177cc0]',
   secondary:
-    'bg-muted text-foreground border border-border-light hover:bg-surface-hover active:bg-muted/80',
+    'bg-transparent text-[#e7e9ea] border border-[#536471] hover:border-[#e7e9ea] hover:bg-white/[0.03] active:bg-white/[0.06]',
+  inverse:
+    'bg-[#eff3f4] text-[#0f1419] hover:bg-[#d7dbdc] active:bg-[#c4c8c9]',
   ghost:
-    'text-muted-foreground hover:bg-muted hover:text-foreground active:bg-muted/80',
+    'bg-transparent text-[#71767b] hover:text-[#e7e9ea] hover:bg-white/[0.03] active:bg-white/[0.06]',
   danger:
-    'bg-destructive text-white hover:bg-destructive/90 active:bg-destructive/80',
+    'bg-[#f4212e] text-white hover:bg-[#dc1d29] active:bg-[#c51924]',
 }
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: 'h-8 px-3 text-sm gap-1.5',
-  md: 'h-10 px-4 text-sm gap-2',
-  lg: 'h-12 px-6 text-base gap-2.5',
+  sm: 'h-8 px-4 text-xs font-bold gap-1.5',
+  md: 'h-9 px-5 text-sm font-bold gap-2',
+  lg: 'h-[52px] px-8 text-[17px] font-bold gap-2.5',
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -45,8 +47,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={cn(
-          'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50',
+          'inline-flex items-center justify-center rounded-full transition-all duration-150',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d9bf0]/50',
           'disabled:pointer-events-none disabled:opacity-50',
           'cursor-pointer select-none active:scale-[0.97]',
           variantStyles[variant],
@@ -56,26 +58,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {loading && (
-          <svg
-            className="animate-spin -ml-0.5 h-4 w-4"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-            />
-          </svg>
+          <span className="inline-flex items-center gap-1 -ml-1 mr-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-current animate-bounce" style={{ animationDelay: '0ms' }} />
+            <span className="w-1.5 h-1.5 rounded-full bg-current animate-bounce" style={{ animationDelay: '150ms' }} />
+            <span className="w-1.5 h-1.5 rounded-full bg-current animate-bounce" style={{ animationDelay: '300ms' }} />
+          </span>
         )}
         {children}
       </button>

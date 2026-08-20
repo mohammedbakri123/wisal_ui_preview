@@ -1,9 +1,10 @@
 import { FeatureScaffold } from '@/core/components/layout/FeatureScaffold'
 import { ROUTES } from '@/core/utils/routes'
-import { mockConversations } from '@/mocks/data/conversations'
+import { useConversations } from '../hooks/useConversations'
 
 export default function ArchivedChatsPage() {
-  const archived = mockConversations.filter((conversation) => conversation.isMuted && !conversation.isPinned)
+  const { conversations } = useConversations()
+  const archived = conversations.filter((conversation) => conversation.isMuted && !conversation.isPinned)
 
   return (
     <FeatureScaffold

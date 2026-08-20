@@ -18,6 +18,8 @@ export const ROUTES = {
     DETAILS: '/home/c/:conversationId/details',
     GROUP: '/home/g/:groupId',
     GROUP_DETAILS: '/home/g/:groupId/details',
+    MEDIA: '/home/c/:conversationId/media',
+    CONVERSATION_SEARCH: '/home/c/:conversationId/search',
   },
   GROUP: {
     DETAIL: '/home/g/:groupId/details',
@@ -36,6 +38,8 @@ export const ROUTES = {
     INVITE: '/channels/:channelId/invite',
     ANALYTICS: '/channels/:channelId/analytics',
     SETTINGS: '/channels/:channelId/settings',
+    ADMINS: '/channels/:channelId/admins',
+    POSTS: '/channels/:channelId/posts',
   },
   COMMUNITY: {
     ROOT: '/communities',
@@ -47,8 +51,16 @@ export const ROUTES = {
     GROUPS: '/communities/:communityId/groups',
     CHANNELS: '/communities/:communityId/channels',
     ABOUT: '/communities/:communityId/about',
+    MANAGE: '/communities/:communityId/manage',
+    CREATE: '/communities/create',
   },
   STORIES: '/stories',
+  STORY_VIEWER: '/stories/viewer',
+  STORY_CREATE: '/stories/create',
+  CONTACTS: {
+    ROOT: '/contacts',
+    ADD: '/contacts/add',
+  },
   SEARCH: '/search',
   NOTIFICATIONS: '/notifications',
   PROFILE: {
@@ -66,6 +78,7 @@ export const ROUTES = {
     CHATS: '/settings/chats',
     STORAGE: '/settings/storage',
     APPEARANCE: '/settings/appearance',
+    LANGUAGE: '/settings/language',
     DEVICES: '/settings/devices',
     HELP: '/settings/help',
     ABOUT: '/settings/about',
@@ -80,5 +93,14 @@ export const ROUTES = {
     DASHBOARD: '/admin',
     REPORTS: '/admin/reports',
     BANS: '/admin/bans',
+  },
+  ADMIN: {
+    LOGIN: '/admin/login',
+    ROOT: '/admin',
+    USERS: '/admin/users',
+    ADMINISTRATORS: '/admin/administrators',
+    INSTITUTIONS: '/admin/institutions',
+    REPORTS: '/admin/reports',
+    CONTENT: '/admin/content',
   },
 } as const

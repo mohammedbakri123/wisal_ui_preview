@@ -11,6 +11,7 @@ export default function AccountSettingsPage() {
 
   const [phone, setPhone] = useState(user?.phone || '')
   const [email, setEmail] = useState(user?.email || '')
+  const [username, setUsername] = useState(user?.username || user?.name.toLowerCase().replace(/\s+/g, '') || '')
   const [password, setPassword] = useState('••••••••')
   const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -23,6 +24,7 @@ export default function AccountSettingsPage() {
       if (user) {
         setUser({
           ...user,
+          username: username.trim().replace(/^@+/, ''),
           phone: phone || null,
           email: email || null,
         })
@@ -42,6 +44,13 @@ export default function AccountSettingsPage() {
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Personal Information</h3>
             </div>
             <div className="p-4 space-y-4">
+              <Input
+                label="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value.replace(/\s/g, ''))}
+                placeholder="yourusername"
+                disabled={!isEditing}
+              />
               <Input
                 label="Phone number"
                 value={phone}
@@ -86,6 +95,7 @@ export default function AccountSettingsPage() {
                   variant="secondary"
                   className="flex-1 w-full cursor-pointer"
                   onClick={() => {
+                    setUsername(user?.username || user?.name.toLowerCase().replace(/\s+/g, '') || '')
                     setPhone(user?.phone || '')
                     setEmail(user?.email || '')
                     setIsEditing(false)

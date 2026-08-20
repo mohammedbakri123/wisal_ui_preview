@@ -5,7 +5,7 @@ import { Button } from '@/core/components/ui/Button'
 interface StoryCreatorProps {
   userName: string
   userAvatar: string | null
-  onPublish: (content: string, backgroundColor: string) => void
+  onPublish: (content: string, backgroundColor: string, type: 'text' | 'image' | 'video', mediaUrl: string, privacy: 'contacts' | 'contacts-except' | 'only-share-with') => void
   onClose: () => void
 }
 
@@ -17,6 +17,9 @@ const COLORS = [
 export function StoryCreator({ userName, userAvatar, onPublish, onClose }: StoryCreatorProps) {
   const [content, setContent] = useState('')
   const [bgColor, setBgColor] = useState(COLORS[0])
+  const [type, setType] = useState<'text' | 'image' | 'video'>('text')
+  const [mediaUrl, setMediaUrl] = useState('')
+  const [privacy, setPrivacy] = useState<'contacts' | 'contacts-except' | 'only-share-with'>('contacts')
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -32,10 +35,13 @@ export function StoryCreator({ userName, userAvatar, onPublish, onClose }: Story
   }, [onClose])
 
   const handlePublish = () => {
-    if (!content.trim()) return
-    onPublish(content.trim(), bgColor)
+    const hasContent = content.trim() || mediaUrl.trim()
+    if (!hasContent) return
+    onPublish(content.trim() || `${type === 'image' ? 'Image' : 'Video'} story`, bgColor, type, mediaUrl.trim(), privacy)
     onClose()
   }
+
+  const canPublish = Boolean(content.trim() || mediaUrl.trim())
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 animate-fade-in">
@@ -50,7 +56,7 @@ export function StoryCreator({ userName, userAvatar, onPublish, onClose }: Story
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
-          <Button variant="primary" size="sm" onClick={handlePublish} disabled={!content.trim()}>
+          <Button variant="primary" size="sm" onClick={handlePublish} disabled={!canPublish}>
             Publish
           </Button>
         </div>
@@ -59,16 +65,36 @@ export function StoryCreator({ userName, userAvatar, onPublish, onClose }: Story
         <div className="flex-1 flex flex-col items-center justify-center p-8">
           <Avatar src={userAvatar} alt={userName} size="lg" />
           <p className="mt-2 text-sm text-white/70">{userName}</p>
+          <div className="mt-5 flex rounded-full border border-white/15 bg-black/20 p-1 text-xs text-white/60">
+            {(['text', 'image', 'video'] as const).map((option) => (
+              <button key={option} type="button" onClick={() => setType(option)} className={`flex-1 rounded-full px-3 py-1.5 capitalize transition-colors ${type === option ? 'bg-white text-black' : 'hover:text-white'}`}>
+                {option}
+              </button>
+            ))}
+          </div>
+          {type !== 'text' && (
+            <input value={mediaUrl} onChange={(e) => setMediaUrl(e.target.value)} placeholder={`${type === 'image' ? 'Image' : 'Video'} URL (optional)`} className="mt-4 w-full rounded-xl border border-white/15 bg-black/20 px-4 py-2 text-sm text-white placeholder:text-white/35 focus:outline-none" />
+          )}
+          {type === 'image' && mediaUrl && <img src={mediaUrl} alt="Story preview" className="mt-6 max-h-44 max-w-full rounded-xl object-contain" />}
+          {type === 'video' && mediaUrl && <video src={mediaUrl} autoPlay muted loop playsInline className="mt-6 max-h-44 max-w-full rounded-xl object-contain" />}
           <textarea
             ref={inputRef}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="What's on your mind?"
+            placeholder={type === 'text' ? "What's on your mind?" : 'Add a caption (optional)'}
             className="mt-6 w-full bg-transparent text-white text-xl sm:text-2xl font-medium text-center leading-relaxed placeholder:text-white/30 focus:outline-none resize-none"
             rows={4}
             maxLength={280}
           />
           <span className="mt-2 text-xs text-white/40">{content.length}/280</span>
+          <label className="mt-5 flex items-center gap-2 text-xs text-white/65">
+            Who can see this?
+            <select value={privacy} onChange={(e) => setPrivacy(e.target.value as typeof privacy)} className="rounded-lg border border-white/15 bg-black/30 px-2 py-1 text-white focus:outline-none">
+              <option value="contacts">Contacts</option>
+              <option value="contacts-except">Contacts except…</option>
+              <option value="only-share-with">Only share with…</option>
+            </select>
+          </label>
         </div>
 
         {/* Color picker */}

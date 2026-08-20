@@ -7,6 +7,7 @@ export interface Story {
   content: string
   type: 'text' | 'image' | 'video'
   backgroundColor?: string
+  privacy?: 'contacts' | 'contacts-except' | 'only-share-with'
   createdAt: string
   expiresAt: string
   viewedBy: string[]

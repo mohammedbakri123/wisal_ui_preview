@@ -1,46 +1,15 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { PageContainer } from '@/core/components/layout/PageContainer'
 import { Button } from '@/core/components/ui/Button'
 import { PullToRefresh } from '@/core/components/ui/PullToRefresh'
 import { ROUTES } from '@/core/utils/routes'
 import { ChannelCard } from '../components/ChannelCard'
-import { channels as channelsData } from '../data'
+import { useChannels } from '../context/useChannels'
 
 export default function JoinedChannelsPage() {
   const navigate = useNavigate()
-  const [channels, setChannels] = useState(channelsData)
+  const { channels } = useChannels()
   const joined = channels.filter((channel) => channel.joined)
-
-  const handleRefresh = async () => {
-    // Simulate refresh
-    await new Promise((r) => setTimeout(r, 800))
-    setChannels([...channelsData])
-  }
-
-  return (
-    <div className="flex h-full flex-col bg-background">
-
-      <PullToRefresh onRefresh={handleRefresh} className="flex-1 overflow-hidden">
-        {(setScrollRef) => (
-          <PageContainer className="w-full px-3 sm:px-4" ref={setScrollRef}>
-            <div className="max-w-4xl mx-auto space-y-4 sm:space-y-5">
-              <section className="rounded-2xl border border-border-light/40 bg-surface p-4 sm:p-5">
-                <h2 className="text-lg sm:text-xl font-bold tracking-tight">Joined channels</h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground/80 max-w-xl">
-                  Follow broadcast spaces for product releases, design notes, and engineering updates.
-                </p>
-                <Button className="mt-4" size="sm" onClick={() => navigate(ROUTES.CHANNEL.DISCOVER)}>
-                  Discover channels
-                </Button>
-              </section>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {joined.map((channel) => <ChannelCard key={channel.id} channel={channel} />)}
-              </div>
-            </div>
-          </PageContainer>
-        )}
-      </PullToRefresh>
-    </div>
-  )
+  const handleRefresh = async () => { await new Promise((resolve) => setTimeout(resolve, 500)) }
+  return <div className="flex h-full flex-col bg-black text-[#e7e9ea]"><PullToRefresh onRefresh={handleRefresh} className="flex-1 overflow-hidden">{(setScrollRef) => <PageContainer ref={setScrollRef} className="mx-auto w-full max-w-4xl px-4 pt-5 pb-10 sm:px-6"><header className="flex items-start justify-between gap-4 border-b border-[#2f3336] pb-5"><div><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1d9bf0]">Broadcasts</p><h1 className="mt-2 text-2xl font-bold">Joined channels</h1><p className="mt-2 max-w-lg text-sm leading-relaxed text-[#71767b]">Follow product, design, and engineering updates from the channels you care about.</p></div><Button size="sm" onClick={() => navigate(ROUTES.CHANNEL.DISCOVER)}>Discover</Button></header><section className="pt-6"><h2 className="mb-3 text-xs font-bold uppercase tracking-wider text-[#71767b]">Your channels</h2><div className="grid gap-3 lg:grid-cols-2">{joined.map((channel) => <ChannelCard key={channel.id} channel={channel} />)}</div></section></PageContainer>}</PullToRefresh></div>
 }

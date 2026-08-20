@@ -1,11 +1,9 @@
 import { FeatureScaffold } from '@/core/components/layout/FeatureScaffold'
-
-const organizations = [
-  { id: 'org-acme', name: 'Acme Product Lab', description: 'Main workspace for product, design, and engineering teams.', members: '48' },
-  { id: 'org-field', name: 'Field Support', description: 'Customer-facing operations and escalation teams.', members: '16' },
-]
+import { useOrganizations } from '../context/useOrganizations'
 
 export default function OrganizationsPage() {
+  const { organizations } = useOrganizations()
+
   return (
     <FeatureScaffold
       title="Organizations"
@@ -17,7 +15,7 @@ export default function OrganizationsPage() {
           items: organizations.map((organization) => ({
             title: organization.name,
             description: organization.description,
-            meta: `${organization.members} members`,
+            meta: `${organization.members} members · ${organization.status}`,
             path: `/organizations/${organization.id}`,
           })),
         },

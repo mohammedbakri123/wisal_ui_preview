@@ -5,6 +5,8 @@ import { MainLayout } from '@/app/layouts/MainLayout'
 import { ChatLayout } from '@/app/layouts/ChatLayout'
 import { AuthGuard } from '@/app/guards/AuthGuard'
 import { GuestGuard } from '@/app/guards/GuestGuard'
+import { AdminGuard } from '@/app/guards/AdminGuard'
+import { AdminLayout } from '@/app/layouts/AdminLayout'
 import { Spinner } from '@/core/components/ui/Spinner'
 import { ROUTES } from '@/core/utils/routes'
 
@@ -20,8 +22,11 @@ const ArchivedChatsPage = lazy(() => import('@/features/chat/pages/ArchivedChats
 const PinnedChatsPage = lazy(() => import('@/features/chat/pages/PinnedChatsPage'))
 const SearchChatsPage = lazy(() => import('@/features/chat/pages/SearchChatsPage'))
 const SearchMessagesPage = lazy(() => import('@/features/chat/pages/SearchMessagesPage'))
+const SharedMediaPage = lazy(() => import('@/features/chat/pages/SharedMediaPage'))
 const AddChatPage = lazy(() => import('@/features/chat/pages/AddChatPage'))
 const CreateGroupPage = lazy(() => import('@/features/chat/pages/CreateGroupPage'))
+const GroupMembersPage = lazy(() => import('@/features/chat/pages/GroupMembersPage'))
+const GroupSettingsPage = lazy(() => import('@/features/chat/pages/GroupSettingsPage'))
 
 // Channels pages
 const JoinedChannelsPage = lazy(() => import('@/features/channels/pages/JoinedChannelsPage'))
@@ -32,6 +37,8 @@ const ChannelDetailsPage = lazy(() => import('@/features/channels/pages/ChannelD
 const InviteMembersPage = lazy(() => import('@/features/channels/pages/InviteMembersPage'))
 const ChannelAnalyticsPage = lazy(() => import('@/features/channels/pages/ChannelAnalyticsPage'))
 const ChannelSettingsPage = lazy(() => import('@/features/channels/pages/ChannelSettingsPage'))
+const ChannelAdminsPage = lazy(() => import('@/features/channels/pages/ChannelAdminsPage'))
+const ChannelPostsPage = lazy(() => import('@/features/channels/pages/ChannelPostsPage'))
 
 // Communities pages
 const JoinedCommunitiesPage = lazy(() => import('@/features/communities/pages/JoinedCommunitiesPage'))
@@ -43,6 +50,8 @@ const CommunityMembersPage = lazy(() => import('@/features/communities/pages/Com
 const CommunityGroupsPage = lazy(() => import('@/features/communities/pages/CommunityGroupsPage'))
 const CommunityChannelsPage = lazy(() => import('@/features/communities/pages/CommunityChannelsPage'))
 const CommunityAboutPage = lazy(() => import('@/features/communities/pages/CommunityAboutPage'))
+const CreateCommunityPage = lazy(() => import('@/features/communities/pages/CreateCommunityPage'))
+const CommunityManagePage = lazy(() => import('@/features/communities/pages/CommunityManagePage'))
 
 // Profile pages
 const ProfilePage = lazy(() => import('@/features/profile/pages/ProfilePage'))
@@ -59,6 +68,7 @@ const NotificationSettingsPage = lazy(() => import('@/features/settings/pages/No
 const ChatSettingsPage = lazy(() => import('@/features/settings/pages/ChatSettingsPage'))
 const StorageDataPage = lazy(() => import('@/features/settings/pages/StorageDataPage'))
 const AppearanceSettingsPage = lazy(() => import('@/features/settings/pages/AppearanceSettingsPage'))
+const LanguageSettingsPage = lazy(() => import('@/features/settings/pages/LanguageSettingsPage'))
 const DevicesPage = lazy(() => import('@/features/settings/pages/DevicesPage'))
 const HelpSupportPage = lazy(() => import('@/features/settings/pages/HelpSupportPage'))
 const AboutPage = lazy(() => import('@/features/settings/pages/AboutPage'))
@@ -68,10 +78,14 @@ const ExplorePage = lazy(() => import('@/features/explore/pages/ExplorePage'))
 
 // Stories
 const StoriesPage = lazy(() => import('@/features/stories/pages/StoriesPage'))
+const StoryViewerPage = lazy(() => import('@/features/stories/pages/StoryViewerPage'))
+const CreateStoryPage = lazy(() => import('@/features/stories/pages/CreateStoryPage'))
 
 // Search & Notifications
 const SearchPage = lazy(() => import('@/features/search/pages/SearchPage'))
 const NotificationsPage = lazy(() => import('@/features/notifications/pages/NotificationsPage'))
+const ContactsPage = lazy(() => import('@/features/contacts/pages/ContactsPage'))
+const AddContactPage = lazy(() => import('@/features/contacts/pages/AddContactPage'))
 
 // Organizations & moderation
 const OrganizationsPage = lazy(() => import('@/features/organizations/pages/OrganizationsPage'))
@@ -81,6 +95,11 @@ const OrganizationSettingsPage = lazy(() => import('@/features/organizations/pag
 const ModerationDashboardPage = lazy(() => import('@/features/moderation/pages/ModerationDashboardPage'))
 const ReportedContentPage = lazy(() => import('@/features/moderation/pages/ReportedContentPage'))
 const BannedUsersPage = lazy(() => import('@/features/moderation/pages/BannedUsersPage'))
+const AdminLoginPage = lazy(() => import('@/features/admin/pages/AdminLoginPage'))
+const AdminUsersPage = lazy(() => import('@/features/admin/pages/AdminUsersPage'))
+const AdministratorsPage = lazy(() => import('@/features/admin/pages/AdministratorsPage'))
+const InstitutionsPage = lazy(() => import('@/features/admin/pages/InstitutionsPage'))
+const AdminContentPage = lazy(() => import('@/features/admin/pages/AdminContentPage'))
 
 function PageLoader() {
   return (
@@ -114,12 +133,16 @@ export function AppRouter() {
           <Route path="/chat/:conversationId" element={<LegacyChatRedirect />} />
           
           {/* Chat routes with WhatsApp-style side-by-side layout */}
-          <Route path={ROUTES.HOME} element={<ChatLayout />}>
+          <Route path={ROUTES.CHAT.LIST} element={<ChatLayout />}>
             <Route index element={<WelcomePage />} />
-            <Route path="c/:conversationId" element={<ConversationPage />} />
-            <Route path="c/:conversationId/details" element={<ChatDetailsPage />} />
-            <Route path="g/:groupId" element={<GroupPage />} />
-            <Route path="g/:groupId/details" element={<GroupDetailsPage />} />
+            <Route path={ROUTES.CHAT.CONVERSATION.replace('/home/', '')} element={<ConversationPage />} />
+            <Route path={ROUTES.CHAT.DETAILS.replace('/home/', '')} element={<ChatDetailsPage />} />
+            <Route path={ROUTES.CHAT.GROUP.replace('/home/', '')} element={<GroupPage />} />
+            <Route path={ROUTES.CHAT.GROUP_DETAILS.replace('/home/', '')} element={<GroupDetailsPage />} />
+            <Route path={ROUTES.GROUP.MEMBERS.replace('/home/', '')} element={<GroupMembersPage />} />
+            <Route path={ROUTES.GROUP.SETTINGS.replace('/home/', '')} element={<GroupSettingsPage />} />
+            <Route path={ROUTES.CHAT.MEDIA.replace('/home/', '')} element={<SharedMediaPage />} />
+            <Route path={ROUTES.CHAT.CONVERSATION_SEARCH.replace('/home/', '')} element={<SearchMessagesPage />} />
           </Route>
 
           {/* Standalone chat pages (not in side-by-side layout) */}
@@ -139,6 +162,8 @@ export function AppRouter() {
           <Route path={ROUTES.CHANNEL.INVITE} element={<InviteMembersPage />} />
           <Route path={ROUTES.CHANNEL.ANALYTICS} element={<ChannelAnalyticsPage />} />
           <Route path={ROUTES.CHANNEL.SETTINGS} element={<ChannelSettingsPage />} />
+          <Route path={ROUTES.CHANNEL.ADMINS} element={<ChannelAdminsPage />} />
+          <Route path={ROUTES.CHANNEL.POSTS} element={<ChannelPostsPage />} />
 
           {/* Community routes */}
           <Route path={ROUTES.COMMUNITY.ROOT} element={<JoinedCommunitiesPage />} />
@@ -150,6 +175,8 @@ export function AppRouter() {
           <Route path={ROUTES.COMMUNITY.GROUPS} element={<CommunityGroupsPage />} />
           <Route path={ROUTES.COMMUNITY.CHANNELS} element={<CommunityChannelsPage />} />
           <Route path={ROUTES.COMMUNITY.ABOUT} element={<CommunityAboutPage />} />
+          <Route path={ROUTES.COMMUNITY.MANAGE} element={<CommunityManagePage />} />
+          <Route path={ROUTES.COMMUNITY.CREATE} element={<CreateCommunityPage />} />
           
           {/* Profile routes */}
           <Route path={ROUTES.PROFILE.SELF} element={<ProfilePage />} />
@@ -166,6 +193,7 @@ export function AppRouter() {
           <Route path={ROUTES.SETTINGS.CHATS} element={<ChatSettingsPage />} />
           <Route path={ROUTES.SETTINGS.STORAGE} element={<StorageDataPage />} />
           <Route path={ROUTES.SETTINGS.APPEARANCE} element={<AppearanceSettingsPage />} />
+          <Route path={ROUTES.SETTINGS.LANGUAGE} element={<LanguageSettingsPage />} />
           <Route path={ROUTES.SETTINGS.DEVICES} element={<DevicesPage />} />
           <Route path={ROUTES.SETTINGS.HELP} element={<HelpSupportPage />} />
           <Route path={ROUTES.SETTINGS.ABOUT} element={<AboutPage />} />
@@ -175,19 +203,36 @@ export function AppRouter() {
 
           {/* Stories */}
           <Route path={ROUTES.STORIES} element={<StoriesPage />} />
+          <Route path={ROUTES.STORY_VIEWER} element={<StoryViewerPage />} />
+          <Route path={ROUTES.STORY_CREATE} element={<CreateStoryPage />} />
 
           {/* Search & Notifications */}
           <Route path={ROUTES.SEARCH} element={<SearchPage />} />
           <Route path={ROUTES.NOTIFICATIONS} element={<NotificationsPage />} />
 
-          {/* Organizations & moderation */}
+          {/* Contacts */}
+          <Route path={ROUTES.CONTACTS.ROOT} element={<ContactsPage />} />
+          <Route path={ROUTES.CONTACTS.ADD} element={<AddContactPage />} />
+
+          {/* Organizations */}
           <Route path={ROUTES.ORGANIZATIONS.LIST} element={<OrganizationsPage />} />
           <Route path={ROUTES.ORGANIZATIONS.CREATE} element={<CreateOrganizationPage />} />
           <Route path={ROUTES.ORGANIZATIONS.DETAIL} element={<OrganizationPage />} />
           <Route path={ROUTES.ORGANIZATIONS.SETTINGS} element={<OrganizationSettingsPage />} />
-          <Route path={ROUTES.MODERATION.DASHBOARD} element={<ModerationDashboardPage />} />
-          <Route path={ROUTES.MODERATION.REPORTS} element={<ReportedContentPage />} />
-          <Route path={ROUTES.MODERATION.BANS} element={<BannedUsersPage />} />
+        </Route>
+
+        {/* Separate admin portal authentication and shell */}
+        <Route path={ROUTES.ADMIN.LOGIN} element={<AdminLoginPage />} />
+        <Route element={<AdminGuard />}>
+          <Route element={<AdminLayout />}>
+            <Route path={ROUTES.MODERATION.DASHBOARD} element={<ModerationDashboardPage />} />
+            <Route path={ROUTES.ADMIN.USERS} element={<AdminUsersPage />} />
+            <Route path={ROUTES.ADMIN.ADMINISTRATORS} element={<AdministratorsPage />} />
+            <Route path={ROUTES.ADMIN.INSTITUTIONS} element={<InstitutionsPage />} />
+            <Route path={ROUTES.MODERATION.REPORTS} element={<ReportedContentPage />} />
+            <Route path={ROUTES.ADMIN.CONTENT} element={<AdminContentPage />} />
+            <Route path={ROUTES.MODERATION.BANS} element={<BannedUsersPage />} />
+          </Route>
         </Route>
 
         {/* Catch-all */}

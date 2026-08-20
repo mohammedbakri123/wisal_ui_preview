@@ -89,19 +89,20 @@ export function useStories() {
     })
   }, [activeStoryIndex])
 
-  const addStory = useCallback((userId: string, content: string, type: 'text' | 'image' = 'text', backgroundColor?: string) => {
+  const addStory = useCallback((userId: string, content: string, type: 'text' | 'image' | 'video' = 'text', backgroundColor?: string, mediaUrl?: string, privacy?: 'contacts' | 'contacts-except' | 'only-share-with') => {
     const user = mockStoryGroups.find((g) => g.userId === userId)?.userName ?? 'You'
     const newStory = {
       id: `s${Date.now()}`,
       userId,
       userName: user,
       userAvatar: null,
-      mediaUrl: null,
+      mediaUrl: mediaUrl || null,
       content,
       type,
       backgroundColor: backgroundColor ?? '#1b2a1e',
+      privacy: privacy ?? 'contacts',
       createdAt: new Date().toISOString(),
-      expiresAt: new Date(Date.now() + 24 * 3600_000).toISOString(),
+      expiresAt: new Date(Date.now() + 25 * 3600_000).toISOString(),
       viewedBy: [],
       reactions: [],
     }
@@ -128,6 +129,13 @@ export function useStories() {
     })
   }, [])
 
+  const deleteStory = useCallback((storyId: string) => {
+    setStoryGroups((prev) => prev
+      .map((group) => ({ ...group, stories: group.stories.filter((story) => story.id !== storyId) }))
+      .filter((group) => group.stories.length > 0))
+    setActiveStoryIndex(null)
+  }, [])
+
   return {
     storyGroups,
     activeStoryIndex,
@@ -138,5 +146,6 @@ export function useStories() {
     markCurrentAsViewed,
     reactToStory,
     addStory,
+    deleteStory,
   }
 }

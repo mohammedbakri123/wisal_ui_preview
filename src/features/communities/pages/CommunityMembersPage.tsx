@@ -1,8 +1,7 @@
-import { useParams } from 'react-router'
-import { useNavigate } from 'react-router'
-import { PageContainer } from '@/core/components/layout/PageContainer'
+import { useNavigate, useParams } from 'react-router'
+import { Avatar } from '@/core/components/ui/Avatar'
 import { BackButton } from '@/core/components/ui/BackButton'
-import { MemberCard } from '@/core/components/shared/MemberCard'
+import { PageContainer } from '@/core/components/layout/PageContainer'
 import { mockUsers } from '@/mocks/data/users'
 import { communities } from '../data'
 
@@ -10,31 +9,5 @@ export default function CommunityMembersPage() {
   const { communityId } = useParams()
   const navigate = useNavigate()
   const community = communities.find((item) => item.id === communityId) ?? communities[0]
-
-  return (
-    <div className="flex h-full flex-col bg-background">
-      <PageContainer className="w-full px-3 sm:px-4 pt-3 sm:pt-4">
-        <BackButton to={`/communities/${community.id}/overview`} />
-        <div className="max-w-3xl mx-auto space-y-4">
-          <section className="rounded-2xl border border-border-light/40 bg-surface p-4 sm:p-5">
-            <p className="text-xs font-semibold uppercase tracking-wider text-accent">{community.name}</p>
-            <h2 className="mt-2 text-lg sm:text-xl font-bold">Member directory</h2>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground/80">
-              Browse member roles, presence, and direct message entry points.
-            </p>
-          </section>
-          <div className="grid gap-2 sm:grid-cols-2">
-            {mockUsers.map((user, index) => (
-              <MemberCard
-                key={user.id}
-                user={user}
-                role={index === 0 ? 'Admin' : 'Member'}
-                onClick={() => navigate('/home/c/c1')}
-              />
-            ))}
-          </div>
-        </div>
-      </PageContainer>
-    </div>
-  )
+  return <div className="flex h-full flex-col bg-black text-[#e7e9ea]"><PageContainer className="w-full px-4 pt-3 pb-8 sm:px-6"><div className="mx-auto max-w-2xl"><BackButton to={`/communities/${community.id}/overview`} /><header className="mt-2 border-b border-[#2f3336] pb-5"><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1d9bf0]">{community.name}</p><h1 className="mt-2 text-2xl font-bold">Members</h1><p className="mt-2 text-sm leading-relaxed text-[#71767b]">Browse member roles, presence, and direct-message entry points.</p></header><section className="mt-6 overflow-hidden rounded-2xl border border-[#2f3336] bg-[#16181c]">{mockUsers.map((user, index) => <button type="button" key={user.id} onClick={() => navigate(`/profile/${user.name.toLowerCase().replace(/\s+/g, '')}`)} className="flex w-full items-center gap-3 border-b border-[#2f3336] p-4 text-left transition-colors last:border-b-0 hover:bg-white/[0.03] cursor-pointer"><Avatar src={user.avatar} alt={user.name} size="md" online={user.isOnline} /><span className="min-w-0 flex-1"><span className="block truncate text-sm font-bold">{user.name}</span><span className="mt-1 block truncate text-xs text-[#71767b]">{user.bio ?? user.email ?? 'Wisal member'}</span></span><span className="rounded-full bg-[#1d9bf0]/10 px-2.5 py-1 text-[10px] font-bold text-[#1d9bf0]">{index === 0 ? 'Admin' : 'Member'}</span></button>)}</section></div></PageContainer></div>
 }

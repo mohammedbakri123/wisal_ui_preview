@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { cn } from '@/core/utils/cn'
 import { usePullToRefresh } from '@/core/hooks/usePullToRefresh'
 
-interface PullToRefreshProps {
+export interface PullToRefreshProps {
   onRefresh: () => Promise<void> | void
   children: (setScrollRef: (el: HTMLDivElement | null) => void) => ReactNode
   disabled?: boolean
@@ -13,8 +13,8 @@ export function PullToRefresh({ onRefresh, children, disabled, className }: Pull
   const { setScrollRef, pullState, pullDistance, pullProgress } = usePullToRefresh<HTMLDivElement>({
     onRefresh,
     disabled,
-    pullThreshold: 80,
-    maxPullDistance: 120,
+    pullThreshold: 70,
+    maxPullDistance: 100,
   })
 
   return (
@@ -28,39 +28,31 @@ export function PullToRefresh({ onRefresh, children, disabled, className }: Pull
           opacity: Math.min(pullProgress, 1),
         }}
       >
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex items-center justify-center p-2">
           {pullState === 'refreshing' ? (
-            <svg className="h-6 w-6 animate-spin text-accent" viewBox="0 0 24 24" fill="none">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-            </svg>
-          ) : pullState === 'threshold-reached' ? (
-            <svg className="h-6 w-6 text-accent animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-            </svg>
+            <div className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1d9bf0] animate-bounce" style={{ animationDelay: '0ms' }} />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1d9bf0] animate-bounce" style={{ animationDelay: '150ms' }} />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1d9bf0] animate-bounce" style={{ animationDelay: '300ms' }} />
+            </div>
           ) : (
-            <svg
-              className="h-5 w-5 text-muted-foreground/60 transition-transform"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
+            <div
+              className="w-7 h-7 rounded-full bg-[#202327] border border-[#2f3336] flex items-center justify-center text-[#1d9bf0] shadow transition-transform"
               style={{ transform: `rotate(${pullProgress * 180}deg)` }}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-            </svg>
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
+              </svg>
+            </div>
           )}
-          <span className="text-[10px] font-medium text-muted-foreground/60">
-            {pullState === 'refreshing' ? 'Refreshing...' : pullState === 'threshold-reached' ? 'Release to refresh' : 'Pull to refresh'}
-          </span>
         </div>
       </div>
 
       {/* Scrollable content */}
       <div
-        className="transition-transform duration-200 ease-out h-full flex flex-col min-h-0"
+        className="transition-transform duration-150 ease-out h-full flex flex-col min-h-0"
         style={{
-          transform: pullState !== 'refreshing' ? `translateY(${pullDistance}px)` : `translateY(0px)`,
+          transform: pullState !== 'refreshing' ? `translateY(${pullDistance}px)` : 'translateY(0px)',
         }}
       >
         {children(setScrollRef)}

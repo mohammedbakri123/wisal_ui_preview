@@ -58,6 +58,10 @@ export default function VerifyOtpPage() {
         disabled={isVerifying}
       />
 
+      <p className="rounded-xl border border-[#1d9bf0]/20 bg-[#1d9bf0]/[0.06] px-4 py-2.5 text-center text-xs leading-relaxed text-[#71767b]">
+        Development code: <span className="font-mono font-bold text-[#e7e9ea]">123456</span>
+      </p>
+
       {error && (
         <p className="text-sm text-destructive bg-destructive/5 px-4 py-2.5 rounded-xl border border-destructive/10 text-center">
           {error}

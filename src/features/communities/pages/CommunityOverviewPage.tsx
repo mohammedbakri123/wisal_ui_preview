@@ -1,9 +1,12 @@
 import { useParams } from 'react-router'
 import { FeatureScaffold } from '@/core/components/layout/FeatureScaffold'
-import { communities, communityActivity } from '../data'
+import { ROUTES } from '@/core/utils/routes'
+import { communityActivity } from '../data'
+import { useCommunities } from '../context/useCommunities'
 
 export default function CommunityOverviewPage() {
   const { communityId } = useParams()
+  const { communities } = useCommunities()
   const community = communities.find((item) => item.id === communityId) ?? communities[0]
 
   return (
@@ -17,6 +20,7 @@ export default function CommunityOverviewPage() {
         { label: 'Groups', path: `/communities/${community.id}/groups`, variant: 'secondary' },
         { label: 'Channels', path: `/communities/${community.id}/channels`, variant: 'secondary' },
         { label: 'About', path: `/communities/${community.id}/about`, variant: 'secondary' },
+        ...(community.owner ? [{ label: 'Manage', path: ROUTES.COMMUNITY.MANAGE.replace(':communityId', community.id), variant: 'secondary' as const }] : []),
       ]}
       sections={[
         {

@@ -2,39 +2,9 @@ import { PageContainer } from '@/core/components/layout/PageContainer'
 import { BackButton } from '@/core/components/ui/BackButton'
 import { ROUTES } from '@/core/utils/routes'
 import { CommunityCard } from '../components/CommunityCard'
-import { communities } from '../data'
+import { useCommunities } from '../context/useCommunities'
 
 export default function DiscoverCommunitiesPage() {
-  return (
-    <div className="flex h-full flex-col bg-background">
-      <PageContainer className="w-full px-3 sm:px-4 pt-3 sm:pt-4">
-        <BackButton to={ROUTES.COMMUNITY.ROOT} />
-        <div className="max-w-4xl mx-auto space-y-4 sm:space-y-5">
-          <section className="rounded-2xl border border-border-light/40 bg-surface p-4 sm:p-5">
-            <span className="mb-2 text-xs font-semibold uppercase tracking-wider text-accent">Browse Directory</span>
-            <h2 className="text-lg sm:text-xl font-bold tracking-tight">Explore communities</h2>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground/80 max-w-xl">
-              Find and join organized spaces by topic, size, and activity levels.
-            </p>
-          </section>
-
-          <section className="space-y-3">
-            <h3 className="px-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/60">
-              Recommended for you
-            </h3>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {communities.map((community) => (
-                <CommunityCard
-                  key={community.id}
-                  community={community}
-                  discover={true}
-                />
-              ))}
-            </div>
-          </section>
-        </div>
-      </PageContainer>
-    </div>
-  )
+  const { communities } = useCommunities()
+  return <div className="flex h-full flex-col bg-black text-[#e7e9ea]"><PageContainer className="w-full px-4 pt-3 pb-8 sm:px-6"><div className="mx-auto max-w-4xl"><BackButton to={ROUTES.COMMUNITY.ROOT} /><header className="mt-2 border-b border-[#2f3336] pb-5"><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1d9bf0]">Directory</p><h1 className="mt-2 text-2xl font-bold">Discover communities</h1><p className="mt-2 max-w-lg text-sm leading-relaxed text-[#71767b]">Find public spaces by topic, member count, and activity level.</p></header><section className="pt-6"><h2 className="mb-3 text-xs font-bold uppercase tracking-wider text-[#71767b]">Recommended for you</h2><div className="grid gap-3 lg:grid-cols-2">{communities.map((community) => <CommunityCard key={community.id} community={community} discover />)}</div></section></div></PageContainer></div>
 }
-
