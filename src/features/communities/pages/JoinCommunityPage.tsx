@@ -11,17 +11,17 @@ export default function JoinCommunityPage() {
 
   return (
     <FeatureScaffold
-      title={`Join ${community.name}`}
-      eyebrow="Community preview"
+      title={`الانضمام إلى ${community.name}`}
+      eyebrow="معاينة المجتمع"
       description={community.description}
       backTo={ROUTES.COMMUNITY.DISCOVER}
-      actions={[{ label: 'Join and enter', path: `/communities/${community.id}/overview`, onClick: () => { joinCommunity(community.id) } }]}
+      actions={[{ label: 'الانضمام والدخول', path: `/communities/${community.id}/overview`, onClick: () => { joinCommunity(community.id) } }]}
       sections={[
         {
-          title: 'Before joining',
+          title: 'قبل الانضمام',
           items: [
-            { title: 'Rules', description: 'Keep discussions focused, cite context, and respect moderator decisions.' },
-            { title: 'Visibility', description: 'Members can see your profile, role, and public activity inside this community.' },
+            { title: 'القواعد', description: 'حافظ على تركيز المناقشات واستشهد بالسياق واحترم قرارات المشرفين.' },
+            { title: 'الرؤية', description: 'يمكن للأعضاء رؤية ملفك الشخصي ودورك ونشاطك العام داخل هذا المجتمع.' },
           ],
         },
       ]}

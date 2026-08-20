@@ -37,12 +37,12 @@ export function ProfileForm({ onSubmit, isLoading, error }: ProfileFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5 sm:gap-6">
-      <div className="text-center lg:text-left">
+      <div className="text-center lg:text-start">
         <h2 className="font-serif italic text-[1.6rem] sm:text-[1.8rem] leading-tight text-foreground tracking-tight">
-          Create your profile
+          أنشئ ملفك الشخصي
         </h2>
         <p className="mt-2 text-sm text-muted-foreground/60 leading-relaxed">
-          Tell us a bit about yourself
+          أخبرنا قليلاً عن نفسك
         </p>
       </div>
 
@@ -70,12 +70,12 @@ export function ProfileForm({ onSubmit, isLoading, error }: ProfileFormProps) {
           onChange={handleAvatarChange}
           className="hidden"
         />
-        <span className="text-xs text-muted-foreground/50">Tap to add a photo</span>
+        <span className="text-xs text-muted-foreground/50">اضغط لإضافة صورة</span>
       </div>
 
       <Input
-        label="Display name"
-        placeholder="Your name"
+        label="الاسم الظاهر"
+        placeholder="اسمك"
         value={name}
         onChange={(e) => setName(e.target.value)}
         autoFocus
@@ -84,11 +84,11 @@ export function ProfileForm({ onSubmit, isLoading, error }: ProfileFormProps) {
 
       <div className="flex flex-col gap-1.5">
         <label htmlFor="bio" className="text-sm font-medium text-muted-foreground">
-          Bio <span className="text-muted-foreground/40 font-normal">(optional)</span>
+          النبذة <span className="text-muted-foreground/40 font-normal">(اختياري)</span>
         </label>
         <textarea
           id="bio"
-          placeholder="A short bio about yourself"
+          placeholder="نبذة قصيرة عنك"
           value={bio}
           onChange={(e) => setBio(e.target.value)}
           rows={3}
@@ -103,7 +103,7 @@ export function ProfileForm({ onSubmit, isLoading, error }: ProfileFormProps) {
       )}
 
       <Button type="submit" loading={isLoading} className="w-full h-12 rounded-xl text-sm font-semibold">
-        Get started
+        ابدأ الآن
       </Button>
     </form>
   )

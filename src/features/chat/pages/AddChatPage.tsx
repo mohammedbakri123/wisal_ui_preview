@@ -23,22 +23,22 @@ export default function AddChatPage() {
       </div>
 
       <div className="relative z-10 shrink-0 px-4 pt-1 pb-2">
-        <BackButton to={ROUTES.CHAT.LIST} label="Chats" />
+        <BackButton to={ROUTES.CHAT.LIST} label="المحادثات" />
       </div>
 
       <div className="relative z-10 shrink-0 px-4 pb-3">
         <h1 className="font-serif text-2xl italic leading-tight tracking-tight text-foreground">
-          New conversation
+          محادثة جديدة
         </h1>
         <p className="mt-0.5 text-xs text-muted-foreground/60">
-          Search contacts or start a group
+          ابحث في جهات الاتصال أو ابدأ مجموعة
         </p>
       </div>
 
       <div className="relative z-10 shrink-0 px-4 pb-3">
         <div className="relative">
           <svg
-            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50"
+            className="pointer-events-none absolute start-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -50,14 +50,14 @@ export default function AddChatPage() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search contacts"
-            className="w-full h-11 pl-10 pr-10 bg-white/[0.04] border border-white/[0.06] rounded-xl text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-[#0ea583]/40 focus:bg-white/[0.06] transition-all backdrop-blur-sm"
+            placeholder="ابحث في جهات الاتصال"
+            className="w-full h-11 ps-10 pe-10 bg-white/[0.04] border border-white/[0.06] rounded-xl text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-[#0ea583]/40 focus:bg-white/[0.06] transition-all backdrop-blur-sm"
             autoFocus
           />
           {search && (
             <button
               onClick={() => setSearch('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 rounded-full text-muted-foreground/50 hover:text-foreground cursor-pointer"
+              className="absolute end-3 top-1/2 -translate-y-1/2 p-0.5 rounded-full text-muted-foreground/50 hover:text-foreground cursor-pointer"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -70,7 +70,7 @@ export default function AddChatPage() {
       <div className="relative z-10 shrink-0 px-4 pb-3">
         <button
           onClick={() => navigate(ROUTES.CHAT.CREATE_GROUP)}
-          className="flex w-full items-center gap-4 rounded-xl border border-white/[0.06] bg-white/[0.03] px-4 py-3 text-left backdrop-blur-sm transition-all hover:bg-white/[0.06] hover:border-[#0ea583]/30 cursor-pointer"
+          className="flex w-full items-center gap-4 rounded-xl border border-white/[0.06] bg-white/[0.03] px-4 py-3 text-start backdrop-blur-sm transition-all hover:bg-white/[0.06] hover:border-[#0ea583]/30 cursor-pointer"
         >
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#0ea583]/15">
             <svg className="h-5 w-5 text-[#0ea583]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
@@ -79,10 +79,10 @@ export default function AddChatPage() {
             </svg>
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-foreground">New Group</p>
-            <p className="text-xs text-muted-foreground/60">Add members and start a group conversation</p>
+            <p className="text-sm font-semibold text-foreground">مجموعة جديدة</p>
+            <p className="text-xs text-muted-foreground/60">أضف أعضاء وابدأ محادثة جماعية</p>
           </div>
-          <svg className="h-4 w-4 shrink-0 text-muted-foreground/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+          <svg className="h-4 w-4 shrink-0 text-muted-foreground/30 rtl:-scale-x-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
           </svg>
         </button>
@@ -90,7 +90,7 @@ export default function AddChatPage() {
 
       <div className="relative z-10 flex-1 overflow-y-auto scrollbar-thin px-4 pb-4">
         <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/40">
-          Contacts on Wisal
+          جهات الاتصال على وصال
         </p>
 
         {filteredUsers.length === 0 ? (
@@ -100,8 +100,8 @@ export default function AddChatPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
               </svg>
             </div>
-            <p className="text-sm font-medium text-muted-foreground/70">No contacts found</p>
-            <p className="mt-1 text-xs text-muted-foreground/50">Try a different search term</p>
+            <p className="text-sm font-medium text-muted-foreground/70">لم يتم العثور على جهات اتصال</p>
+            <p className="mt-1 text-xs text-muted-foreground/50">جرب مصطلح بحث مختلف</p>
           </div>
         ) : (
           <div className="divide-y divide-white/[0.04] overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm">
@@ -109,7 +109,7 @@ export default function AddChatPage() {
               <button
                 key={user.id}
                 onClick={() => navigate(`/home/c/c${user.id}`)}
-                className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition-all hover:bg-white/[0.04] active:bg-white/[0.06] cursor-pointer"
+                className="flex w-full items-center gap-3 px-4 py-3.5 text-start transition-all hover:bg-white/[0.04] active:bg-white/[0.06] cursor-pointer"
               >
                 <Avatar src={user.avatar} alt={user.name} size="md" online={user.isOnline} />
                 <div className="min-w-0 flex-1">
@@ -123,7 +123,7 @@ export default function AddChatPage() {
                     {user.email ?? user.phone} {user.bio ? `· ${user.bio}` : ''}
                   </p>
                 </div>
-                <svg className="h-4 w-4 shrink-0 text-muted-foreground/20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <svg className="h-4 w-4 shrink-0 text-muted-foreground/20 rtl:-scale-x-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                 </svg>
               </button>

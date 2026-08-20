@@ -4,22 +4,22 @@ import { ROUTES } from '@/core/utils/routes'
 export default function AboutPage() {
   return (
     <FeatureScaffold
-      title="About"
-      description="Wisal frontend prototype built with React, Vite, TypeScript, Tailwind CSS, and MSW."
+      title="حول"
+      description="نموذج واجهة وصال مبني بـ React و Vite و TypeScript و Tailwind CSS و MSW."
       backTo={ROUTES.SETTINGS.ROOT}
       stats={[
-        { label: 'Version', value: '0.1.0' },
-        { label: 'Build', value: 'Vite' },
-        { label: 'UI', value: 'React' },
-        { label: 'Mocking', value: 'MSW' },
+        { label: 'الإصدار', value: '0.1.0' },
+        { label: 'البناء', value: 'Vite' },
+        { label: 'الواجهة', value: 'React' },
+        { label: 'المحاكاة', value: 'MSW' },
       ]}
       sections={[
         {
-          title: 'Legal',
+          title: 'قانوني',
           items: [
-            { title: 'Terms of service', description: 'Placeholder route target for legal copy.' },
-            { title: 'Privacy policy', description: 'Placeholder route target for data handling copy.' },
-            { title: 'Open-source licenses', description: 'Runtime packages and third-party credits.' },
+            { title: 'شروط الخدمة', description: 'مسار مؤقت لنسخة قانونية.' },
+            { title: 'سياسة الخصوصية', description: 'مسار مؤقت لنسخة معالجة البيانات.' },
+            { title: 'تراخيص مفتوحة المصدر', description: 'حزم وقت التشغيل واعتمادات الطرف الثالث.' },
           ],
         },
       ]}

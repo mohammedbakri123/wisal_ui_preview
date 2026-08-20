@@ -21,7 +21,7 @@ export function MainLayout() {
           {/* Main App Container Shell (max-width: 1280px) */}
           <div className="flex w-full max-w-[1280px] h-full overflow-hidden">
             {/* Desktop / Tablet Nav Rail */}
-            <aside className="hidden lg:flex lg:w-[68px] xl:w-[275px] shrink-0 border-r border-[#2f3336] bg-black h-full">
+            <aside className="hidden lg:flex lg:w-[68px] xl:w-[275px] shrink-0 border-e border-[#2f3336] bg-black h-full">
               <Sidebar />
             </aside>
 
@@ -29,7 +29,7 @@ export function MainLayout() {
             <div className="flex-1 flex flex-col min-w-0 h-full bg-black overflow-hidden">
               {!isOnline && (
                 <div className="border-b border-[#f4212e]/20 bg-[#f4212e]/10 px-4 py-2 text-center text-xs font-bold text-[#f4212e]">
-                  You're offline. Reconnecting to Wisal...
+                  أنت غير متصل. جارٍ إعادة الاتصال بوصال...
                 </div>
               )}
 

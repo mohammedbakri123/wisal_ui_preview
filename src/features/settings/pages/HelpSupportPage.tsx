@@ -4,16 +4,16 @@ import { ROUTES } from '@/core/utils/routes'
 export default function HelpSupportPage() {
   return (
     <FeatureScaffold
-      title="Help & Support"
-      description="Access support resources, report a problem, and review troubleshooting guides."
+      title="المساعدة والدعم"
+      description="الوصول إلى موارد الدعم، والإبلاغ عن مشكلة، ومراجعة أدلة استكشاف الأخطاء."
       backTo={ROUTES.SETTINGS.ROOT}
       sections={[
         {
-          title: 'Support',
+          title: 'الدعم',
           items: [
-            { title: 'FAQ', description: 'Common answers for login, messaging, notifications, and privacy.' },
-            { title: 'Contact support', description: 'Send diagnostics and describe what went wrong.' },
-            { title: 'Report a problem', description: 'Attach a screen and route context for investigation.' },
+            { title: 'الأسئلة الشائعة', description: 'إجابات شائعة لتسجيل الدخول والمراسلة والإشعارات والخصوصية.' },
+            { title: 'التواصل مع الدعم', description: 'أرسل بيانات التشخيص وصف ما حدث.' },
+            { title: 'الإبلاغ عن مشكلة', description: 'أرفق لقطة شاشة وسياق المسار للتحقيق.' },
           ],
         },
       ]}

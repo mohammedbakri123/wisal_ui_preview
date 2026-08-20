@@ -76,8 +76,10 @@ const AboutPage = lazy(() => import('@/features/settings/pages/AboutPage'))
 // Explore
 const ExplorePage = lazy(() => import('@/features/explore/pages/ExplorePage'))
 
+// Updates hub
+const UpdatesPage = lazy(() => import('@/features/updates/pages/UpdatesPage'))
+
 // Stories
-const StoriesPage = lazy(() => import('@/features/stories/pages/StoriesPage'))
 const StoryViewerPage = lazy(() => import('@/features/stories/pages/StoryViewerPage'))
 const CreateStoryPage = lazy(() => import('@/features/stories/pages/CreateStoryPage'))
 
@@ -201,8 +203,10 @@ export function AppRouter() {
           {/* Explore */}
           <Route path={ROUTES.EXPLORE} element={<ExplorePage />} />
 
+          {/* Updates hub */}
+          <Route path={ROUTES.UPDATES} element={<UpdatesPage />} />
+
           {/* Stories */}
-          <Route path={ROUTES.STORIES} element={<StoriesPage />} />
           <Route path={ROUTES.STORY_VIEWER} element={<StoryViewerPage />} />
           <Route path={ROUTES.STORY_CREATE} element={<CreateStoryPage />} />
 
@@ -293,21 +297,21 @@ function WelcomePage() {
           Wisal
         </h1>
         <p className="text-sm text-muted-foreground/50 max-w-xs mx-auto leading-relaxed">
-          Select a conversation from the left to start chatting, or begin a new one.
+          اختر محادثة من الجانب لبدء الدردشة، أو ابدأ محادثة جديدة.
         </p>
 
         {/* Separator */}
         <div className="mt-8 flex items-center gap-3 justify-center">
           <div className="h-px w-12 bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
-          <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground/30">Secure</span>
+          <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground/30">آمن</span>
           <div className="h-px w-12 bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
         </div>
 
         {/* Feature list */}
         <div className="mt-6 space-y-3">
           {[
-            { icon: 'M6 18L18 6M6 6l12 12', label: 'End-to-end encrypted' },
-            { icon: 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z', label: 'Real-time messaging' },
+            { icon: 'M6 18L18 6M6 6l12 12', label: 'مشفر طرفًا بطرف' },
+            { icon: 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z', label: 'مراسلة فورية' },
           ].map((feat) => (
             <div key={feat.label} className="flex items-center gap-2.5 text-xs text-muted-foreground/40">
               <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>

@@ -12,31 +12,40 @@ interface StoriesRowProps {
 
 export function StoriesRow({ storyGroups, onStoryPress, onAddStory, onSeeAll }: StoriesRowProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
-  const [showLeftArrow, setShowLeftArrow] = useState(false)
-  const [showRightArrow, setShowRightArrow] = useState(true)
+  const [showPrevArrow, setShowPrevArrow] = useState(false)
+  const [showNextArrow, setShowNextArrow] = useState(true)
 
   const handleScroll = () => {
     if (!scrollRef.current) return
     const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
-    setShowLeftArrow(scrollLeft > 0)
-    setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10)
+    const maxScroll = scrollWidth - clientWidth
+    const isRTL = document.documentElement.dir === 'rtl'
+    if (isRTL) {
+      setShowPrevArrow(scrollLeft < -1)
+      setShowNextArrow(scrollLeft > -(maxScroll - 10))
+    } else {
+      setShowPrevArrow(scrollLeft > 1)
+      setShowNextArrow(scrollLeft < maxScroll - 10)
+    }
   }
 
-  const scroll = (direction: 'left' | 'right') => {
+  const scroll = (direction: 'prev' | 'next') => {
     if (!scrollRef.current) return
-    const amount = direction === 'left' ? -200 : 200
+    // In RTL, scrollLeft is negative (0 at the right edge), so 'next' scrolls negative.
+    const signOfNext = document.documentElement.dir === 'rtl' ? -1 : 1
+    const amount = direction === 'next' ? signOfNext * 200 : -signOfNext * 200
     scrollRef.current.scrollBy({ left: amount, behavior: 'smooth' })
   }
 
   return (
     <div className="relative">
-      {/* Left scroll arrow */}
-      {showLeftArrow && (
+      {/* Previous (start side) scroll arrow */}
+      {showPrevArrow && (
         <button
-          onClick={() => scroll('left')}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-6 h-6 rounded-full bg-surface border border-border-light/60 shadow-lg flex items-center justify-center hover:bg-muted transition-colors cursor-pointer"
+          onClick={() => scroll('prev')}
+          className="absolute start-0 top-1/2 -translate-y-1/2 z-10 w-6 h-6 rounded-full bg-surface border border-border-light/60 shadow-lg flex items-center justify-center hover:bg-muted transition-colors cursor-pointer"
         >
-          <svg className="h-3.5 w-3.5 text-muted-foreground" viewBox="0 0 20 20" fill="currentColor">
+          <svg className="h-3.5 w-3.5 text-muted-foreground rtl:rotate-180" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clipRule="evenodd" />
           </svg>
         </button>
@@ -55,13 +64,13 @@ export function StoriesRow({ storyGroups, onStoryPress, onAddStory, onSeeAll }: 
           >
             <div className="relative">
               <Avatar src={null} alt="You" size="md" />
-              <div className="absolute -bottom-0.5 -right-0.5 h-5 w-5 rounded-full bg-accent flex items-center justify-center border-2 border-surface group-hover:scale-110 transition-transform">
+              <div className="absolute -bottom-0.5 -end-0.5 h-5 w-5 rounded-full bg-accent flex items-center justify-center border-2 border-surface group-hover:scale-110 transition-transform">
                 <svg className="h-3 w-3 text-accent-foreground" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
               </div>
             </div>
-            <span className="text-[10px] text-muted-foreground truncate max-w-[56px] text-center">Your story</span>
+            <span className="text-[10px] text-muted-foreground truncate max-w-[56px] text-center">قصتي</span>
           </button>
         )}
 
@@ -94,7 +103,7 @@ export function StoriesRow({ storyGroups, onStoryPress, onAddStory, onSeeAll }: 
                   />
                 )}
                 {hasUnseen && (
-                  <span className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-accent border-2 border-surface" />
+                  <span className="absolute -top-0.5 -end-0.5 h-2.5 w-2.5 rounded-full bg-accent border-2 border-surface" />
                 )}
               </div>
               <span className={cn(
@@ -112,7 +121,7 @@ export function StoriesRow({ storyGroups, onStoryPress, onAddStory, onSeeAll }: 
           <button
             onClick={onSeeAll}
             className="flex flex-col items-center justify-center gap-1 shrink-0 cursor-pointer group h-[72px] w-[60px]"
-            title="See all stories"
+            title="عرض كل القصص"
           >
             <div className="h-[48px] w-[48px] rounded-full border-2 border-dashed border-border-light/40 flex items-center justify-center group-hover:border-accent/50 transition-colors">
               <svg className="h-4 w-4 text-muted-foreground/40 group-hover:text-accent transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
@@ -120,19 +129,19 @@ export function StoriesRow({ storyGroups, onStoryPress, onAddStory, onSeeAll }: 
               </svg>
             </div>
             <span className="text-[10px] text-muted-foreground/50 truncate max-w-[56px] text-center group-hover:text-foreground transition-colors">
-              See all
+              عرض الكل
             </span>
           </button>
         )}
       </div>
 
-      {/* Right scroll arrow */}
-      {showRightArrow && (
+      {/* Next (end side) scroll arrow */}
+      {showNextArrow && (
         <button
-          onClick={() => scroll('right')}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-6 h-6 rounded-full bg-surface border border-border-light/60 shadow-lg flex items-center justify-center hover:bg-muted transition-colors cursor-pointer"
+          onClick={() => scroll('next')}
+          className="absolute end-0 top-1/2 -translate-y-1/2 z-10 w-6 h-6 rounded-full bg-surface border border-border-light/60 shadow-lg flex items-center justify-center hover:bg-muted transition-colors cursor-pointer"
         >
-          <svg className="h-3.5 w-3.5 text-muted-foreground" viewBox="0 0 20 20" fill="currentColor">
+          <svg className="h-3.5 w-3.5 text-muted-foreground rtl:rotate-180" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
           </svg>
         </button>

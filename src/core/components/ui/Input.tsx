@@ -23,7 +23,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
         <div className="relative flex items-center w-full">
           {icon && (
-            <div className="absolute left-3.5 text-[#71767b] pointer-events-none flex items-center justify-center">
+            <div className="absolute start-3.5 text-[#71767b] pointer-events-none flex items-center justify-center">
               {icon}
             </div>
           )}
@@ -35,7 +35,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               'placeholder:text-[#71767b]',
               'focus:outline-none focus:border-[#1d9bf0] focus:ring-1 focus:ring-[#1d9bf0] focus:bg-black',
               'transition-colors duration-150',
-              icon && 'pl-10',
+              icon && 'ps-10',
               error && 'border-[#f4212e] focus:border-[#f4212e] focus:ring-[#f4212e]',
               className,
             )}

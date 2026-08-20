@@ -18,7 +18,7 @@ export function Sidebar() {
 
   const navItems: NavItem[] = [
     {
-      label: 'Messages',
+      label: 'الرسائل',
       path: ROUTES.HOME,
       icon: (active: boolean) => (
         <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
@@ -27,7 +27,7 @@ export function Sidebar() {
       ),
     },
     {
-      label: 'Explore',
+      label: 'استكشاف',
       path: ROUTES.EXPLORE,
       icon: (active: boolean) => (
         <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
@@ -36,44 +36,8 @@ export function Sidebar() {
       ),
     },
     {
-      label: 'Channels',
-      path: ROUTES.CHANNEL.ROOT,
-      icon: (active: boolean) => (
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M10.34 15.84c-.012-.03-.027-.06-.046-.089a4.5 4.5 0 116.892-5.467M12 21.75a9.75 9.75 0 110-19.5 9.75 9.75 0 010 19.5z" />
-        </svg>
-      ),
-    },
-    {
-      label: 'Communities',
-      path: ROUTES.COMMUNITY.ROOT,
-      icon: (active: boolean) => (
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-        </svg>
-      ),
-    },
-    {
-      label: 'Organizations',
-      path: ROUTES.ORGANIZATIONS.LIST,
-      icon: (active: boolean) => (
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
-        </svg>
-      ),
-    },
-    {
-      label: 'Notifications',
-      path: ROUTES.NOTIFICATIONS,
-      icon: (active: boolean) => (
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-        </svg>
-      ),
-    },
-    {
-      label: 'Stories',
-      path: ROUTES.STORIES,
+      label: 'التحديثات',
+      path: ROUTES.UPDATES,
       icon: (active: boolean) => (
         <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" />
@@ -82,7 +46,34 @@ export function Sidebar() {
       ),
     },
     {
-      label: 'Contacts',
+      label: 'المجتمعات',
+      path: ROUTES.COMMUNITY.ROOT,
+      icon: (active: boolean) => (
+        <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+        </svg>
+      ),
+    },
+    {
+      label: 'المنظمات',
+      path: ROUTES.ORGANIZATIONS.LIST,
+      icon: (active: boolean) => (
+        <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+        </svg>
+      ),
+    },
+    {
+      label: 'الإشعارات',
+      path: ROUTES.NOTIFICATIONS,
+      icon: (active: boolean) => (
+        <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+        </svg>
+      ),
+    },
+    {
+      label: 'جهات الاتصال',
       path: ROUTES.CONTACTS.ROOT,
       icon: (active: boolean) => (
         <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 2}>
@@ -91,7 +82,7 @@ export function Sidebar() {
       ),
     },
     {
-      label: 'Profile',
+      label: 'الملف الشخصي',
       path: ROUTES.PROFILE.SELF,
       icon: (active: boolean) => (
         <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
@@ -100,7 +91,7 @@ export function Sidebar() {
       ),
     },
     {
-      label: 'Settings',
+      label: 'الإعدادات',
       path: ROUTES.SETTINGS.ROOT,
       icon: (active: boolean) => (
         <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 2}>
@@ -153,7 +144,7 @@ export function Sidebar() {
                 <div className="relative flex items-center justify-center text-[#e7e9ea] group-hover:text-[#1d9bf0] transition-colors">
                   {item.icon(isActive)}
                   {item.badge !== undefined && item.badge > 0 && (
-                    <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#1d9bf0] text-black text-[10px] font-bold flex items-center justify-center">
+                    <span className="absolute -top-1 -end-1 w-4 h-4 rounded-full bg-[#1d9bf0] text-black text-[10px] font-bold flex items-center justify-center">
                       {item.badge}
                     </span>
                   )}
@@ -176,12 +167,12 @@ export function Sidebar() {
           <button
             onClick={() => navigate(ROUTES.CHAT.ADD)}
             className="w-[50px] h-[50px] xl:w-full xl:h-[52px] rounded-full bg-[#1d9bf0] hover:bg-[#1a8cd8] active:scale-[0.97] transition-all flex items-center justify-center text-white font-bold text-[17px] shadow-sm cursor-pointer"
-            title="New Chat"
+            title="محادثة جديدة"
           >
             <svg className="h-6 w-6 xl:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
-            <span className="hidden xl:inline">New Message</span>
+            <span className="hidden xl:inline">رسالة جديدة</span>
           </button>
         </div>
       </div>
@@ -192,13 +183,13 @@ export function Sidebar() {
         className="flex items-center justify-between p-2 rounded-full hover:bg-white/[0.06] transition-colors cursor-pointer mt-auto"
       >
         <div className="flex items-center gap-3 min-w-0">
-          <Avatar src={user?.avatar} alt={user?.name ?? 'User'} size="md" online verified verifiedType="blue" />
-          <div className="hidden xl:flex flex-col min-w-0 text-left">
+          <Avatar src={user?.avatar} alt={user?.name ?? 'مستخدم'} size="md" online verified verifiedType="blue" />
+          <div className="hidden xl:flex flex-col min-w-0 text-start">
             <span className="text-[15px] font-bold text-[#e7e9ea] truncate flex items-center gap-1">
-              {user?.name ?? 'User'}
+              {user?.name ?? 'مستخدم'}
             </span>
             <span className="text-[13px] text-[#71767b] truncate">
-              @{user?.name?.toLowerCase().replace(/\s+/g, '') ?? 'user'}
+              @{user?.name?.toLowerCase().replace(/\s+/g, '') ?? 'مستخدم'}
             </span>
           </div>
         </div>

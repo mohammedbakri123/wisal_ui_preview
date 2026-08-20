@@ -74,8 +74,8 @@ export function ChatList({ conversations, isLoading, onRefresh }: ChatListProps)
   if (chatList.length === 0) {
     return (
       <EmptyState
-        title="Welcome to your inbox!"
-        description="Drop a line, share posts and more with private conversations between you and others on Wisal."
+        title="مرحباً بك في صندوق الوارد!"
+        description="ابدأ محادثة، شارك المنشورات والمزيد عبر محادثات خاصة بينك وبين الآخرين على وصال."
         action={
           <Button variant="primary" size="md" onClick={() => navigate(ROUTES.CHAT.ADD)}>
             Write a message
@@ -95,7 +95,7 @@ export function ChatList({ conversations, isLoading, onRefresh }: ChatListProps)
           {pinned.length > 0 && (
             <div>
               <div className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#71767b] border-b border-[#2f3336] bg-[#16181c]/40">
-                Pinned Messages
+                الرسائل المثبتة
               </div>
               {pinned.map((conversation) => (
                 <ChatListItem
@@ -124,14 +124,14 @@ export function ChatList({ conversations, isLoading, onRefresh }: ChatListProps)
           {/* Archived Link row */}
           <button
             onClick={() => navigate(ROUTES.CHAT.ARCHIVED)}
-            className="flex items-center gap-3 px-4 py-3.5 text-left transition-colors cursor-pointer hover:bg-white/[0.03] border-b border-[#2f3336] text-[#71767b] hover:text-[#e7e9ea]"
+            className="flex items-center gap-3 px-4 py-3.5 text-start transition-colors cursor-pointer hover:bg-white/[0.03] border-b border-[#2f3336] text-[#71767b] hover:text-[#e7e9ea]"
           >
             <div className="w-10 h-10 rounded-full bg-[#202327] flex items-center justify-center text-[#71767b]">
               <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
               </svg>
             </div>
-            <span className="text-[15px] font-bold">Archived messages</span>
+            <span className="text-[15px] font-bold">الرسائل المؤرشفة</span>
           </button>
         </div>
       )}

@@ -29,6 +29,7 @@ export const ROUTES = {
     SETTINGS: '/home/g/:groupId/settings',
   },
   EXPLORE: '/explore',
+  UPDATES: '/updates',
   CHANNEL: {
     ROOT: '/channels',
     DISCOVER: '/channels/discover',
@@ -54,7 +55,6 @@ export const ROUTES = {
     MANAGE: '/communities/:communityId/manage',
     CREATE: '/communities/create',
   },
-  STORIES: '/stories',
   STORY_VIEWER: '/stories/viewer',
   STORY_CREATE: '/stories/create',
   CONTACTS: {

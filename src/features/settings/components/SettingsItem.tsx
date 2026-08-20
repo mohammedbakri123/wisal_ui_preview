@@ -16,7 +16,7 @@ export function SettingsItem({ title, description, path, value, destructive = fa
       type="button"
       onClick={() => path && navigate(path)}
       disabled={!path}
-      className="flex w-full items-center gap-3 border-b border-border-light/30 p-3.5 sm:p-4 text-left last:border-b-0 enabled:hover:bg-surface-hover disabled:cursor-default transition-colors"
+      className="flex w-full items-center gap-3 border-b border-border-light/30 p-3.5 sm:p-4 text-start last:border-b-0 enabled:hover:bg-surface-hover disabled:cursor-default transition-colors"
     >
       <div className={`shrink-0 w-2 h-2 rounded-full ${destructive ? 'bg-destructive' : 'bg-accent'}`} />
       <div className="min-w-0 flex-1">

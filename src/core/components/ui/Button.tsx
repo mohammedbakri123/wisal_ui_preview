@@ -12,15 +12,15 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    'bg-[#1d9bf0] text-[#e7e9ea] hover:bg-[#1a8cd8] active:bg-[#177cc0]',
+    'bg-accent text-accent-foreground hover:bg-accent-hover active:bg-accent-hover/85',
   secondary:
-    'bg-transparent text-[#e7e9ea] border border-[#536471] hover:border-[#e7e9ea] hover:bg-white/[0.03] active:bg-white/[0.06]',
+    'bg-transparent text-foreground border border-border-hover hover:border-foreground hover:bg-surface-hover active:bg-active',
   inverse:
-    'bg-[#eff3f4] text-[#0f1419] hover:bg-[#d7dbdc] active:bg-[#c4c8c9]',
+    'bg-button-inverse-bg text-button-inverse-text hover:bg-button-inverse-bg/85 active:bg-button-inverse-bg/70',
   ghost:
-    'bg-transparent text-[#71767b] hover:text-[#e7e9ea] hover:bg-white/[0.03] active:bg-white/[0.06]',
+    'bg-transparent text-muted hover:text-foreground hover:bg-surface-hover active:bg-active',
   danger:
-    'bg-[#f4212e] text-white hover:bg-[#dc1d29] active:bg-[#c51924]',
+    'bg-danger text-white hover:bg-danger/90 active:bg-danger/80',
 }
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -58,7 +58,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {loading && (
-          <span className="inline-flex items-center gap-1 -ml-1 mr-1">
+          <span className="inline-flex items-center gap-1 -ms-1 me-1">
             <span className="w-1.5 h-1.5 rounded-full bg-current animate-bounce" style={{ animationDelay: '0ms' }} />
             <span className="w-1.5 h-1.5 rounded-full bg-current animate-bounce" style={{ animationDelay: '150ms' }} />
             <span className="w-1.5 h-1.5 rounded-full bg-current animate-bounce" style={{ animationDelay: '300ms' }} />

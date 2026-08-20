@@ -28,7 +28,7 @@ export function MessageList({ conversation, currentUserId, messages, isReplying,
     try {
       dispatch({ type: 'UPSERT_MESSAGES', conversationId: conversation.id, messages: await action() })
     } catch (error) {
-      dispatch({ type: 'LOAD_ERROR', message: error instanceof Error ? error.message : 'Message action failed' })
+      dispatch({ type: 'LOAD_ERROR', message: error instanceof Error ? error.message : 'فشلت العملية على الرسالة' })
     }
   }
 
@@ -48,7 +48,7 @@ export function MessageList({ conversation, currentUserId, messages, isReplying,
         <Avatar src={conversation.avatar} alt={conversation.name} size="xl" verified verifiedType="blue" />
         <h2 className="mt-4 text-[20px] font-bold text-[#e7e9ea]">{conversation.name}</h2>
         <p className="mt-1 max-w-xs text-[15px] text-[#71767b]">
-          Direct Messages are end-to-end encrypted on Wisal.
+          الرسائل الخاصة مشفرة من طرف إلى طرف على وصال.
         </p>
       </div>
     )
@@ -62,7 +62,7 @@ export function MessageList({ conversation, currentUserId, messages, isReplying,
           onClick={() => setWindowSize((current) => current + 60)}
           className="self-center rounded-full border border-[#2f3336] bg-[#16181c] px-4 py-1.5 text-xs font-bold text-[#71767b] hover:text-[#e7e9ea] hover:bg-[#202327] transition-colors cursor-pointer"
         >
-          Load {Math.min(60, hiddenCount)} earlier messages
+          تحميل {Math.min(60, hiddenCount)} رسائل سابقة
         </button>
       )}
 

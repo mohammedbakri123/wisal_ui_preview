@@ -17,7 +17,7 @@ function ConversationTypeIcon({ type }: { type: Conversation['type'] }) {
   if (type === 'direct') return null
 
   return (
-    <span className="text-[#71767b]" title={type === 'group' ? 'Group' : 'Channel'}>
+    <span className="text-[#71767b]" title={type === 'group' ? 'مجموعة' : 'قناة'}>
       {type === 'group' ? (
         <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
           <path d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
@@ -85,7 +85,7 @@ export function ChatListItem({
     longPressTimer.current = setTimeout(() => {
       if (itemRef.current) {
         const rect = itemRef.current.getBoundingClientRect()
-        openMenu(rect.right - 160, rect.top + 10)
+        openMenu(document.documentElement.dir === 'rtl' ? rect.left + 8 : rect.right - 160, rect.top + 10)
       }
     }, 600)
   }
@@ -100,7 +100,7 @@ export function ChatListItem({
     longPressTimer.current = setTimeout(() => {
       if (itemRef.current) {
         const rect = itemRef.current.getBoundingClientRect()
-        openMenu(rect.right - 160, rect.top + 10)
+        openMenu(document.documentElement.dir === 'rtl' ? rect.left + 8 : rect.right - 160, rect.top + 10)
       }
     }, 600)
   }
@@ -153,12 +153,12 @@ export function ChatListItem({
             {onMarkRead && (
               <button
                 onClick={() => handleAction(() => onMarkRead(conversation.id))}
-                className="flex items-center gap-3 w-full px-4 py-3 text-left text-[14px] font-medium text-[#e7e9ea] hover:bg-white/[0.04] transition-colors cursor-pointer"
+                className="flex items-center gap-3 w-full px-4 py-3 text-start text-[14px] font-medium text-[#e7e9ea] hover:bg-white/[0.04] transition-colors cursor-pointer"
               >
                 <svg className="h-4 w-4 text-[#71767b]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                {hasUnread ? 'Mark as read' : 'Mark as unread'}
+                {hasUnread ? 'تحديد كمقروءة' : 'تحديد كغير مقروءة'}
               </button>
             )}
 
@@ -166,12 +166,12 @@ export function ChatListItem({
             {onTogglePin && (
               <button
                 onClick={() => handleAction(() => onTogglePin(conversation.id))}
-                className="flex items-center gap-3 w-full px-4 py-3 text-left text-[14px] font-medium text-[#e7e9ea] hover:bg-white/[0.04] transition-colors cursor-pointer"
+                className="flex items-center gap-3 w-full px-4 py-3 text-start text-[14px] font-medium text-[#e7e9ea] hover:bg-white/[0.04] transition-colors cursor-pointer"
               >
                 <svg className="h-4 w-4 text-[#71767b]" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81v8.37C2 19.83 4.17 22 7.81 22h8.37c3.64 0 5.81-2.17 5.81-5.81V7.81C22 4.17 19.83 2 16.19 2z" />
                 </svg>
-                {isPinned ? 'Unpin conversation' : 'Pin conversation'}
+                {isPinned ? 'إلغاء تثبيت المحادثة' : 'تثبيت المحادثة'}
               </button>
             )}
 
@@ -179,12 +179,12 @@ export function ChatListItem({
             {onArchive && (
               <button
                 onClick={() => handleAction(() => onArchive(conversation.id))}
-                className="flex items-center gap-3 w-full px-4 py-3 text-left text-[14px] font-medium text-[#e7e9ea] hover:bg-white/[0.04] transition-colors cursor-pointer"
+                className="flex items-center gap-3 w-full px-4 py-3 text-start text-[14px] font-medium text-[#e7e9ea] hover:bg-white/[0.04] transition-colors cursor-pointer"
               >
                 <svg className="h-4 w-4 text-[#71767b]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
                 </svg>
-                Archive conversation
+                أرشفة المحادثة
               </button>
             )}
 
@@ -194,12 +194,12 @@ export function ChatListItem({
             {onDelete && (
               <button
                 onClick={() => handleAction(() => onDelete(conversation.id))}
-                className="flex items-center gap-3 w-full px-4 py-3 text-left text-[14px] font-medium text-[#f4212e] hover:bg-[#f4212e]/10 transition-colors cursor-pointer"
+                className="flex items-center gap-3 w-full px-4 py-3 text-start text-[14px] font-medium text-[#f4212e] hover:bg-[#f4212e]/10 transition-colors cursor-pointer"
               >
                 <svg className="h-4 w-4 text-[#f4212e]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                 </svg>
-                Delete conversation
+                حذف المحادثة
               </button>
             )}
           </div>
@@ -210,7 +210,7 @@ export function ChatListItem({
       <button
         onClick={handleClick}
         className={cn(
-          'group w-full flex items-center gap-3 px-4 py-3.5 text-left transition-colors cursor-pointer',
+          'group w-full flex items-center gap-3 px-4 py-3.5 text-start transition-colors cursor-pointer',
           'bg-transparent hover:bg-white/[0.03] active:bg-white/[0.06]',
         )}
       >
@@ -248,7 +248,7 @@ export function ChatListItem({
               'text-[15px] truncate flex-1',
               hasUnread ? 'text-[#e7e9ea] font-medium' : 'text-[#71767b]',
             )}>
-              {conversation.lastMessage ?? 'No messages yet'}
+              {conversation.lastMessage ?? 'لا توجد رسائل بعد'}
             </p>
 
             <div className="flex items-center gap-1.5 shrink-0">

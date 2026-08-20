@@ -11,10 +11,28 @@ export default function StorageDataPage() {
   const [cacheCleared, setCacheCleared] = useState(false)
 
   return (
-    <div className="flex h-full flex-col bg-black text-[#e7e9ea]"><PageContainer className="w-full px-4 pt-3 pb-8"><div className="mx-auto max-w-xl"><BackButton to={ROUTES.SETTINGS.ROOT} /><header className="mb-6 mt-2"><p className="text-xs font-bold uppercase tracking-wider text-[#1d9bf0]">Settings</p><h1 className="mt-1 text-2xl font-bold">Storage & data</h1><p className="mt-2 text-sm leading-relaxed text-[#71767b]">Control cached media and automatic downloads on this device.</p></header><div className="grid grid-cols-2 overflow-hidden rounded-2xl border border-[#2f3336] bg-[#16181c]">{[['Media cache', '248 MB'], ['Documents', '41 MB'], ['Network', '1.2 GB'], ['Backups', '3']].map(([label, value]) => <div key={label} className="border-b border-r border-[#2f3336] p-4 last:border-r-0"><p className="text-xs text-[#71767b]">{label}</p><p className="mt-1 text-base font-bold">{cacheCleared && label === 'Media cache' ? '0 MB' : value}</p></div>)}</div><section className="mt-6 overflow-hidden rounded-2xl border border-[#2f3336] bg-[#16181c]"><ToggleRow label="Auto-download images" description="Download images on Wi-Fi and cellular." checked={images} onChange={setImages} /><ToggleRow label="Auto-download files" description="Download files only on Wi-Fi." checked={files} onChange={setFiles} /><div className="flex items-center justify-between gap-4 border-t border-[#2f3336] p-4"><div><p className="text-sm font-bold">Clear media cache</p><p className="mt-1 text-xs text-[#71767b]">Remove cached media from this device.</p></div><Button size="sm" variant="secondary" onClick={() => setCacheCleared(true)}>{cacheCleared ? 'Cleared' : 'Clear'}</Button></div></section></div></PageContainer></div>
+    <div className="flex h-full flex-col bg-background text-foreground">
+      <PageContainer className="w-full px-4 pt-3 pb-8">
+        <div className="mx-auto w-full max-w-xl">
+          <BackButton to={ROUTES.SETTINGS.ROOT} label="الإعدادات" />
+          <header className="mb-6 mt-2"><p className="text-xs font-bold uppercase tracking-wider text-accent">الإعدادات</p><h1 className="mt-1 text-2xl font-bold">التخزين والبيانات</h1><p className="mt-2 text-sm leading-relaxed text-muted">تحكم في الوسائط المخزنة والتنزيلات التلقائية على هذا الجهاز.</p></header>
+          <div className="grid grid-cols-2 overflow-hidden rounded-2xl border border-border bg-surface sm:grid-cols-4">
+            {[['ذاكرة الوسائط', '248 ميجا'], ['المستندات', '41 ميجا'], ['الشبكة', '1.2 جيجا'], ['النسخ الاحتياطي', '3']].map(([label, value]) => <div key={label} className="border-b border-e border-border p-4 last:border-e-0 sm:border-b-0 sm:last:border-b-0"><p className="text-xs text-muted">{label}</p><p className="mt-1 text-base font-bold tabular-nums">{cacheCleared && label === 'ذاكرة الوسائط' ? '0 ميجا' : value}</p></div>)}
+          </div>
+          <section className="mt-6 overflow-hidden rounded-2xl border border-border bg-surface">
+            <ToggleRow label="التحميل التلقائي للصور" description="تنزيل الصور على الواي فاي وبيانات الجوال." checked={images} onChange={setImages} />
+            <ToggleRow label="التحميل التلقائي للملفات" description="تنزيل الملفات على الواي فاي فقط." checked={files} onChange={setFiles} />
+            <div className="flex items-center justify-between gap-4 border-t border-border p-4">
+              <div className="min-w-0 flex-1 pe-2"><p className="text-sm font-bold">مسح ذاكرة الوسائط</p><p className="mt-1 line-clamp-2 text-xs text-muted">إزالة الوسائط المخزنة من هذا الجهاز.</p></div>
+              <Button size="sm" variant="secondary" className="shrink-0" onClick={() => setCacheCleared(true)}>{cacheCleared ? 'تم المسح' : 'مسح'}</Button>
+            </div>
+          </section>
+        </div>
+      </PageContainer>
+    </div>
   )
 }
 
 function ToggleRow({ label, description, checked, onChange }: { label: string; description: string; checked: boolean; onChange: (value: boolean) => void }) {
-  return <div className="flex items-center justify-between gap-4 border-b border-[#2f3336] p-4 last:border-b-0"><div><p className="text-sm font-bold">{label}</p><p className="mt-1 text-xs text-[#71767b]">{description}</p></div><Toggle checked={checked} onChange={onChange} label={label} /></div>
+  return <div className="flex items-center justify-between gap-4 border-b border-border p-4 last:border-b-0"><div className="min-w-0 flex-1 pe-2"><p className="text-sm font-bold">{label}</p><p className="mt-1 line-clamp-2 text-xs text-muted">{description}</p></div><Toggle checked={checked} onChange={onChange} label={label} /></div>
 }

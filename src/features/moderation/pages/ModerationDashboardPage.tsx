@@ -4,24 +4,24 @@ import { ROUTES } from '@/core/utils/routes'
 export default function ModerationDashboardPage() {
   return (
     <FeatureScaffold
-      title="Moderation"
-      description="Review reports, bans, moderation logs, and platform safety rules."
+      title="الإشراف"
+      description="مراجعة البلاغات والحظر وسجلات الإشراف وقواعد سلامة المنصة."
       actions={[
-        { label: 'Reports', path: ROUTES.MODERATION.REPORTS },
-        { label: 'Banned users', path: ROUTES.MODERATION.BANS, variant: 'secondary' },
+        { label: 'البلاغات', path: ROUTES.MODERATION.REPORTS },
+        { label: 'المحظورون', path: ROUTES.MODERATION.BANS, variant: 'secondary' },
       ]}
       stats={[
-        { label: 'Open reports', value: '7' },
-        { label: 'High risk', value: '2' },
-        { label: 'Bans', value: '14' },
-        { label: 'Rules', value: '9' },
+        { label: 'بلاغات مفتوحة', value: '7' },
+        { label: 'عالي الخطورة', value: '2' },
+        { label: 'حظر', value: '14' },
+        { label: 'قواعد', value: '9' },
       ]}
       sections={[
         {
-          title: 'Queue',
+          title: 'الطابور',
           items: [
-            { title: 'Reported messages', description: 'Messages flagged by users or automated rules.', path: ROUTES.MODERATION.REPORTS },
-            { title: 'Ban review', description: 'Users with active restrictions and appeal context.', path: ROUTES.MODERATION.BANS },
+            { title: 'رسائل مبلغ عنها', description: 'رسائل أبلغ عنها المستخدمون أو قواعد تلقائية.', path: ROUTES.MODERATION.REPORTS },
+            { title: 'مراجعة الحظر', description: 'مستخدمون لديهم قيود نشطة وسياق الاستئناف.', path: ROUTES.MODERATION.BANS },
           ],
         },
       ]}

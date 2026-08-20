@@ -37,29 +37,29 @@ export default function AccountSettingsPage() {
   return (
     <div className="flex flex-col h-full bg-background">
       <PageContainer className="w-full px-3 sm:px-4 pt-3 sm:pt-4">
-        <BackButton to={ROUTES.SETTINGS.ROOT} label="Settings" />
+        <BackButton to={ROUTES.SETTINGS.ROOT} label="الإعدادات" />
         <form onSubmit={handleUpdate} className="max-w-lg mx-auto space-y-4 sm:space-y-6">
           <section className="bg-surface rounded-2xl border border-border-light/40 overflow-hidden">
             <div className="p-4 border-b border-border-light/30">
-              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Personal Information</h3>
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">المعلومات الشخصية</h3>
             </div>
             <div className="p-4 space-y-4">
               <Input
-                label="Username"
+                label="اسم المستخدم"
                 value={username}
                 onChange={(e) => setUsername(e.target.value.replace(/\s/g, ''))}
-                placeholder="yourusername"
+                placeholder="اسم_المستخدم"
                 disabled={!isEditing}
               />
               <Input
-                label="Phone number"
+                label="رقم الهاتف"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+1234567890"
                 disabled={!isEditing}
               />
               <Input
-                label="Email address"
+                label="البريد الإلكتروني"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="alex@example.com"
@@ -71,11 +71,11 @@ export default function AccountSettingsPage() {
 
           <section className="bg-surface rounded-2xl border border-border-light/40 overflow-hidden">
             <div className="p-4 border-b border-border-light/30">
-              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Security</h3>
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">الأمان</h3>
             </div>
             <div className="p-4 space-y-3">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-muted-foreground">Password</label>
+                <label className="text-xs font-semibold text-muted-foreground">كلمة المرور</label>
                 <input
                   type="password"
                   value={password}
@@ -101,14 +101,14 @@ export default function AccountSettingsPage() {
                     setIsEditing(false)
                   }}
                 >
-                  Cancel
+                  إلغاء
                 </Button>
                 <Button
                   type="submit"
                   className="flex-1 w-full cursor-pointer"
                   loading={isLoading}
                 >
-                  Save Account
+                  حفظ الحساب
                 </Button>
               </>
             ) : (
@@ -117,7 +117,7 @@ export default function AccountSettingsPage() {
                 className="w-full cursor-pointer"
                 onClick={() => setIsEditing(true)}
               >
-                Edit Account Details
+                تعديل بيانات الحساب
               </Button>
             )}
           </div>

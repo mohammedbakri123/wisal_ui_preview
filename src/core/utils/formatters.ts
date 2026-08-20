@@ -1,3 +1,5 @@
+const relativeFormatter = new Intl.RelativeTimeFormat('ar', { numeric: 'auto', style: 'short' })
+
 export function formatRelativeTime(date: Date | string): string {
   const now = new Date()
   const target = typeof date === 'string' ? new Date(date) : date
@@ -7,16 +9,16 @@ export function formatRelativeTime(date: Date | string): string {
   const diffHour = Math.floor(diffMin / 60)
   const diffDay = Math.floor(diffHour / 24)
 
-  if (diffSec < 60) return 'now'
-  if (diffMin < 60) return `${diffMin}m`
-  if (diffHour < 24) return `${diffHour}h`
-  if (diffDay < 7) return `${diffDay}d`
-  return target.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  if (diffSec < 60) return relativeFormatter.format(Math.round(-diffSec), 'second')
+  if (diffMin < 60) return relativeFormatter.format(Math.round(-diffMin), 'minute')
+  if (diffHour < 24) return relativeFormatter.format(Math.round(-diffHour), 'hour')
+  if (diffDay < 7) return relativeFormatter.format(Math.round(-diffDay), 'day')
+  return target.toLocaleDateString('ar', { month: 'short', day: 'numeric' })
 }
 
 export function formatMessageTime(date: Date | string): string {
   const target = typeof date === 'string' ? new Date(date) : date
-  return target.toLocaleTimeString('en-US', {
+  return target.toLocaleTimeString('ar', {
     hour: 'numeric',
     minute: '2-digit',
     hour12: true,

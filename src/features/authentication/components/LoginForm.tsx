@@ -24,27 +24,27 @@ export function LoginForm({ onSubmit, isLoading, error, mode = 'login' }: LoginF
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5 sm:gap-6">
-      <div className="text-center lg:text-left">
+      <div className="text-center lg:text-start">
         <h2 className="font-serif italic text-[1.6rem] sm:text-[1.8rem] leading-tight text-foreground tracking-tight">
-          {mode === 'signup' ? 'Create account' : 'Welcome back'}
+          {mode === 'signup' ? 'إنشاء حساب' : 'مرحباً بعودتك'}
         </h2>
         <p className="mt-2 text-sm text-muted-foreground/60 leading-relaxed">
-          {mode === 'signup' ? 'Enter your phone number to get started' : 'Enter your phone number to sign in'}
+          {mode === 'signup' ? 'أدخل رقم هاتفك للبدء' : 'أدخل رقم هاتفك لتسجيل الدخول'}
         </p>
       </div>
 
       <div className="h-px bg-gradient-to-r from-accent/20 via-accent/5 to-transparent" />
 
       <div className="flex flex-col gap-1.5 w-full">
-        <label htmlFor="phone-number" className="text-[13px] font-medium text-[#71767b]">Phone number</label>
+        <label htmlFor="phone-number" className="text-[13px] font-medium text-[#71767b]">رقم الهاتف</label>
         <div className="flex h-11 w-full overflow-hidden rounded-full bg-[#202327] border border-transparent focus-within:border-[#1d9bf0] focus-within:ring-1 focus-within:ring-[#1d9bf0] focus-within:bg-black transition-colors">
-          <label className="flex items-center border-r border-[#2f3336] px-3 text-[15px] text-[#e7e9ea]">
-            <span className="sr-only">Country code</span>
+          <label className="flex items-center border-s border-[#2f3336] px-3 text-[15px] text-[#e7e9ea]">
+            <span className="sr-only">رمز البلد</span>
             <select
-              aria-label="Country code"
+              aria-label="رمز البلد"
               value={countryCode}
               onChange={(e) => setCountryCode(e.target.value)}
-              className="h-full bg-transparent pr-1 text-[15px] text-[#e7e9ea] outline-none cursor-pointer"
+              className="h-full bg-transparent pe-1 text-[15px] text-[#e7e9ea] outline-none cursor-pointer"
             >
               <option value="+1" className="bg-[#16181c]">US +1</option>
               <option value="+20" className="bg-[#16181c]">EG +20</option>
@@ -74,17 +74,17 @@ export function LoginForm({ onSubmit, isLoading, error, mode = 'login' }: LoginF
       )}
 
       <Button type="submit" loading={isLoading} className="w-full h-12 rounded-xl text-sm font-semibold">
-        {mode === 'signup' ? 'Create account' : 'Continue'}
+        {mode === 'signup' ? 'إنشاء حساب' : 'متابعة'}
       </Button>
 
       <p className="text-xs text-center text-muted-foreground/40 max-w-xs mx-auto leading-relaxed">
-        We’ll send a one-time verification code to this number
+        سنرسل رمز تحقق لمرة واحدة إلى هذا الرقم
       </p>
 
       <div className="flex items-center gap-3">
         <div className="flex-1 h-px bg-border-light/5" />
         <span className="text-[11px] text-muted-foreground/30 uppercase tracking-wider font-medium">
-          {mode === 'signup' ? 'Already have an account?' : "Don't have an account?"}
+          {mode === 'signup' ? 'لديك حساب بالفعل؟' : "ليس لديك حساب؟"}
         </span>
         <div className="flex-1 h-px bg-border-light/5" />
       </div>
@@ -94,7 +94,7 @@ export function LoginForm({ onSubmit, isLoading, error, mode = 'login' }: LoginF
         onClick={() => navigate(mode === 'signup' ? ROUTES.AUTH.LOGIN : ROUTES.AUTH.SIGNUP)}
         className="text-sm text-accent/70 hover:text-accent font-semibold transition-colors cursor-pointer text-center"
       >
-        {mode === 'signup' ? 'Sign in' : 'Create one'}
+        {mode === 'signup' ? 'تسجيل الدخول' : 'أنشئ حساباً'}
       </button>
     </form>
   )

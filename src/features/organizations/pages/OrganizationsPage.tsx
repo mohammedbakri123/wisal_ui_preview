@@ -6,16 +6,16 @@ export default function OrganizationsPage() {
 
   return (
     <FeatureScaffold
-      title="Organizations"
-      description="Create, switch, and manage multi-tenant workspaces."
-      actions={[{ label: 'Create organization', path: '/organizations/create' }]}
+      title="المنظمات"
+      description="إنشاء مساحات العمل متعددة المستأجرين والتبديل بينها وإدارتها."
+      actions={[{ label: 'إنشاء منظمة', path: '/organizations/create' }]}
       sections={[
         {
-          title: 'Workspaces',
+          title: 'مساحات العمل',
           items: organizations.map((organization) => ({
             title: organization.name,
             description: organization.description,
-            meta: `${organization.members} members · ${organization.status}`,
+            meta: `${organization.members} أعضاء · ${organization.status}`,
             path: `/organizations/${organization.id}`,
           })),
         },

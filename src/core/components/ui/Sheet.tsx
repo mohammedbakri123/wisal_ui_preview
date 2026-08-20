@@ -72,7 +72,7 @@ export function Sheet({ open, onClose, children, title, className }: SheetProps)
             <button
               onClick={onClose}
               className="w-[34.75px] h-[34.75px] rounded-full flex items-center justify-center text-[#e7e9ea] hover:bg-white/[0.08] active:bg-white/[0.12] transition-colors cursor-pointer"
-              aria-label="Close"
+              aria-label="إغلاق"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

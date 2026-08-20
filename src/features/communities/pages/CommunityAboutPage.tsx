@@ -8,17 +8,17 @@ export default function CommunityAboutPage() {
 
   return (
     <FeatureScaffold
-      title="About Community"
+      title="حول المجتمع"
       eyebrow={community.name}
       description={community.description}
       backTo={`/communities/${community.id}/overview`}
       sections={[
         {
-          title: 'Guidelines',
+          title: 'الإرشادات',
           items: [
-            { title: 'Purpose', description: 'Share actionable context and keep discussions useful for members.' },
-            { title: 'Moderation', description: 'Reports are reviewed by community moderators and platform admins.' },
-            { title: 'Created', description: 'Community created on June 4, 2024.' },
+            { title: 'الغرض', description: 'شارك سياقًا عمليًا وحافظ على فائدة النقاشات للأعضاء.' },
+            { title: 'الإشراف', description: 'تتم مراجعة البلاغات بواسطة مشرفي المجتمع ومسؤولي المنصة.' },
+            { title: 'تاريخ الإنشاء', description: 'تم إنشاء المجتمع في 4 يونيو 2024.' },
           ],
         },
       ]}

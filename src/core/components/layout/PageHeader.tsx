@@ -20,10 +20,10 @@ export function PageHeader({ title, subtitle, onBack, actions, className }: Page
       {onBack && (
         <button
           onClick={onBack}
-          className="mr-3 -ml-1.5 w-[34.75px] h-[34.75px] rounded-full flex items-center justify-center text-[#e7e9ea] hover:bg-white/[0.08] active:bg-white/[0.12] transition-colors cursor-pointer shrink-0"
-          aria-label="Go back"
+          className="me-3 -ms-1.5 w-[34.75px] h-[34.75px] rounded-full flex items-center justify-center text-[#e7e9ea] hover:bg-white/[0.08] active:bg-white/[0.12] transition-colors cursor-pointer shrink-0"
+          aria-label="رجوع"
         >
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+          <svg className="h-5 w-5 rtl:-scale-x-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
           </svg>
         </button>
@@ -32,7 +32,7 @@ export function PageHeader({ title, subtitle, onBack, actions, className }: Page
         <h1 className="text-[20px] font-bold text-[#e7e9ea] leading-6 truncate">{title}</h1>
         {subtitle && <p className="text-[13px] text-[#71767b] leading-4 truncate">{subtitle}</p>}
       </div>
-      {actions && <div className="flex items-center gap-1 ml-2 shrink-0">{actions}</div>}
+      {actions && <div className="flex items-center gap-1 ms-2 shrink-0">{actions}</div>}
     </header>
   )
 }

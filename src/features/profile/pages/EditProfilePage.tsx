@@ -61,7 +61,7 @@ export default function EditProfilePage() {
             <Avatar src={avatar} alt="Avatar preview" size="xl" />
             
             <div className="space-y-2 text-center">
-              <span className="text-xs text-muted-foreground block font-medium">Choose an avatar preset</span>
+              <span className="text-xs text-muted-foreground block font-medium">اختر صورة رمزية جاهزة</span>
               <div className="flex gap-2.5">
                 {avatarPresets.map((preset, i) => (
                   <button
@@ -82,7 +82,7 @@ export default function EditProfilePage() {
                     avatar === '' ? 'border-accent scale-110' : 'border-transparent'
                   }`}
                 >
-                  Clear
+                  مسح
                 </button>
               </div>
             </div>
@@ -91,36 +91,36 @@ export default function EditProfilePage() {
           {/* Form details inputs */}
           <div className="bg-surface p-5 rounded-2xl border border-border/50 space-y-4">
             <Input
-              label="Display Name"
+              label="الاسم الظاهر"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Alex Morgan"
+              placeholder="مثال: أحمد محمد"
               required
             />
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Bio</label>
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">النبذة</label>
               <textarea
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
-                placeholder="A bit about yourself..."
+                placeholder="نبذة قصيرة عن نفسك..."
                 rows={3}
                 className="w-full bg-background border border-border rounded-xl px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors resize-none"
               />
             </div>
 
             <Input
-              label="Phone Number"
+              label="رقم الهاتف"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="+1234567890"
+              placeholder="+966 5xxxxxxxx"
             />
 
             <Input
-              label="Email Address"
+              label="البريد الإلكتروني"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="alex@example.com"
+              placeholder="ahmed@example.com"
               type="email"
             />
           </div>
@@ -132,14 +132,14 @@ export default function EditProfilePage() {
               className="flex-1 cursor-pointer"
               onClick={() => navigate(ROUTES.PROFILE.SELF)}
             >
-              Cancel
+              إلغاء
             </Button>
             <Button
               type="submit"
               className="flex-1 cursor-pointer"
               loading={isLoading}
             >
-              Save Changes
+              حفظ التغييرات
             </Button>
           </div>
         </form>

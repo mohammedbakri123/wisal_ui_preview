@@ -8,16 +8,16 @@ export default function ArchivedChatsPage() {
 
   return (
     <FeatureScaffold
-      title="Archived Chats"
-      description="Archived conversations are quiet spaces you can restore by opening them again."
+      title="المحادثات المؤرشفة"
+      description="المحادثات المؤرشفة هي مساحات هادئة يمكنك استعادتها بفتحها مرة أخرى."
       backTo={ROUTES.CHAT.LIST}
       sections={[
         {
-          title: 'Archived',
+          title: 'المؤرشفة',
           items: archived.map((conversation) => ({
             title: conversation.name,
-            description: conversation.lastMessage ?? 'No recent message',
-            meta: 'Archived',
+            description: conversation.lastMessage ?? 'لا توجد رسائل حديثة',
+            meta: 'مؤرشفة',
             path: conversation.type === 'group' ? `/home/g/${conversation.id}` : `/home/c/${conversation.id}`,
           })),
         },

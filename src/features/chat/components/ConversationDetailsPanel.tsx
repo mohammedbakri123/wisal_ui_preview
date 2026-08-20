@@ -34,7 +34,7 @@ export function ConversationDetailsPanel({
         <Avatar src={conversation.avatar} alt={conversation.name} size="xl" verified verifiedType="blue" />
         <h3 className="mt-3 text-[20px] font-bold text-[#e7e9ea]">{conversation.name}</h3>
         <p className="mt-0.5 text-[13px] text-[#71767b]">
-          {conversation.type === 'direct' ? '@' + conversation.name.toLowerCase().replace(/\s+/g, '') : `${conversation.members.length} members`}
+          {conversation.type === 'direct' ? '@' + conversation.name.toLowerCase().replace(/\s+/g, '') : `${conversation.members.length} أعضاء`}
         </p>
         {conversation.type === 'direct' && (
           <Button
@@ -43,7 +43,7 @@ export function ConversationDetailsPanel({
             className="mt-4"
             onClick={() => navigate(`/profile/${conversation.name.toLowerCase().replace(/\s+/g, '')}`)}
           >
-            View Profile
+            عرض الملف الشخصي
           </Button>
         )}
       </div>
@@ -55,14 +55,14 @@ export function ConversationDetailsPanel({
         </h4>
         <div className="rounded-2xl bg-[#16181c] border border-[#2f3336] overflow-hidden divide-y divide-[#2f3336]">
           <ToggleRow
-            label="Mute notifications"
+            label="كتم الإشعارات"
             checked={isMuted}
             onChange={onMutedChange}
             iconPath="M14.86 17.08a23.85 23.85 0 0 0 5.45-1.31A8.97 8.97 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.97 8.97 0 0 1-2.31 6.02c1.73.64 3.56 1.09 5.45 1.31m5.72 0a24.26 24.26 0 0 1-5.72 0m5.72 0a3 3 0 1 1-5.72 0"
           />
           {conversation.type === 'direct' && (
             <ToggleRow
-              label="Block user"
+              label="حظر المستخدم"
               checked={isBlocked}
               onChange={onBlockedChange}
               destructive
@@ -76,15 +76,15 @@ export function ConversationDetailsPanel({
       {conversation.type !== 'direct' && (
         <section className="space-y-2">
           <h4 className="text-[13px] font-bold uppercase tracking-wider text-[#71767b] px-1">
-            Group Members ({conversation.members.length})
+            أعضاء المجموعة ({conversation.members.length})
           </h4>
           <div className="rounded-2xl bg-[#16181c] border border-[#2f3336] p-3 space-y-1 divide-y divide-[#2f3336]">
             {conversation.members.map((member, index) => (
               <div key={member.id} className="flex items-center gap-3 pt-2 first:pt-0">
                 <Avatar src={member.avatar} alt={member.name} size="xs" online={member.isOnline ?? true} />
-                <div className="min-w-0 flex-1 text-left">
+                <div className="min-w-0 flex-1 text-start">
                   <p className="truncate text-sm font-bold text-[#e7e9ea]">{member.name}</p>
-                  <span className="text-[11px] text-[#71767b]">{index === 0 ? 'Admin' : 'Member'}</span>
+                  <span className="text-[11px] text-[#71767b]">{index === 0 ? 'مسؤول' : 'عضو'}</span>
                 </div>
               </div>
             ))}
@@ -103,7 +103,7 @@ export function ConversationDetailsPanel({
             onClose()
           }}
         >
-          Clear chat history
+          مسح سجل المحادثة
         </Button>
         <Button
           variant="danger"
@@ -115,7 +115,7 @@ export function ConversationDetailsPanel({
             navigate(ROUTES.CHAT.LIST)
           }}
         >
-          Delete Conversation
+          حذف المحادثة
         </Button>
       </div>
     </div>

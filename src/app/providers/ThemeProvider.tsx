@@ -25,8 +25,10 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | null>(null)
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  // X/Twitter Dark — always dark mode
-  const [theme, setThemeState] = useState<Theme>('dark')
+  const [theme, setThemeState] = useState<Theme>(() => {
+    const stored = localStorage.getItem(STORAGE_KEYS.THEME) as Theme | null
+    return stored === 'light' ? 'light' : 'dark'
+  })
 
   const [accentColor, setAccentColorState] = useState<AccentColor>(() => {
     const stored = localStorage.getItem(STORAGE_KEYS.ACCENT) as AccentColor | null
@@ -39,26 +41,26 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const root = document.documentElement
     root.classList.remove('light', 'dark')
-    root.classList.add('dark')
-    localStorage.setItem(STORAGE_KEYS.THEME, 'dark')
+    root.classList.add(theme)
+    localStorage.setItem(STORAGE_KEYS.THEME, theme)
     root.dataset.bubbleStyle = bubbleStyle
     root.dataset.chatBackground = chatBackground
     root.dataset.chatFontSize = chatFontSize
+
+    const metaTheme = document.querySelector('meta[name="theme-color"]')
+    if (metaTheme) {
+      metaTheme.setAttribute('content', theme === 'dark' ? '#000000' : '#ffffff')
+    }
   }, [theme, bubbleStyle, chatBackground, chatFontSize])
 
   useEffect(() => {
-    const language = localStorage.getItem(STORAGE_KEYS.LANGUAGE) ?? 'en'
+    const language = localStorage.getItem(STORAGE_KEYS.LANGUAGE) ?? 'ar'
     document.documentElement.lang = language
     document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr'
   }, [])
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.ACCENT, accentColor)
-    // Keep browser theme-color as black for X Dark
-    const metaTheme = document.querySelector('meta[name="theme-color"]')
-    if (metaTheme) {
-      metaTheme.setAttribute('content', '#000000')
-    }
   }, [accentColor])
 
   const setTheme = useCallback((t: Theme) => setThemeState(t), [])

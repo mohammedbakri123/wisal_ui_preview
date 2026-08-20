@@ -39,12 +39,12 @@ export default function VerifyOtpPage() {
 
   return (
     <div className="flex flex-col gap-5 sm:gap-6">
-      <div className="text-center lg:text-left">
+      <div className="text-center lg:text-start">
         <h2 className="font-serif italic text-[1.6rem] sm:text-[1.8rem] leading-tight text-foreground tracking-tight">
-          Verify your code
+          تأكيد الرمز
         </h2>
         <p className="mt-2 text-sm text-muted-foreground/60 leading-relaxed">
-          Enter the 6-digit code sent to{' '}
+          أدخل رمز التحقق المكون من 6 أرقام المرسل إلى{' '}
           <span className="text-foreground font-medium">{masked}</span>
         </p>
       </div>
@@ -59,7 +59,7 @@ export default function VerifyOtpPage() {
       />
 
       <p className="rounded-xl border border-[#1d9bf0]/20 bg-[#1d9bf0]/[0.06] px-4 py-2.5 text-center text-xs leading-relaxed text-[#71767b]">
-        Development code: <span className="font-mono font-bold text-[#e7e9ea]">123456</span>
+        رمز التطوير: <span className="font-mono font-bold text-[#e7e9ea]">123456</span>
       </p>
 
       {error && (
@@ -74,12 +74,12 @@ export default function VerifyOtpPage() {
         disabled={resendCooldown > 0 || isVerifying}
         className="w-full text-sm text-accent/70 hover:text-accent font-semibold transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed text-center py-2"
       >
-        {resendCooldown > 0 ? `Resend code in ${resendCooldown}s` : 'Resend code'}
+        {resendCooldown > 0 ? `إعادة الإرسال خلال ${resendCooldown} ثانية` : 'إعادة إرسال الرمز'}
       </button>
 
       <div className="flex items-center gap-3">
         <div className="flex-1 h-px bg-border-light/5" />
-        <span className="text-[11px] text-muted-foreground/30 uppercase tracking-wider font-medium">Wrong identifier?</span>
+        <span className="text-[11px] text-muted-foreground/30 uppercase tracking-wider font-medium">المعرّف غير صحيح؟</span>
         <div className="flex-1 h-px bg-border-light/5" />
       </div>
 
@@ -91,7 +91,7 @@ export default function VerifyOtpPage() {
         }}
         className="text-sm text-muted-foreground/50 hover:text-foreground transition-colors cursor-pointer text-center"
       >
-        Use a different {identifier.includes('@') ? 'email' : 'phone number'}
+        استخدم {identifier.includes('@') ? 'بريدًا إلكترونيًا آخر' : 'رقم هاتف آخر'}
       </button>
     </div>
   )

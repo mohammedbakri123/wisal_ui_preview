@@ -5,14 +5,50 @@ import { PageContainer } from '@/core/components/layout/PageContainer'
 import { ROUTES } from '@/core/utils/routes'
 
 const sections = [
-  { label: 'Account', items: [{ title: 'Profile settings', description: 'Display name, avatar, bio, and status', path: ROUTES.SETTINGS.PROFILE, icon: '◎' }, { title: 'Account settings', description: 'Phone, email, and account controls', path: ROUTES.SETTINGS.ACCOUNT, icon: '@' }] },
-  { label: 'Privacy & security', items: [{ title: 'Privacy', description: 'Last seen, read receipts, and blocked users', path: ROUTES.SETTINGS.PRIVACY, icon: '◈' }, { title: 'Security', description: 'App lock, PIN, and active sessions', path: ROUTES.SETTINGS.SECURITY, icon: '⌑' }, { title: 'Devices', description: 'Active sessions and linked devices', path: ROUTES.SETTINGS.DEVICES, icon: '▣' }] },
-  { label: 'Preferences', items: [{ title: 'Notifications', description: 'Alerts, sounds, and message previews', path: ROUTES.SETTINGS.NOTIFICATIONS, icon: '◌' }, { title: 'Chat settings', description: 'Composer, downloads, wallpaper, and backups', path: ROUTES.SETTINGS.CHATS, icon: '▱' }, { title: 'Storage & data', description: 'Cached media, downloads, and network usage', path: ROUTES.SETTINGS.STORAGE, icon: '▤' }, { title: 'Appearance', description: 'Theme and conversation presentation', path: ROUTES.SETTINGS.APPEARANCE, icon: '◐' }, { title: 'Language', description: 'Choose the language used across Wisal', path: ROUTES.SETTINGS.LANGUAGE, icon: '文' }] },
-  { label: 'Support', items: [{ title: 'Help & support', description: 'FAQ, contact support, and report a problem', path: ROUTES.SETTINGS.HELP, icon: '?' }, { title: 'About', description: 'Version, licenses, legal, and credits', path: ROUTES.SETTINGS.ABOUT, icon: 'i' }] },
+  { label: 'الحساب', items: [{ title: 'إعدادات الملف الشخصي', description: 'الاسم الظاهر والصورة والنبذة والحالة', path: ROUTES.SETTINGS.PROFILE, icon: '◎' }, { title: 'إعدادات الحساب', description: 'الهاتف والبريد الإلكتروني وعناصر التحكم بالحساب', path: ROUTES.SETTINGS.ACCOUNT, icon: '@' }] },
+  { label: 'الخصوصية والأمان', items: [{ title: 'الخصوصية', description: 'آخر ظهور وإيصالات القراءة والمستخدمون المحظورون', path: ROUTES.SETTINGS.PRIVACY, icon: '◈' }, { title: 'الأمان', description: 'قفل التطبيق ورمز PIN والجلسات النشطة', path: ROUTES.SETTINGS.SECURITY, icon: '⌑' }, { title: 'الأجهزة', description: 'الجلسات النشطة والأجهزة المرتبطة', path: ROUTES.SETTINGS.DEVICES, icon: '▣' }] },
+  { label: 'التفضيلات', items: [{ title: 'الإشعارات', description: 'التنبيهات والأصوات ومعاينات الرسائل', path: ROUTES.SETTINGS.NOTIFICATIONS, icon: '◌' }, { title: 'إعدادات الدردشة', description: 'الكتابة والتنزيلات والخلفية والنسخ الاحتياطي', path: ROUTES.SETTINGS.CHATS, icon: '▱' }, { title: 'التخزين والبيانات', description: 'الوسائط المخزنة والتنزيلات واستخدام الشبكة', path: ROUTES.SETTINGS.STORAGE, icon: '▤' }, { title: 'المظهر', description: 'السمة وعرض المحادثات', path: ROUTES.SETTINGS.APPEARANCE, icon: '◐' }, { title: 'اللغة', description: 'اختر اللغة المستخدمة في وصال', path: ROUTES.SETTINGS.LANGUAGE, icon: '文' }] },
+  { label: 'الدعم', items: [{ title: 'المساعدة والدعم', description: 'الأسئلة الشائعة والتواصل مع الدعم والإبلاغ عن مشكلة', path: ROUTES.SETTINGS.HELP, icon: '?' }, { title: 'حول', description: 'الإصدار والتراخيص والقانون والشكر', path: ROUTES.SETTINGS.ABOUT, icon: 'i' }] },
 ]
 
 export default function SettingsPage() {
   const navigate = useNavigate()
   const { logout } = useAuth()
-  return <div className="flex h-full flex-col bg-black text-[#e7e9ea]"><PageContainer className="mx-auto w-full max-w-3xl px-4 pt-5 pb-10 sm:px-6"><header className="border-b border-[#2f3336] pb-5"><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1d9bf0]">Preferences</p><h1 className="mt-2 text-2xl font-bold sm:text-3xl">Settings</h1><p className="mt-2 max-w-lg text-sm leading-relaxed text-[#71767b]">Manage your account, privacy, and conversation experience.</p></header><div className="mt-6 space-y-6">{sections.map((section) => <section key={section.label}><h2 className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-[#71767b]">{section.label}</h2><div className="overflow-hidden rounded-2xl border border-[#2f3336] bg-[#16181c]">{section.items.map((item) => <button type="button" key={item.path} onClick={() => navigate(item.path)} className="group flex w-full items-center gap-3 border-b border-[#2f3336] p-4 text-left transition-colors last:border-b-0 hover:bg-white/[0.03] cursor-pointer"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#1d9bf0]/10 text-sm font-bold text-[#1d9bf0]">{item.icon}</span><span className="min-w-0 flex-1"><span className="block truncate text-[15px] font-bold">{item.title}</span><span className="mt-1 block truncate text-xs text-[#71767b]">{item.description}</span></span><span className="text-lg text-[#71767b] transition-colors group-hover:text-[#1d9bf0]">→</span></button>)}</div></section>)}</div><Button variant="danger" className="mt-8 w-full" onClick={() => { logout(); navigate(ROUTES.AUTH.LOGIN) }}>Log out</Button><p className="mt-5 text-center text-[10px] text-[#71767b]">Wisal v0.1.0</p></PageContainer></div>
+  return (
+    <div className="flex h-full flex-col bg-background text-foreground">
+      <PageContainer className="mx-auto w-full max-w-2xl px-3 pt-4 pb-10 sm:px-4 sm:pt-5">
+        <header className="border-b border-border pb-5">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">التفضيلات</p>
+          <h1 className="mt-2 text-2xl font-bold sm:text-3xl">الإعدادات</h1>
+          <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted">إدارة حسابك وخصوصيتك وتجربة المحادثات.</p>
+        </header>
+        <div className="mt-6 space-y-6">
+          {sections.map((section) => (
+            <section key={section.label}>
+              <h2 className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-muted">{section.label}</h2>
+              <div className="overflow-hidden rounded-2xl border border-border bg-surface">
+                {section.items.map((item) => (
+                  <button
+                    type="button"
+                    key={item.path}
+                    onClick={() => navigate(item.path)}
+                    className="group flex w-full items-center gap-3 border-b border-border p-3.5 text-start transition-colors last:border-b-0 hover:bg-surface-hover cursor-pointer sm:p-4"
+                  >
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent/10 text-sm font-bold text-accent">{item.icon}</span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-[15px] font-bold">{item.title}</span>
+                      <span className="mt-1 block truncate text-xs text-muted">{item.description}</span>
+                    </span>
+                    <span className="shrink-0 text-lg text-muted transition-colors group-hover:text-accent">→</span>
+                  </button>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+        <Button variant="danger" className="mt-8 w-full" onClick={() => { logout(); navigate(ROUTES.AUTH.LOGIN) }}>تسجيل الخروج</Button>
+        <p className="mt-5 text-center text-[10px] text-muted-foreground/70">وصال v0.1.0</p>
+      </PageContainer>
+    </div>
+  )
 }

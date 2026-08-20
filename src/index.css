@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800;900&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -12,6 +13,11 @@
 
   --color-foreground: #e7e9ea;
   --color-muted: #71767b;
+
+  /* ── Aliases used across the app (resolve per-theme) ── */
+  --color-muted-foreground: var(--color-muted);
+  --color-border-light: var(--color-border);
+  --color-surface-hover: var(--color-hover);
 
   --color-accent: #1d9bf0;
   --color-accent-hover: #1a8cd8;
@@ -45,8 +51,8 @@
   --color-story-ring-seen: #536471;
 
   /* ── Typography ── */
-  --font-sans: "TwitterChirp", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-serif: "TwitterChirp", Georgia, serif;
+  --font-sans: "IBM Plex Sans Arabic", "Tajawal", "Cairo", "TwitterChirp", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-serif: "Tajawal", "IBM Plex Sans Arabic", Georgia, serif;
   --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
 
   /* ── Spacing ── */
@@ -81,6 +87,98 @@
   --size-icon-button: 34.75px;
 }
 
+/* ── Light mode (X/Twitter Light palette) ──
+   The app is authored in dark raw-hex utilities; we remap the generated
+   utility classes under a `.light` root class so everything adapts. */
+.light {
+  --color-background: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #eff3f4;
+  --color-hover: rgba(15, 20, 25, 0.04);
+  --color-active: rgba(15, 20, 25, 0.08);
+  --color-border: #e4e8eb;
+  --color-border-hover: #b4c0ca;
+
+  --color-foreground: #0f1419;
+  --color-muted: #536471;
+
+  --color-accent-foreground: #ffffff;
+  --color-button-inverse-bg: #0f1419;
+  --color-button-inverse-text: #ffffff;
+
+  --color-overlay: rgba(15, 20, 25, 0.4);
+  --color-skeleton: #e4e8eb;
+
+  --color-bubble-other: #eef1f3;
+  --color-panel-header: rgba(255, 255, 255, 0.72);
+  --color-panel-bg: #ffffff;
+  --color-compose-bg: #ffffff;
+  --color-nav-bg: #ffffff;
+  --color-story-ring-seen: #b4c0ca;
+}
+
+/* Remap hardcoded dark utilities so pages authored in raw hex adapt. */
+.light .bg-black { background-color: #ffffff; }
+.light .bg-\[\#16181c\] { background-color: #f7f9f9; }
+.light .bg-\[\#202327\] { background-color: #eff3f4; }
+.light .bg-\[\#272c30\] { background-color: #e4e8eb; }
+.light .bg-\[\#2f3336\] { background-color: #d6dce1; }
+.light .bg-\[\#000\] { background-color: #ffffff; }
+.light .bg-\[\#000000\] { background-color: #ffffff; }
+.light .bg-\[\#71767b\] { background-color: #536471; }
+
+.light .bg-black\/65 { background-color: rgba(255, 255, 255, 0.72); }
+
+.light .text-\[\#e7e9ea\] { color: #0f1419; }
+.light .text-\[\#71767b\] { color: #536471; }
+
+.light .border-\[\#2f3336\] { border-color: #e4e8eb; }
+.light .border-\[\#e7e9ea\] { border-color: #dfe3e6; }
+.light .divide-\[\#2f3336\] > :not([hidden]) ~ :not([hidden]) { border-color: #e4e8eb; }
+
+/* White hover/active overlays → dark tints on light surfaces */
+.light .bg-white\/\[0\.02\] { background-color: rgba(15, 20, 25, 0.05); }
+.light .hover\:bg-white\/\[0\.02\]:hover { background-color: rgba(15, 20, 25, 0.05); }
+.light .active\:bg-white\/\[0\.02\]:active { background-color: rgba(15, 20, 25, 0.07); }
+.light .bg-white\/\[0\.03\] { background-color: rgba(15, 20, 25, 0.05); }
+.light .hover\:bg-white\/\[0\.03\]:hover { background-color: rgba(15, 20, 25, 0.05); }
+.light .active\:bg-white\/\[0\.03\]:active { background-color: rgba(15, 20, 25, 0.07); }
+.light .bg-white\/\[0\.04\] { background-color: rgba(15, 20, 25, 0.06); }
+.light .hover\:bg-white\/\[0\.04\]:hover { background-color: rgba(15, 20, 25, 0.06); }
+.light .bg-white\/\[0\.06\] { background-color: rgba(15, 20, 25, 0.08); }
+.light .hover\:bg-white\/\[0\.06\]:hover { background-color: rgba(15, 20, 25, 0.08); }
+.light .active\:bg-white\/\[0\.06\]:active { background-color: rgba(15, 20, 25, 0.1); }
+.light .bg-white\/\[0\.08\] { background-color: rgba(15, 20, 25, 0.1); }
+.light .hover\:bg-white\/\[0\.08\]:hover { background-color: rgba(15, 20, 25, 0.1); }
+.light .bg-white\/\[0\.12\] { background-color: rgba(15, 20, 25, 0.14); }
+.light .hover\:bg-white\/\[0\.12\]:hover { background-color: rgba(15, 20, 25, 0.14); }
+
+/* Surfaces that must stay dark: story viewer / creator canvases */
+.light .story-canvas,
+.light .story-canvas .bg-black\/95,
+.light .story-canvas .bg-black\/85,
+.light .story-canvas .bg-black\/60 { background-color: #000000; }
+
+/* Glass panels + scrollbar adapt to light */
+.light .sticky-header,
+.light .glass-panel { background: rgba(255, 255, 255, 0.72); }
+.light ::-webkit-scrollbar-thumb { background-color: rgba(15, 20, 25, 0.2); }
+.light ::-webkit-scrollbar-thumb:hover { background-color: rgba(15, 20, 25, 0.3); }
+.light .scrollbar-thin { scrollbar-color: rgba(15, 20, 25, 0.2) transparent; }
+
+/* Chat wallpaper light variants */
+.light .chat-background-classic {
+  background-color: #ffffff;
+  background-image: linear-gradient(rgba(15, 20, 25, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 20, 25, 0.03) 1px, transparent 1px);
+}
+.light .chat-background-dots {
+  background-color: #ffffff;
+  background-image: radial-gradient(rgba(29, 155, 240, 0.12) 1px, transparent 1px);
+}
+.light .chat-background-solid {
+  background-color: #f7f9f9;
+}
+
 /* ── Base styles ── */
 @layer base {
   *,
@@ -93,6 +191,10 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+
+  html[dir="rtl"] {
+    direction: rtl;
   }
 
   body {
@@ -189,13 +291,19 @@
   .bubble-own {
     background-color: var(--color-accent);
     color: #ffffff;
-    border-radius: var(--radius-bubble) var(--radius-bubble) 4px var(--radius-bubble);
+    border-start-start-radius: var(--radius-bubble);
+    border-start-end-radius: var(--radius-bubble);
+    border-end-start-radius: var(--radius-bubble);
+    border-end-end-radius: 4px;
   }
 
   .bubble-other {
     background-color: var(--color-surface);
     color: var(--color-foreground);
-    border-radius: var(--radius-bubble) var(--radius-bubble) var(--radius-bubble) 4px;
+    border-start-start-radius: var(--radius-bubble);
+    border-start-end-radius: var(--radius-bubble);
+    border-end-start-radius: 4px;
+    border-end-end-radius: var(--radius-bubble);
     border: 1px solid var(--color-border);
   }
 

@@ -8,15 +8,15 @@ export default function ChannelAnalyticsPage() {
 
   return (
     <FeatureScaffold
-      title="Channel Analytics"
+      title="تحليلات القناة"
       eyebrow={channel.name}
-      description="Track subscriber growth, post engagement, and top-performing updates."
+      description="تتبع نمو المشتركين وتفاعل المنشورات وأفضل التحديثات أداءً."
       backTo={`/channels/${channel.id}/details`}
       stats={[
-        { label: 'Reach', value: '72%' },
-        { label: 'Growth', value: '+8.4%' },
-        { label: 'Reactions', value: '1.8k' },
-        { label: 'Replies', value: '342' },
+        { label: 'الوصول', value: '72%' },
+        { label: 'النمو', value: '+8.4%' },
+        { label: 'التفاعلات', value: '1.8k' },
+        { label: 'الردود', value: '342' },
       ]}
     />
   )

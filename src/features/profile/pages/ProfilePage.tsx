@@ -16,7 +16,7 @@ export default function ProfilePage() {
           <button
             onClick={() => navigate('/settings')}
             className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
-            title="Settings"
+            title="الإعدادات"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.43l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
@@ -27,9 +27,9 @@ export default function ProfilePage() {
         {/* User Card Header */}
         <div className="flex flex-col items-center text-center p-6 bg-surface rounded-2xl border border-border/50 shadow-md">
           <Avatar src={user?.avatar} alt={user?.name ?? 'User'} size="xl" />
-          <h2 className="text-xl font-bold mt-4">{user?.name || 'Your Name'}</h2>
+          <h2 className="text-xl font-bold mt-4">{user?.name || 'اسمك'}</h2>
           <p className="text-sm text-muted-foreground mt-1 max-w-xs leading-relaxed">
-            {user?.bio || 'No bio yet. Tell the world what you are up to!'}
+            {user?.bio || 'لا توجد نبذة بعد. عرّف الآخرين بنفسك!'}
           </p>
 
           <div className="mt-5 w-full flex gap-3">
@@ -38,7 +38,7 @@ export default function ProfilePage() {
               variant="secondary"
               onClick={() => navigate(ROUTES.PROFILE.EDIT)}
             >
-              Edit Profile
+              تعديل الملف الشخصي
             </Button>
             <Button 
               className="flex-1 cursor-pointer" 
@@ -48,7 +48,7 @@ export default function ProfilePage() {
                 navigate(ROUTES.AUTH.LOGIN)
               }}
             >
-              Log Out
+              تسجيل الخروج
             </Button>
           </div>
         </div>
@@ -58,7 +58,7 @@ export default function ProfilePage() {
           {user?.phone && (
             <div className="flex items-center justify-between p-4">
               <div className="space-y-0.5">
-                <span className="text-xs text-muted-foreground block">Phone number</span>
+                <span className="text-xs text-muted-foreground block">رقم الهاتف</span>
                 <span className="text-sm font-semibold">{user.phone}</span>
               </div>
               <svg className="h-5 w-5 text-muted-foreground/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
@@ -70,7 +70,7 @@ export default function ProfilePage() {
           {user?.email && (
             <div className="flex items-center justify-between p-4">
               <div className="space-y-0.5">
-                <span className="text-xs text-muted-foreground block">Email address</span>
+                <span className="text-xs text-muted-foreground block">البريد الإلكتروني</span>
                 <span className="text-sm font-semibold">{user.email}</span>
               </div>
               <svg className="h-5 w-5 text-muted-foreground/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
@@ -81,7 +81,7 @@ export default function ProfilePage() {
 
           <div className="flex items-center justify-between p-4">
             <div className="space-y-0.5">
-              <span className="text-xs text-muted-foreground block">Member since</span>
+              <span className="text-xs text-muted-foreground block">عضو منذ</span>
               <span className="text-sm font-semibold">
                 {new Date(user?.createdAt ?? new Date(0).toISOString()).toLocaleDateString(undefined, {
                   year: 'numeric',

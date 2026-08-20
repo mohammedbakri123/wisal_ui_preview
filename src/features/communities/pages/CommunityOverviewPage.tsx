@@ -11,21 +11,21 @@ export default function CommunityOverviewPage() {
 
   return (
     <FeatureScaffold
-      title={`${community.name} Overview`}
-      eyebrow="Inside community"
-      description="Recent activity, announcements, and shortcuts into members, groups, channels, and about."
+      title={`${community.name} نظرة عامة`}
+      eyebrow="داخل المجتمع"
+      description="النشاط الأخير والإعلانات والاختصارات إلى الأعضاء والمجموعات والقنوات وحول."
       backTo={`/communities/${community.id}`}
       actions={[
-        { label: 'Members', path: `/communities/${community.id}/members`, variant: 'secondary' },
-        { label: 'Groups', path: `/communities/${community.id}/groups`, variant: 'secondary' },
-        { label: 'Channels', path: `/communities/${community.id}/channels`, variant: 'secondary' },
-        { label: 'About', path: `/communities/${community.id}/about`, variant: 'secondary' },
-        ...(community.owner ? [{ label: 'Manage', path: ROUTES.COMMUNITY.MANAGE.replace(':communityId', community.id), variant: 'secondary' as const }] : []),
+        { label: 'الأعضاء', path: `/communities/${community.id}/members`, variant: 'secondary' },
+        { label: 'المجموعات', path: `/communities/${community.id}/groups`, variant: 'secondary' },
+        { label: 'القنوات', path: `/communities/${community.id}/channels`, variant: 'secondary' },
+        { label: 'حول', path: `/communities/${community.id}/about`, variant: 'secondary' },
+        ...(community.owner ? [{ label: 'إدارة', path: ROUTES.COMMUNITY.MANAGE.replace(':communityId', community.id), variant: 'secondary' as const }] : []),
       ]}
       sections={[
         {
-          title: 'Activity',
-          items: communityActivity.map((activity) => ({ title: activity, description: 'Updated from the community activity feed.' })),
+          title: 'النشاط',
+          items: communityActivity.map((activity) => ({ title: activity, description: 'تم التحديث من موجز نشاط المجتمع.' })),
         },
       ]}
     />

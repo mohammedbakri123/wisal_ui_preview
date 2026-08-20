@@ -23,37 +23,37 @@ export default function ChannelDetailsPage() {
         <div className="mx-auto max-w-2xl">
           <BackButton to={`/channels/${channel.id}`} />
           <header className="mt-2 rounded-2xl border border-[#2f3336] bg-[#16181c] p-5">
-            <p className="text-xs font-bold uppercase tracking-wider text-[#1d9bf0]">Channel profile</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-[#1d9bf0]">ملف القناة</p>
             <h1 className="mt-2 text-2xl font-bold">{channel.name}</h1>
             <p className="mt-2 text-sm leading-relaxed text-[#71767b]">{channel.description}</p>
             <div className="mt-5 flex flex-wrap gap-2">
-              <Button size="sm" onClick={() => toggleFollow(channel.id)}>{channel.joined ? 'Following' : 'Follow channel'}</Button>
-              <Button size="sm" variant="secondary" onClick={() => navigate(`/channels/${channel.id}/invite`)}>Invite</Button>
-              {channel.admin && <Button size="sm" variant="secondary" onClick={() => navigate(ROUTES.CHANNEL.SETTINGS.replace(':channelId', channel.id))}>Settings</Button>}
+              <Button size="sm" onClick={() => toggleFollow(channel.id)}>{channel.joined ? 'تتابع' : 'متابعة القناة'}</Button>
+              <Button size="sm" variant="secondary" onClick={() => navigate(`/channels/${channel.id}/invite`)}>دعوة</Button>
+              {channel.admin && <Button size="sm" variant="secondary" onClick={() => navigate(ROUTES.CHANNEL.SETTINGS.replace(':channelId', channel.id))}>الإعدادات</Button>}
             </div>
           </header>
 
           <section className="mt-6 grid grid-cols-2 divide-x divide-y divide-[#2f3336] overflow-hidden rounded-2xl border border-[#2f3336] bg-[#16181c] sm:grid-cols-4 sm:divide-y-0">
-            <Stat label="Subscribers" value={channel.subscribers} />
-            <Stat label="Posts" value={String(channel.posts)} />
-            <Stat label="Admins" value={channel.admin ? '3' : '2'} />
-            <Stat label="Status" value={channel.joined ? 'Joined' : 'Public'} />
+            <Stat label="المشتركون" value={channel.subscribers} />
+            <Stat label="المنشورات" value={String(channel.posts)} />
+            <Stat label="المشرفون" value={channel.admin ? '3' : '2'} />
+            <Stat label="الحالة" value={channel.joined ? 'منضم' : 'عام'} />
           </section>
 
           <section className="mt-6 overflow-hidden rounded-2xl border border-[#2f3336] bg-[#16181c]">
-            <Row label="Invite link" description={inviteLink} value={copied ? 'Copied' : 'Copy'} onClick={() => setCopied(true)} />
-            <Row label="Pinned posts" description="Open the channel feed to review pinned updates." value="View" onClick={() => navigate(`/channels/${channel.id}`)} />
-            <Row label="Report channel" description="Send a report for moderator review." value="Report" danger onClick={() => { setReported(false); setReportOpen(true) }} />
-            {channel.admin && <Row label="Manage channel" description="Manage administrators and published posts." value="Open" onClick={() => navigate(ROUTES.CHANNEL.ADMINS.replace(':channelId', channel.id))} />}
+            <Row label="رابط الدعوة" description={inviteLink} value={copied ? 'تم النسخ' : 'نسخ'} onClick={() => setCopied(true)} />
+            <Row label="المنشورات المثبتة" description="افتح موجز القناة لمراجعة التحديثات المثبتة." value="عرض" onClick={() => navigate(`/channels/${channel.id}`)} />
+            <Row label="الإبلاغ عن القناة" description="أرسل بلاغًا لمراجعة المشرف." value="إبلاغ" danger onClick={() => { setReported(false); setReportOpen(true) }} />
+            {channel.admin && <Row label="إدارة القناة" description="إدارة المشرفين والمنشورات المنشورة." value="فتح" onClick={() => navigate(ROUTES.CHANNEL.ADMINS.replace(':channelId', channel.id))} />}
           </section>
         </div>
       </PageContainer>
 
-      <Sheet open={reportOpen} onClose={() => setReportOpen(false)} title="Report channel">
+      <Sheet open={reportOpen} onClose={() => setReportOpen(false)} title="الإبلاغ عن القناة">
         {reported ? (
-          <div className="py-5 text-center"><p className="font-bold">Report submitted</p><p className="mt-1 text-sm text-[#71767b]">The channel has been sent for review.</p><Button size="sm" className="mt-4" onClick={() => setReportOpen(false)}>Done</Button></div>
+          <div className="py-5 text-center"><p className="font-bold">تم إرسال البلاغ</p><p className="mt-1 text-sm text-[#71767b]">تم إرسال القناة للمراجعة.</p><Button size="sm" className="mt-4" onClick={() => setReportOpen(false)}>تم</Button></div>
         ) : (
-          <div><p className="text-sm text-[#71767b]">Tell us why this channel should be reviewed.</p><select className="mt-4 h-11 w-full rounded-full border border-[#2f3336] bg-[#202327] px-4 text-sm text-[#e7e9ea] outline-none focus:border-[#1d9bf0]"><option>Spam or misleading</option><option>Harassment or abuse</option><option>Harmful content</option></select><Button className="mt-4 w-full" onClick={() => setReported(true)}>Send report</Button></div>
+          <div><p className="text-sm text-[#71767b]">أخبرنا لماذا يجب مراجعة هذه القناة.</p><select className="mt-4 h-11 w-full rounded-full border border-[#2f3336] bg-[#202327] px-4 text-sm text-[#e7e9ea] outline-none focus:border-[#1d9bf0]"><option>بريد عشوائي أو مضلل</option><option>مضايقة أو إساءة</option><option>محتوى ضار</option></select><Button className="mt-4 w-full" onClick={() => setReported(true)}>إرسال البلاغ</Button></div>
         )}
       </Sheet>
     </div>
@@ -65,5 +65,5 @@ function Stat({ label, value }: { label: string; value: string }) {
 }
 
 function Row({ label, description, value, onClick, danger = false }: { label: string; description: string; value: string; onClick: () => void; danger?: boolean }) {
-  return <button type="button" onClick={onClick} className="flex w-full items-center gap-4 border-b border-[#2f3336] p-4 text-left last:border-b-0 hover:bg-white/[0.03] cursor-pointer"><span className="min-w-0 flex-1"><span className={`block text-sm font-bold ${danger ? 'text-[#f4212e]' : ''}`}>{label}</span><span className="mt-1 block truncate text-xs text-[#71767b]">{description}</span></span><span className={`shrink-0 text-xs font-bold ${danger ? 'text-[#f4212e]' : 'text-[#1d9bf0]'}`}>{value}</span></button>
+  return <button type="button" onClick={onClick} className="flex w-full items-center gap-4 border-b border-[#2f3336] p-4 text-start last:border-b-0 hover:bg-white/[0.03] cursor-pointer"><span className="min-w-0 flex-1"><span className={`block text-sm font-bold ${danger ? 'text-[#f4212e]' : ''}`}>{label}</span><span className="mt-1 block truncate text-xs text-[#71767b]">{description}</span></span><span className={`shrink-0 text-xs font-bold ${danger ? 'text-[#f4212e]' : 'text-[#1d9bf0]'}`}>{value}</span></button>
 }

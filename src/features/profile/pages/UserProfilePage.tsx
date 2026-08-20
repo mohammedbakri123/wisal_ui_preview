@@ -20,11 +20,11 @@ export default function UserProfilePage() {
   )
 
   const displayName = matchedConversation?.name || 
-    (username ? username.charAt(0).toUpperCase() + username.slice(1) : 'User Details')
+    (username ? username.charAt(0).toUpperCase() + username.slice(1) : 'تفاصيل المستخدم')
   const userAvatar = matchedConversation?.avatar || null
   const userBio = matchedConversation?.type === 'direct' 
-    ? 'Productive software engineer & tech designer. Coding day & night.'
-    : 'This is a description page for Wisal user profiles.'
+    ? 'مهندس برمجيات ومصمم تقني. أعمل ليل نهار.'
+    : 'صفحة تعريفية لمستخدمي وصال.'
 
   const handleMessage = () => {
     if (matchedConversation) {
@@ -44,7 +44,7 @@ export default function UserProfilePage() {
           
           <h2 className="text-xl font-bold mt-4">{displayName}</h2>
           <p className="text-xs text-success font-medium mt-1">
-            {isBlocked ? 'Blocked' : 'Online'}
+            {isBlocked ? 'محظور' : 'متصل الآن'}
           </p>
 
           <p className="text-sm text-muted-foreground mt-3 max-w-xs leading-relaxed">
@@ -53,7 +53,7 @@ export default function UserProfilePage() {
 
           <div className="mt-5 w-full flex gap-3">
             <Button className="flex-1 cursor-pointer" onClick={handleMessage}>
-              Send Message
+              إرسال رسالة
             </Button>
           </div>
         </div>
@@ -65,7 +65,7 @@ export default function UserProfilePage() {
               <svg className="h-4.5 w-4.5 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
               </svg>
-              <span className="text-sm font-semibold">Mute notifications</span>
+              <span className="text-sm font-semibold">كتم الإشعارات</span>
             </div>
             <button
               onClick={() => setIsMuted(!isMuted)}
@@ -74,7 +74,7 @@ export default function UserProfilePage() {
               }`}
             >
               <span className={`pointer-events-none inline-block h-4.5 w-4.5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                isMuted ? 'translate-x-4.5' : 'translate-x-0'
+                isMuted ? 'translate-x-4.5 rtl:-translate-x-4.5' : 'translate-x-0'
               }`} />
             </button>
           </div>
@@ -84,7 +84,7 @@ export default function UserProfilePage() {
               <svg className="h-4.5 w-4.5 text-destructive" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
               </svg>
-              <span className="text-sm font-semibold text-destructive">Block contact</span>
+              <span className="text-sm font-semibold text-destructive">حظر جهة الاتصال</span>
             </div>
             <button
               onClick={() => setIsBlocked(!isBlocked)}
@@ -93,7 +93,7 @@ export default function UserProfilePage() {
               }`}
             >
               <span className={`pointer-events-none inline-block h-4.5 w-4.5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                isBlocked ? 'translate-x-4.5' : 'translate-x-0'
+                isBlocked ? 'translate-x-4.5 rtl:-translate-x-4.5' : 'translate-x-0'
               }`} />
             </button>
           </div>
@@ -101,20 +101,20 @@ export default function UserProfilePage() {
 
         {/* Mutual Groups */}
         <div className="bg-surface rounded-2xl border border-border/50 p-4 space-y-3 shadow-sm">
-          <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Mutual Groups</h4>
+          <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">المجموعات المشتركة</h4>
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <div className="h-9 w-9 rounded-lg bg-accent/15 flex items-center justify-center text-accent text-sm font-bold">DT</div>
-              <div className="flex-1 text-left min-w-0">
-                <p className="text-sm font-semibold truncate">Design Team</p>
-                <p className="text-xs text-muted-foreground">12 members</p>
+              <div className="flex-1 text-start min-w-0">
+                <p className="text-sm font-semibold truncate">فريق التصميم</p>
+                <p className="text-xs text-muted-foreground">12 عضو</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
               <div className="h-9 w-9 rounded-lg bg-accent/15 flex items-center justify-center text-accent text-sm font-bold">EN</div>
-              <div className="flex-1 text-left min-w-0">
-                <p className="text-sm font-semibold truncate">Engineering</p>
-                <p className="text-xs text-muted-foreground">8 members</p>
+              <div className="flex-1 text-start min-w-0">
+                <p className="text-sm font-semibold truncate">الهندسة</p>
+                <p className="text-xs text-muted-foreground">8 أعضاء</p>
               </div>
             </div>
           </div>
@@ -122,12 +122,12 @@ export default function UserProfilePage() {
 
         {/* Shared Media */}
         <div className="bg-surface rounded-2xl border border-border/50 p-4 space-y-3 shadow-sm">
-          <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Shared Media</h4>
+          <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">الوسائط المشتركة</h4>
           <div className="grid grid-cols-4 gap-2">
-            <div className="aspect-square bg-muted/60 rounded-lg flex items-center justify-center text-muted-foreground text-[10px] text-center p-1 border border-border/20 hover:bg-muted cursor-pointer transition-colors">UI v1</div>
-            <div className="aspect-square bg-muted/60 rounded-lg flex items-center justify-center text-muted-foreground text-[10px] text-center p-1 border border-border/20 hover:bg-muted cursor-pointer transition-colors">Palettes</div>
-            <div className="aspect-square bg-muted/60 rounded-lg flex items-center justify-center text-muted-foreground text-[10px] text-center p-1 border border-border/20 hover:bg-muted cursor-pointer transition-colors">Mockups</div>
-            <div className="aspect-square bg-muted/60 rounded-lg flex items-center justify-center text-muted-foreground text-[10px] text-center p-1 border border-border/20 hover:bg-muted cursor-pointer transition-colors">Logo</div>
+            <div className="aspect-square bg-muted/60 rounded-lg flex items-center justify-center text-muted-foreground text-[10px] text-center p-1 border border-border/20 hover:bg-muted cursor-pointer transition-colors">واجهة</div>
+            <div className="aspect-square bg-muted/60 rounded-lg flex items-center justify-center text-muted-foreground text-[10px] text-center p-1 border border-border/20 hover:bg-muted cursor-pointer transition-colors">لوحات</div>
+            <div className="aspect-square bg-muted/60 rounded-lg flex items-center justify-center text-muted-foreground text-[10px] text-center p-1 border border-border/20 hover:bg-muted cursor-pointer transition-colors">نماذج</div>
+            <div className="aspect-square bg-muted/60 rounded-lg flex items-center justify-center text-muted-foreground text-[10px] text-center p-1 border border-border/20 hover:bg-muted cursor-pointer transition-colors">شعار</div>
           </div>
         </div>
       </PageContainer>

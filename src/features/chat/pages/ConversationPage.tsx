@@ -48,9 +48,9 @@ export default function ConversationPage() {
     return (
       <div className="flex h-full items-center justify-center bg-black p-6">
         <EmptyState
-          title="Conversation not found"
-          description="This chat may have been deleted or does not exist."
-          action={<Button variant="primary" onClick={() => navigate(ROUTES.CHAT.LIST)}>Back to Messages</Button>}
+          title="المحادثة غير موجودة"
+          description="قد تكون هذه المحادثة محذوفة أو غير موجودة."
+          action={<Button variant="primary" onClick={() => navigate(ROUTES.CHAT.LIST)}>العودة إلى الرسائل</Button>}
         />
       </div>
     )
@@ -66,9 +66,9 @@ export default function ConversationPage() {
             type="button"
             onClick={() => navigate(ROUTES.CHAT.LIST)}
             className="w-[34.75px] h-[34.75px] rounded-full flex items-center justify-center text-[#e7e9ea] hover:bg-white/[0.08] active:bg-white/[0.12] transition-colors md:hidden cursor-pointer shrink-0"
-            title="Back to conversations"
+            title="العودة إلى المحادثات"
           >
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+            <svg className="h-5 w-5 rtl:-scale-x-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
           </button>
@@ -76,7 +76,7 @@ export default function ConversationPage() {
           <button
             type="button"
             onClick={() => setShowDetails(true)}
-            className="flex min-w-0 items-center gap-3 text-left hover:opacity-90 transition-opacity cursor-pointer"
+            className="flex min-w-0 items-center gap-3 text-start hover:opacity-90 transition-opacity cursor-pointer"
           >
             <Avatar
               src={conversation.avatar}
@@ -92,8 +92,8 @@ export default function ConversationPage() {
               </h1>
               <p className="truncate text-[12px] text-[#71767b] leading-tight">
                 {conversation.type === 'direct'
-                  ? isMuted ? 'Muted' : 'Online'
-                  : `${conversation.members.length || 0} members`}
+                  ? isMuted ? 'مكتومة' : 'متصل'
+                  : `${conversation.members.length || 0} أعضاء`}
               </p>
             </div>
           </button>
@@ -105,7 +105,7 @@ export default function ConversationPage() {
             type="button"
             onClick={() => navigate(`/home/c/${conversation.id}/search`)}
             className="w-[34.75px] h-[34.75px] rounded-full flex items-center justify-center text-[#e7e9ea] hover:bg-white/[0.08] active:bg-white/[0.12] transition-colors cursor-pointer"
-            title="Search in conversation"
+            title="البحث في المحادثة"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -116,7 +116,7 @@ export default function ConversationPage() {
             type="button"
             onClick={() => setShowDetails(true)}
             className="w-[34.75px] h-[34.75px] rounded-full flex items-center justify-center text-[#e7e9ea] hover:bg-white/[0.08] active:bg-white/[0.12] transition-colors cursor-pointer"
-            title="Conversation details"
+            title="تفاصيل المحادثة"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
@@ -158,7 +158,7 @@ export default function ConversationPage() {
       </footer>
 
       {/* Details Sheet Modal */}
-      <Sheet open={showDetails} onClose={() => setShowDetails(false)} title="Conversation Info">
+      <Sheet open={showDetails} onClose={() => setShowDetails(false)} title="معلومات المحادثة">
         <ConversationDetailsPanel
           conversation={conversation}
           isMuted={isMuted}
@@ -174,16 +174,16 @@ export default function ConversationPage() {
         />
       </Sheet>
 
-      <Sheet open={selectedMember !== null} onClose={() => setSelectedMember(null)} title="Member profile">
+      <Sheet open={selectedMember !== null} onClose={() => setSelectedMember(null)} title="الملف الشخصي للعضو">
         {selectedMember && (
           <div className="text-center">
             <Avatar src={selectedMember.avatar} alt={selectedMember.name} size="xl" online={selectedMember.isOnline} />
             <h2 className="mt-3 text-xl font-bold">{selectedMember.name}</h2>
-            <p className="mt-1 text-sm text-[#71767b]">Group member</p>
-            <p className="mt-4 text-sm leading-relaxed text-[#71767b]">{selectedMember.bio ?? 'No bio added yet.'}</p>
+            <p className="mt-1 text-sm text-[#71767b]">عضو في المجموعة</p>
+            <p className="mt-4 text-sm leading-relaxed text-[#71767b]">{selectedMember.bio ?? 'لا توجد نبذة بعد.'}</p>
             <div className="mt-5 flex gap-2">
-              <Button variant="secondary" className="flex-1" onClick={() => navigate(`/profile/${selectedMember.name.toLowerCase().replace(/\s+/g, '')}`)}>View profile</Button>
-              <Button className="flex-1" onClick={() => { setSelectedMember(null); navigate('/home/c/c1') }}>Message</Button>
+              <Button variant="secondary" className="flex-1" onClick={() => navigate(`/profile/${selectedMember.name.toLowerCase().replace(/\s+/g, '')}`)}>عرض الملف الشخصي</Button>
+              <Button className="flex-1" onClick={() => { setSelectedMember(null); navigate('/home/c/c1') }}>مراسلة</Button>
             </div>
           </div>
         )}

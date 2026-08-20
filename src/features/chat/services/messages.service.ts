@@ -6,11 +6,11 @@ import { realtimeConnection } from './realtime.service'
 
 const fallbackSender = mockUsers[0]
 const quickReplies = [
-  'That works for me.',
-  'I am checking this now.',
-  'Can you send the latest version?',
-  'Let us circle back after the review.',
-  'Thanks, I have what I need.',
+  'هذا يناسبني.',
+  'أتحقق من هذا الآن.',
+  'هل يمكنك إرسال أحدث نسخة؟',
+  'دعنا نعود بعد المراجعة.',
+  'شكراً، لدي ما أحتاجه.',
 ]
 
 function createMessage(conversationId: string, sender: User, content: string, type: Message['type']): Message {
@@ -95,7 +95,7 @@ export const messagesService = {
   },
 
   async edit(conversationId: string, messageId: string, content: string): Promise<Message[]> {
-    if (!content.trim()) throw new Error('Message cannot be empty')
+    if (!content.trim()) throw new Error('لا يمكن أن تكون الرسالة فارغة')
     return updateStoredMessage(conversationId, messageId, (message) => ({
       ...message,
       content: content.trim(),

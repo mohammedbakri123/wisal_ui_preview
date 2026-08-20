@@ -15,7 +15,7 @@ export function SearchResultItem({ conversation, snippet }: SearchResultItemProp
     <button
       type="button"
       onClick={() => navigate(path)}
-      className="group flex w-full items-center gap-3.5 px-4 py-3.5 text-left border-b border-[#2f3336] hover:bg-white/[0.03] active:bg-white/[0.06] transition-colors cursor-pointer"
+      className="group flex w-full items-center gap-3.5 px-4 py-3.5 text-start border-b border-[#2f3336] hover:bg-white/[0.03] active:bg-white/[0.06] transition-colors cursor-pointer"
     >
       <div className="relative shrink-0">
         <Avatar src={conversation.avatar} alt={conversation.name} size="md" online={conversation.type === 'direct'} />
@@ -26,7 +26,7 @@ export function SearchResultItem({ conversation, snippet }: SearchResultItemProp
             {conversation.name}
           </p>
           <span className="rounded-full bg-[#202327] px-2 py-0.5 text-[10px] font-bold uppercase text-[#71767b] tracking-wider">
-            {conversation.type}
+            {conversation.type === 'group' ? 'مجموعة' : conversation.type === 'channel' ? 'قناة' : 'خاص'}
           </span>
         </div>
         <p className="mt-0.5 truncate text-[13px] text-[#71767b]">

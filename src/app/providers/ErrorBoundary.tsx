@@ -25,9 +25,9 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="flex flex-col items-center justify-center min-h-dvh p-8 text-center">
           <div className="text-4xl mb-4">!</div>
-          <h1 className="text-xl font-semibold mb-2">Something went wrong</h1>
+          <h1 className="text-xl font-semibold mb-2">حدث خطأ ما</h1>
           <p className="text-sm text-muted-foreground mb-6 max-w-sm">
-            {this.state.error?.message ?? 'An unexpected error occurred.'}
+            {this.state.error?.message ?? 'حدث خطأ غير متوقع.'}
           </p>
           <button
             onClick={() => {
@@ -36,7 +36,7 @@ export class ErrorBoundary extends Component<Props, State> {
             }}
             className="px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-medium hover:bg-accent/90 transition-colors cursor-pointer"
           >
-            Reload page
+            إعادة تحميل الصفحة
           </button>
         </div>
       )

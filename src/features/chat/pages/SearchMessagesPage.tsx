@@ -60,10 +60,10 @@ export default function SearchMessagesPage() {
                 Messages
               </h1>
               <p className="text-sm text-muted-foreground/50 mt-2 max-w-md leading-relaxed hidden sm:block">
-                Find messages across all your conversations.
+                ابحث عن الرسائل عبر جميع محادثاتك.
               </p>
             </div>
-            <BackButton to={conversationId ? `/home/${conversationId.startsWith('g') ? 'g' : 'c'}/${conversationId}` : ROUTES.CHAT.SEARCH} label={conversationId ? 'Conversation' : 'Search'} />
+            <BackButton to={conversationId ? `/home/${conversationId.startsWith('g') ? 'g' : 'c'}/${conversationId}` : ROUTES.CHAT.SEARCH} label={conversationId ? 'المحادثة' : 'البحث'} />
           </div>
           <div className="mt-4 sm:mt-5 h-px bg-gradient-to-r from-accent/25 via-accent/5 to-transparent" />
         </section>
@@ -71,21 +71,21 @@ export default function SearchMessagesPage() {
         {/* Search input */}
         <div className="pt-5 sm:pt-6 space-y-4">
           <div className="group flex items-center bg-surface/60 border border-border-light/20 rounded-2xl px-4 py-3 focus-within:border-accent/30 focus-within:ring-2 focus-within:ring-accent/10 transition-all duration-300">
-            <svg className="h-5 w-5 text-muted-foreground/30 group-focus-within:text-accent/50 transition-colors mr-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+            <svg className="h-5 w-5 text-muted-foreground/30 group-focus-within:text-accent/50 transition-colors me-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               autoFocus
-              placeholder="Search message text"
+              placeholder="ابحث في نص الرسائل"
               className="min-w-0 flex-1 bg-transparent text-sm text-foreground focus:outline-none placeholder:text-muted-foreground/40"
             />
             {!conversationId && <button
               onClick={() => navigate(ROUTES.CHAT.SEARCH)}
-              className="text-[11px] sm:text-xs font-semibold text-accent/70 hover:text-accent transition-colors ml-2 shrink-0 whitespace-nowrap"
+              className="text-[11px] sm:text-xs font-semibold text-accent/70 hover:text-accent transition-colors ms-2 shrink-0 whitespace-nowrap"
             >
-              Chats &rarr;
+              المحادثات <span className="rtl:hidden">&rarr;</span><span className="ltr:hidden">&larr;</span>
             </button>}
           </div>
         </div>
@@ -99,13 +99,13 @@ export default function SearchMessagesPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
               </div>
-              <p className="text-sm font-medium text-muted-foreground/60">No messages found</p>
-              <p className="text-xs text-muted-foreground/40 mt-1 max-w-xs">Try a different search term.</p>
+              <p className="text-sm font-medium text-muted-foreground/60">لم يتم العثور على رسائل</p>
+              <p className="text-xs text-muted-foreground/40 mt-1 max-w-xs">جرب مصطلح بحث مختلف.</p>
             </div>
           ) : results.length > 0 ? (
             <div className="space-y-2">
               <div className="flex items-center gap-2 px-1 pb-2">
-                <span className="text-[11px] sm:text-xs font-semibold text-muted-foreground/50 uppercase tracking-[0.15em]">Results</span>
+                <span className="text-[11px] sm:text-xs font-semibold text-muted-foreground/50 uppercase tracking-[0.15em]">النتائج</span>
                 <span className="text-[11px] text-muted-foreground/30 font-medium">({results.length})</span>
               </div>
               <div className="overflow-hidden rounded-2xl border border-border-light/10 bg-surface/20 divide-y divide-border-light/5">
@@ -129,7 +129,7 @@ function MessageSearchResult({ conversation, message }: { conversation: Conversa
     <button
       type="button"
       onClick={() => navigate(path, { state: { highlightMessageId: message.id } })}
-      className="group flex w-full items-start gap-3 border-b border-[#2f3336] px-4 py-3.5 text-left transition-colors hover:bg-white/[0.03] active:bg-white/[0.06] cursor-pointer"
+      className="group flex w-full items-start gap-3 border-b border-[#2f3336] px-4 py-3.5 text-start transition-colors hover:bg-white/[0.03] active:bg-white/[0.06] cursor-pointer"
     >
       <Avatar src={message.sender.avatar ?? conversation.avatar} alt={message.sender.name} size="sm" online={message.sender.isOnline} />
       <span className="min-w-0 flex-1">
@@ -139,7 +139,7 @@ function MessageSearchResult({ conversation, message }: { conversation: Conversa
         </span>
         <span className="mt-1 block break-words text-sm leading-relaxed text-[#71767b]">{message.content}</span>
       </span>
-      <span className="shrink-0 pt-1 text-xs font-bold text-[#1d9bf0]">Jump</span>
+      <span className="shrink-0 pt-1 text-xs font-bold text-[#1d9bf0]">انتقال</span>
     </button>
   )
 }
