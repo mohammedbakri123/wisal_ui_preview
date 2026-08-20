@@ -11,7 +11,6 @@ import { Spinner } from '@/core/components/ui/Spinner'
 import { ROUTES } from '@/core/utils/routes'
 
 const LoginPage = lazy(() => import('@/features/authentication/pages/LoginPage'))
-const SignUpPage = lazy(() => import('@/features/authentication/pages/SignUpPage'))
 const VerifyOtpPage = lazy(() => import('@/features/authentication/pages/VerifyOtpPage'))
 const CreateProfilePage = lazy(() => import('@/features/authentication/pages/CreateProfilePage'))
 const ConversationPage = lazy(() => import('@/features/chat/pages/ConversationPage'))
@@ -122,7 +121,6 @@ export function AppRouter() {
       <Routes>
         {/* Auth routes */}
         <Route element={<GuestGuard><AuthLayout /></GuestGuard>}>
-          <Route path={ROUTES.AUTH.SIGNUP} element={<SignUpPage />} />
           <Route path={ROUTES.AUTH.LOGIN} element={<LoginPage />} />
           <Route path={ROUTES.AUTH.VERIFY} element={<VerifyOtpPage />} />
           <Route path={ROUTES.AUTH.PROFILE} element={<CreateProfilePage />} />

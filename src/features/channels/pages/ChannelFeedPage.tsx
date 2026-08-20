@@ -8,15 +8,29 @@ import { cn } from '@/core/utils/cn'
 import { channelPosts } from '../data'
 import { Sheet } from '@/core/components/ui/Sheet'
 import { useChannels } from '../context/useChannels'
+import { useCommunities } from '@/features/communities/context/useCommunities'
 
 export default function ChannelFeedPage() {
   const navigate = useNavigate()
   const { channelId } = useParams()
   const { channels, toggleFollow } = useChannels()
-  const channel = channels.find((item) => item.id === channelId) ?? channels[0]
-  const posts = channel.id.startsWith('channel-')
+  const { communities, toggleChannelJoined } = useCommunities()
+  const globalChannel = channels.find((item) => item.id === channelId)
+  const communityChannel = communities
+    .flatMap((community) => (community.channels ?? []).map((channel) => ({ ...channel, communityId: community.id })))
+    .find((channel) => channel.id === channelId)
+  const channel = globalChannel ?? communityChannel ?? channels[0]
+  const posts = channel.id.startsWith('channel-') || channel.id.startsWith('ann-') || channel.id.startsWith('ch-')
     ? (channel.lastPost ? [channel.lastPost] : [])
     : channelPosts
+
+  const handleToggleFollow = () => {
+    if (communityChannel) {
+      toggleChannelJoined(communityChannel.communityId, channel.id)
+    } else {
+      toggleFollow(channel.id)
+    }
+  }
   const [reportOpen, setReportOpen] = useState(false)
   const [reportSent, setReportSent] = useState(false)
 
@@ -24,7 +38,7 @@ export default function ChannelFeedPage() {
     <div className="flex h-full flex-col bg-black text-[#e7e9ea]">
       {/* Chat-style header */}
       <header className="flex items-center gap-3 border-b border-[#2f3336] bg-black/65 px-2 py-2.5 backdrop-blur-md">
-        <BackButton to={ROUTES.CHANNEL.ROOT} />
+        <BackButton to={communityChannel ? ROUTES.CHAT.LIST : ROUTES.CHANNEL.ROOT} />
         <Avatar
           src={null}
           alt={channel.name}
@@ -119,7 +133,7 @@ export default function ChannelFeedPage() {
               <span className="truncate text-sm text-[#71767b]">فقط المدير يمكنه نشر التحديثات في هذه القناة</span>
             </div>
           ) : (
-            <Button className="h-11 w-full" onClick={() => toggleFollow(channel.id)}>
+            <Button className="h-11 w-full" onClick={handleToggleFollow}>
               انضمام إلى القناة
             </Button>
           )}

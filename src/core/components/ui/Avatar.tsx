@@ -1,11 +1,13 @@
 import { cn } from '@/core/utils/cn'
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'profile'
+export type AvatarShape = 'circle' | 'square'
 
 export interface AvatarProps {
   src?: string | null
   alt: string
   size?: AvatarSize
+  shape?: AvatarShape
   online?: boolean
   story?: boolean
   storySeen?: boolean
@@ -54,6 +56,7 @@ export function Avatar({
   src,
   alt,
   size = 'md',
+  shape = 'circle',
   online,
   story,
   storySeen,
@@ -62,6 +65,7 @@ export function Avatar({
   className,
 }: AvatarProps) {
   const styles = sizeStyles[size]
+  const shapeClass = shape === 'square' ? 'rounded-[22%]' : 'rounded-full'
 
   return (
     <div className={cn('relative inline-flex shrink-0', story && 'p-0.5', className)}>
@@ -81,13 +85,14 @@ export function Avatar({
         <img
           src={src}
           alt={alt}
-          className={cn(styles.container, 'rounded-full object-cover relative z-10 bg-[#16181c]')}
+          className={cn(styles.container, shapeClass, 'object-cover relative z-10 bg-[#16181c]')}
         />
       ) : (
         <div
           className={cn(
             styles.container,
-            'rounded-full flex items-center justify-center relative z-10 border border-[#2f3336]',
+            shapeClass,
+            'flex items-center justify-center relative z-10 border border-[#2f3336]',
             getColorForName(alt || 'مستخدم'),
           )}
         >

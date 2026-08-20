@@ -24,5 +24,5 @@ export default function LoginPage() {
     }
   }
 
-  return <LoginForm onSubmit={handleSubmit} isLoading={isLoading} error={error} mode="login" />
+  return <LoginForm onSubmit={handleSubmit} isLoading={isLoading} error={error} />
 }

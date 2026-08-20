@@ -1,20 +1,54 @@
+import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { PageContainer } from '@/core/components/layout/PageContainer'
 import { BackButton } from '@/core/components/ui/BackButton'
 import { Button } from '@/core/components/ui/Button'
+import { Avatar } from '@/core/components/ui/Avatar'
 import { ROUTES } from '@/core/utils/routes'
-import { channels as allChannels } from '@/features/channels/data'
 import { useCommunities } from '../context/useCommunities'
 
 export default function CommunityDetailsPage() {
   const navigate = useNavigate()
   const { communityId } = useParams()
-  const { communities, joinCommunity, leaveCommunity } = useCommunities()
+  const { communities, joinCommunity, leaveCommunity, addGroup, addChannel } = useCommunities()
   const community = communities.find((item) => item.id === communityId) ?? communities[0]
 
   const groupCount = community.groupList?.length ?? 0
-  const channelIds = community.channelIds ?? []
-  const communityChannels = allChannels.filter((channel) => channelIds.includes(channel.id))
+  const extraChannels = (community.channels ?? []).filter((channel) => !channel.isAnnouncement)
+
+  const [showGroupForm, setShowGroupForm] = useState(false)
+  const [groupName, setGroupName] = useState('')
+  const [showChannelForm, setShowChannelForm] = useState(false)
+  const [channelName, setChannelName] = useState('')
+
+  const announcement = community.channels?.find((channel) => channel.isAnnouncement)
+
+  const canManage = community.owner
+
+  const createGroup = () => {
+    if (!groupName.trim()) return
+    addGroup(community.id, groupName.trim())
+    setGroupName('')
+    setShowGroupForm(false)
+  }
+
+  const createChannel = () => {
+    if (!channelName.trim()) return
+    addChannel(community.id, {
+      name: channelName.trim(),
+      description: 'قناة جديدة داخل المجتمع.',
+      category: 'عام',
+      subscribers: '1',
+      joined: true,
+      admin: true,
+      verified: false,
+      hasNewUpdate: false,
+      lastPost: 'تم إنشاء القناة.',
+      lastPostTime: 'الآن',
+    })
+    setChannelName('')
+    setShowChannelForm(false)
+  }
 
   return (
     <div className="flex h-full flex-col bg-black text-[#e7e9ea]">
@@ -27,9 +61,12 @@ export default function CommunityDetailsPage() {
             <div className="border-b border-[#2f3336] p-5">
               <p className="text-xs font-bold uppercase tracking-wider text-[#1d9bf0]">المجتمع</p>
               <div className="mt-2 flex items-start justify-between gap-4">
-                <div className="min-w-0">
-                  <h1 className="text-[22px] font-bold tracking-tight text-[#e7e9ea]">{community.name}</h1>
-                  <p className="mt-2 text-[14px] leading-relaxed text-[#71767b]">{community.description}</p>
+                <div className="flex items-start gap-4">
+                  <Avatar alt={community.name} size="lg" shape="square" className="shrink-0" />
+                  <div className="min-w-0">
+                    <h1 className="text-[22px] font-bold tracking-tight text-[#e7e9ea]">{community.name}</h1>
+                    <p className="mt-2 text-[14px] leading-relaxed text-[#71767b]">{community.description}</p>
+                  </div>
                 </div>
                 {community.verified && (
                   <svg className="mt-1 h-6 w-6 shrink-0 text-[#1d9bf0]" viewBox="0 0 24 24" fill="currentColor">
@@ -44,7 +81,7 @@ export default function CommunityDetailsPage() {
                 ) : (
                   <Button size="sm" onClick={() => joinCommunity(community.id)}>انضمام</Button>
                 )}
-                {community.owner && (
+                {canManage && (
                   <Button size="sm" variant="secondary" onClick={() => navigate(ROUTES.COMMUNITY.MANAGE.replace(':communityId', community.id))}>
                     إدارة المجتمع
                   </Button>
@@ -64,7 +101,7 @@ export default function CommunityDetailsPage() {
               {[
                 { label: 'الأعضاء', value: community.members },
                 { label: 'المجموعات', value: String(groupCount) },
-                { label: 'القنوات', value: String(communityChannels.length) },
+                { label: 'القنوات', value: String(community.channels?.length ?? 0) },
               ].map((stat) => (
                 <div key={stat.label} className="p-4 text-center">
                   <p className="text-[12px] font-medium text-[#71767b]">{stat.label}</p>
@@ -74,14 +111,76 @@ export default function CommunityDetailsPage() {
             </div>
           </section>
 
+          {/* Announcement channel — pinned at top */}
+          {announcement && (
+            <section className="mt-6">
+              <div className="mb-2 px-1">
+                <h3 className="text-[13px] font-bold uppercase tracking-wider text-[#71767b]">قناة الإعلانات</h3>
+              </div>
+              <div className="overflow-hidden rounded-2xl border border-[#1d9bf0]/30 bg-[#16181c]">
+                <button
+                  type="button"
+                  onClick={() => navigate(`/channels/${announcement.id}`)}
+                  className="flex w-full items-center gap-3 p-4 text-start transition-colors hover:bg-white/[0.03] cursor-pointer"
+                >
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#1d9bf0]/15 text-[#1d9bf0]">
+                    <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0121.485 12 59.768 59.768 0 013.27 20.875L5.999 12zm0 0h7.5" />
+                    </svg>
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-center gap-1.5">
+                      <span className="truncate text-[15px] font-bold text-[#e7e9ea]">{announcement.name}</span>
+                      {announcement.verified && (
+                        <svg className="h-4 w-4 shrink-0 text-[#1d9bf0]" viewBox="0 0 24 24" fill="currentColor">
+                          <path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307z" clipRule="evenodd" />
+                        </svg>
+                      )}
+                    </span>
+                    <span className="mt-0.5 block truncate text-xs text-[#71767b]">{announcement.lastPost}</span>
+                    <span className="mt-1 block text-[11px] text-[#1d9bf0]">قناة بث · {announcement.subscribers} مشترك · {announcement.lastPostTime}</span>
+                  </span>
+                  {announcement.hasNewUpdate && (
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1d9bf0] text-[10px] font-bold text-white">✓</span>
+                  )}
+                  <svg className="h-4 w-4 shrink-0 text-[#71767b] rtl:-scale-x-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                  </svg>
+                </button>
+              </div>
+            </section>
+          )}
+
           {/* Nested groups */}
           <section className="mt-6">
             <div className="mb-2 flex items-center justify-between px-1">
               <h3 className="text-[13px] font-bold uppercase tracking-wider text-[#71767b]">المجموعات</h3>
-              <button type="button" onClick={() => navigate(`/communities/${community.id}/groups`)} className="text-xs font-bold text-[#1d9bf0] hover:underline cursor-pointer">
-                عرض الكل
-              </button>
+              <div className="flex items-center gap-3">
+                {canManage && (
+                  <button type="button" onClick={() => setShowGroupForm((value) => !value)} className="text-xs font-bold text-[#1d9bf0] hover:underline cursor-pointer">
+                    {showGroupForm ? 'إلغاء' : 'مجموعة جديدة'}
+                  </button>
+                )}
+                <button type="button" onClick={() => navigate(`/communities/${community.id}/groups`)} className="text-xs font-bold text-[#1d9bf0] hover:underline cursor-pointer">
+                  عرض الكل
+                </button>
+              </div>
             </div>
+
+            {showGroupForm && (
+              <div className="mb-3 flex items-center gap-2 rounded-2xl border border-[#2f3336] bg-[#16181c] p-3">
+                <input
+                  type="text"
+                  value={groupName}
+                  onChange={(event) => setGroupName(event.target.value)}
+                  onKeyDown={(event) => event.key === 'Enter' && createGroup()}
+                  placeholder="اسم المجموعة الجديدة"
+                  className="h-10 min-w-0 flex-1 rounded-full border border-[#2f3336] bg-[#202327] px-4 text-sm text-[#e7e9ea] placeholder:text-[#71767b] outline-none focus:border-[#1d9bf0]"
+                />
+                <Button size="sm" disabled={!groupName.trim()} onClick={createGroup}>إنشاء</Button>
+              </div>
+            )}
+
             <div className="overflow-hidden rounded-2xl border border-[#2f3336] bg-[#16181c]">
               {groupCount === 0 ? (
                 <p className="p-4 text-sm text-[#71767b]">لا توجد مجموعات بعد في هذا المجتمع.</p>
@@ -116,15 +215,37 @@ export default function CommunityDetailsPage() {
           <section className="mt-6">
             <div className="mb-2 flex items-center justify-between px-1">
               <h3 className="text-[13px] font-bold uppercase tracking-wider text-[#71767b]">القنوات</h3>
-              <button type="button" onClick={() => navigate(`/communities/${community.id}/channels`)} className="text-xs font-bold text-[#1d9bf0] hover:underline cursor-pointer">
-                عرض الكل
-              </button>
+              <div className="flex items-center gap-3">
+                {canManage && (
+                  <button type="button" onClick={() => setShowChannelForm((value) => !value)} className="text-xs font-bold text-[#1d9bf0] hover:underline cursor-pointer">
+                    {showChannelForm ? 'إلغاء' : 'قناة جديدة'}
+                  </button>
+                )}
+                <button type="button" onClick={() => navigate(`/communities/${community.id}/channels`)} className="text-xs font-bold text-[#1d9bf0] hover:underline cursor-pointer">
+                  عرض الكل
+                </button>
+              </div>
             </div>
+
+            {showChannelForm && (
+              <div className="mb-3 flex items-center gap-2 rounded-2xl border border-[#2f3336] bg-[#16181c] p-3">
+                <input
+                  type="text"
+                  value={channelName}
+                  onChange={(event) => setChannelName(event.target.value)}
+                  onKeyDown={(event) => event.key === 'Enter' && createChannel()}
+                  placeholder="اسم القناة الجديدة"
+                  className="h-10 min-w-0 flex-1 rounded-full border border-[#2f3336] bg-[#202327] px-4 text-sm text-[#e7e9ea] placeholder:text-[#71767b] outline-none focus:border-[#1d9bf0]"
+                />
+                <Button size="sm" disabled={!channelName.trim()} onClick={createChannel}>إنشاء</Button>
+              </div>
+            )}
+
             <div className="overflow-hidden rounded-2xl border border-[#2f3336] bg-[#16181c]">
-              {communityChannels.length === 0 ? (
-                <p className="p-4 text-sm text-[#71767b]">لا توجد قنوات بعد في هذا المجتمع.</p>
+              {extraChannels.length === 0 ? (
+                <p className="p-4 text-sm text-[#71767b]">لا توجد قنوات إضافية بعد في هذا المجتمع.</p>
               ) : (
-                communityChannels.map((channel) => (
+                extraChannels.map((channel) => (
                   <button
                     key={channel.id}
                     type="button"

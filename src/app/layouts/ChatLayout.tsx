@@ -7,6 +7,8 @@ import { ROUTES } from '@/core/utils/routes'
 import { StoryViewer } from '@/features/stories/components/StoryViewer'
 import { StoryCreator } from '@/features/stories/components/StoryCreator'
 import { useStoriesContext } from '@/features/stories/context/useStoriesContext'
+import { CommunityInboxRows } from '@/features/communities/components/CommunityInboxRows'
+import { CommunityInfoDialog } from '@/features/communities/components/CommunityInfoDialog'
 
 export function ChatLayout() {
   const { user } = useAuth()
@@ -24,6 +26,7 @@ export function ChatLayout() {
     addStory,
   } = useStoriesContext()
   const [showCreator, setShowCreator] = useState(false)
+  const [openCommunityId, setOpenCommunityId] = useState<string | null>(null)
 
   const hasActiveConversation =
     location.pathname.startsWith('/home/c/') || location.pathname.startsWith('/home/g/')
@@ -95,6 +98,7 @@ export function ChatLayout() {
               </button>
             </div>
           )}
+          {!error && <CommunityInboxRows onOpen={setOpenCommunityId} />}
           {!error && <ChatList conversations={conversations} isLoading={isLoading} />}
         </div>
       </div>
@@ -128,6 +132,12 @@ export function ChatLayout() {
           onClose={() => setShowCreator(false)}
         />
       )}
+
+      {/* Community Info Dialog */}
+      <CommunityInfoDialog
+        communityId={openCommunityId}
+        onClose={() => setOpenCommunityId(null)}
+      />
     </div>
   )
 }

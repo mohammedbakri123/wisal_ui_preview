@@ -3,6 +3,17 @@ import { useAuth } from '@/app/providers/AuthProvider'
 import { Avatar } from '@/core/components/ui/Avatar'
 import { cn } from '@/core/utils/cn'
 import { ROUTES } from '@/core/utils/routes'
+import {
+  CommunitiesIcon,
+  ContactsIcon,
+  ExploreIcon,
+  MessagesIcon,
+  NotificationsIcon,
+  OrganizationsIcon,
+  ProfileIcon,
+  SettingsIcon,
+  UpdatesIcon,
+} from '@/core/components/ui/NavIcons'
 
 interface NavItem {
   label: string
@@ -20,85 +31,47 @@ export function Sidebar() {
     {
       label: 'الرسائل',
       path: ROUTES.HOME,
-      icon: (active: boolean) => (
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-        </svg>
-      ),
+      icon: (active: boolean) => <MessagesIcon active={active} />,
     },
     {
       label: 'استكشاف',
       path: ROUTES.EXPLORE,
-      icon: (active: boolean) => (
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-        </svg>
-      ),
+      icon: (active: boolean) => <ExploreIcon active={active} />,
     },
     {
       label: 'التحديثات',
       path: ROUTES.UPDATES,
-      icon: (active: boolean) => (
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 7.5v4.75l3 1.75" />
-        </svg>
-      ),
+      icon: (active: boolean) => <UpdatesIcon active={active} />,
     },
     {
       label: 'المجتمعات',
       path: ROUTES.COMMUNITY.ROOT,
-      icon: (active: boolean) => (
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-        </svg>
-      ),
+      icon: (active: boolean) => <CommunitiesIcon active={active} />,
     },
     {
       label: 'المنظمات',
       path: ROUTES.ORGANIZATIONS.LIST,
-      icon: (active: boolean) => (
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
-        </svg>
-      ),
+      icon: (active: boolean) => <OrganizationsIcon active={active} />,
     },
     {
       label: 'الإشعارات',
       path: ROUTES.NOTIFICATIONS,
-      icon: (active: boolean) => (
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-        </svg>
-      ),
+      icon: (active: boolean) => <NotificationsIcon active={active} />,
     },
     {
       label: 'جهات الاتصال',
       path: ROUTES.CONTACTS.ROOT,
-      icon: (active: boolean) => (
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.125-.953 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-.355-.023-.706-.068-1.05M15 19.128v.003a6.75 6.75 0 0 1-9.75 0v-.003m9.75 0a24.07 24.07 0 0 0-9.75 0m9.75 0a24.07 24.07 0 0 1-9.75 0M8.25 6.75a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM21 6.75a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-        </svg>
-      ),
+      icon: (active: boolean) => <ContactsIcon active={active} />,
     },
     {
       label: 'الملف الشخصي',
       path: ROUTES.PROFILE.SELF,
-      icon: (active: boolean) => (
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-        </svg>
-      ),
+      icon: (active: boolean) => <ProfileIcon active={active} />,
     },
     {
       label: 'الإعدادات',
       path: ROUTES.SETTINGS.ROOT,
-      icon: (active: boolean) => (
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9.59 3.2c.38-1.6 2.44-1.6 2.82 0a1.65 1.65 0 0 0 2.46 1.02c1.4-.86 2.86.6 2 2a1.65 1.65 0 0 0 1.02 2.46c1.6.38 1.6 2.44 0 2.82a1.65 1.65 0 0 0-1.02 2.46c.86 1.4-.6 2.86-2 2a1.65 1.65 0 0 0-2.46 1.02c-.38 1.6-2.44 1.6-2.82 0a1.65 1.65 0 0 0-2.46-1.02c-1.4.86-2.86-.6-2-2a1.65 1.65 0 0 0-1.02-2.46c-1.6-.38-1.6-2.44 0-2.82a1.65 1.65 0 0 0 1.02-2.46c-.86-1.4.6-2.86 2-2a1.65 1.65 0 0 0 2.46-1.02Z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-        </svg>
-      ),
+      icon: (active: boolean) => <SettingsIcon active={active} />,
     },
   ]
 

@@ -16,7 +16,7 @@ export function CommunityCard({ community, discover = false }: CommunityCardProp
   return (
     <article onClick={() => navigate(destination)} className="group cursor-pointer overflow-hidden rounded-2xl border border-[#2f3336] bg-[#16181c] transition-colors hover:bg-white/[0.03]">
       <div className="flex items-start gap-4 p-4 sm:p-5">
-        <Avatar alt={community.name} size="lg" className="shrink-0" />
+        <Avatar alt={community.name} size="lg" shape="square" className="shrink-0" />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <h3 className="truncate text-[17px] font-bold text-[#e7e9ea]">{community.name}</h3>

@@ -1,9 +1,10 @@
 import { useParams } from 'react-router'
 import { FeatureScaffold } from '@/core/components/layout/FeatureScaffold'
-import { communities } from '../data'
+import { useCommunities } from '../context/useCommunities'
 
 export default function CommunityGroupsPage() {
   const { communityId } = useParams()
+  const { communities } = useCommunities()
   const community = communities.find((item) => item.id === communityId) ?? communities[0]
   const groups = community.groupList ?? []
 
